@@ -146,14 +146,20 @@
       word-break: break-all;
     }
 
-    .password {
+    .cred {
       margin-top: 0.9rem;
       display: flex;
       align-items: center;
       gap: 0.6rem;
     }
 
-    .password code {
+    .cred .label {
+      flex: 0 0 6.2rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .cred code {
       flex: 1;
       font-family: var(--mono);
       font-size: 1.15rem;
@@ -177,7 +183,7 @@
 <body>
   <main class="card">
     <h1>SCOM-Modem-Passwort</h1>
-    <p class="hint">Modem-ID (Seriennummer) vom Aufkleber eingeben. Die Berechnung läuft nur lokal im Browser.</p>
+    <p class="hint">Modem-ID (Seriennummer) vom Aufkleber eingeben. Benutzername ist immer <code>1UND1</code>. Die Berechnung läuft nur lokal im Browser.</p>
 
     <form id="form" autocomplete="off">
       <label for="modemId">Modem-ID / Seriennummer</label>
@@ -198,9 +204,15 @@
         <dt>Letzte 5 Zeichen</dt>
         <dd id="lastFive"></dd>
       </dl>
-      <div class="password">
+      <div class="cred">
+        <span class="label">Benutzername</span>
+        <code id="username">1UND1</code>
+        <button class="ghost copy" type="button" id="copyUser" data-copy="username">Kopieren</button>
+      </div>
+      <div class="cred">
+        <span class="label">Passwort</span>
         <code id="password"></code>
-        <button class="ghost copy" type="button" id="copy">Kopieren</button>
+        <button class="ghost copy" type="button" id="copy" data-copy="password">Kopieren</button>
       </div>
       <p class="note">Prefix <code>G6m%Z</code> + letzte 5 Zeichen der intern übersetzten ID. Hex-Prefix <code>53434F4D</code> wird als <code>SCOM</code> gelesen.</p>
     </section>
@@ -214,8 +226,11 @@
       const resultEl = document.getElementById("result");
       const cleanIdEl = document.getElementById("cleanId");
       const lastFiveEl = document.getElementById("lastFive");
+      const USERNAME = "1UND1";
       const passwordEl = document.getElementById("password");
+      const usernameEl = document.getElementById("username");
       const copyBtn = document.getElementById("copy");
+      const copyUserBtn = document.getElementById("copyUser");
       const resetBtn = document.getElementById("reset");
 
       function hideError() {
@@ -260,9 +275,11 @@
 
         cleanIdEl.textContent = result.cleanId;
         lastFiveEl.textContent = result.lastFive;
+        usernameEl.textContent = USERNAME;
         passwordEl.textContent = result.password;
         resultEl.classList.add("visible");
         copyBtn.textContent = "Kopieren";
+        copyUserBtn.textContent = "Kopieren";
       });
 
       resetBtn.addEventListener("click", function () {
@@ -272,18 +289,25 @@
         input.focus();
       });
 
-      copyBtn.addEventListener("click", async function () {
-        const value = passwordEl.textContent;
+      async function copyText(value, button, promptLabel) {
         if (!value) return;
         try {
           await navigator.clipboard.writeText(value);
-          copyBtn.textContent = "Kopiert";
+          button.textContent = "Kopiert";
           setTimeout(function () {
-            copyBtn.textContent = "Kopieren";
+            button.textContent = "Kopieren";
           }, 1500);
         } catch (err) {
-          window.prompt("Passwort kopieren:", value);
+          window.prompt(promptLabel, value);
         }
+      }
+
+      copyBtn.addEventListener("click", function () {
+        copyText(passwordEl.textContent, copyBtn, "Passwort kopieren:");
+      });
+
+      copyUserBtn.addEventListener("click", function () {
+        copyText(USERNAME, copyUserBtn, "Benutzername kopieren:");
       });
     })();
   </script>
