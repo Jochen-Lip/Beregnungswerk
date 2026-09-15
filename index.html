@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCOM-Modem-Passwort</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --card: #1a2332;
+      --border: #2d3a4d;
+      --text: #e8eef5;
+      --muted: #8b9bb0;
+      --accent: #3d9a6d;
+      --accent-hover: #4db57f;
+      --error: #e05c5c;
+      --mono: "SF Mono", "Menlo", "Consolas", monospace;
+      --sans: "Segoe UI", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--sans);
+      background:
+        radial-gradient(ellipse at top, #1a2a22 0%, var(--bg) 55%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 28rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem 1.5rem 1.5rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      margin: 0 0 0.35rem;
+      font-size: 1.25rem;
+      font-weight: 650;
+    }
+
+    .hint {
+      margin: 0 0 1.25rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #121820;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    .row {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.85rem;
+    }
+
+    button {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border: 0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .primary:hover { background: var(--accent-hover); }
+
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .ghost:hover { color: var(--text); }
+
+    .error {
+      display: none;
+      margin-top: 0.85rem;
+      color: var(--error);
+      font-size: 0.9rem;
+    }
+
+    .error.visible { display: block; }
+
+    .result {
+      display: none;
+      margin-top: 1.15rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #121820;
+    }
+
+    .result.visible { display: block; }
+
+    .result dl {
+      margin: 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.35rem 0.85rem;
+      font-size: 0.85rem;
+    }
+
+    .result dt { color: var(--muted); }
+    .result dd {
+      margin: 0;
+      font-family: var(--mono);
+      word-break: break-all;
+    }
+
+    .password {
+      margin-top: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .password code {
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 1.15rem;
+      letter-spacing: 0.02em;
+      word-break: break-all;
+    }
+
+    .copy {
+      flex: 0 0 auto;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .note {
+      margin: 0.85rem 0 0;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>SCOM-Modem-Passwort</h1>
+    <p class="hint">Modem-ID (Seriennummer) vom Aufkleber eingeben. Die Berechnung läuft nur lokal im Browser.</p>
+
+    <form id="form" autocomplete="off">
+      <label for="modemId">Modem-ID / Seriennummer</label>
+      <input id="modemId" type="text" name="modemId" spellcheck="false" autofocus
+             placeholder="z. B. SCOM… oder 53434F4D…">
+      <div class="row">
+        <button class="primary" type="submit">Passwort berechnen</button>
+        <button class="ghost" type="button" id="reset">Leeren</button>
+      </div>
+    </form>
+
+    <p class="error" id="error" role="alert"></p>
+
+    <section class="result" id="result" aria-live="polite">
+      <dl>
+        <dt>Modem-ID intern</dt>
+        <dd id="cleanId"></dd>
+        <dt>Letzte 5 Zeichen</dt>
+        <dd id="lastFive"></dd>
+      </dl>
+      <div class="password">
+        <code id="password"></code>
+        <button class="ghost copy" type="button" id="copy">Kopieren</button>
+      </div>
+      <p class="note">Prefix <code>G6m%Z</code> + letzte 5 Zeichen der intern übersetzten ID. Hex-Prefix <code>53434F4D</code> wird als <code>SCOM</code> gelesen.</p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById("form");
+      const input = document.getElementById("modemId");
+      const errorEl = document.getElementById("error");
+      const resultEl = document.getElementById("result");
+      const cleanIdEl = document.getElementById("cleanId");
+      const lastFiveEl = document.getElementById("lastFive");
+      const passwordEl = document.getElementById("password");
+      const copyBtn = document.getElementById("copy");
+      const resetBtn = document.getElementById("reset");
+
+      function hideError() {
+        errorEl.classList.remove("visible");
+        errorEl.textContent = "";
+      }
+
+      function showError(message) {
+        resultEl.classList.remove("visible");
+        errorEl.textContent = message;
+        errorEl.classList.add("visible");
+      }
+
+      function computePassword(raw) {
+        let cleanId = String(raw || "").trim();
+        if (!cleanId) {
+          return { error: "Keine ID eingegeben." };
+        }
+
+        if (cleanId.toLowerCase().startsWith("53434f4d")) {
+          cleanId = "SCOM" + cleanId.substring(8);
+        }
+
+        if (cleanId.length < 5) {
+          return { error: "Die eingegebene ID ist zu kurz (mindestens 5 Zeichen erforderlich)." };
+        }
+
+        const lastFive = cleanId.substring(cleanId.length - 5);
+        const password = "G6m%Z" + lastFive;
+        return { cleanId, lastFive, password };
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        hideError();
+
+        const result = computePassword(input.value);
+        if (result.error) {
+          showError(result.error);
+          return;
+        }
+
+        cleanIdEl.textContent = result.cleanId;
+        lastFiveEl.textContent = result.lastFive;
+        passwordEl.textContent = result.password;
+        resultEl.classList.add("visible");
+        copyBtn.textContent = "Kopieren";
+      });
+
+      resetBtn.addEventListener("click", function () {
+        input.value = "";
+        hideError();
+        resultEl.classList.remove("visible");
+        input.focus();
+      });
+
+      copyBtn.addEventListener("click", async function () {
+        const value = passwordEl.textContent;
+        if (!value) return;
+        try {
+          await navigator.clipboard.writeText(value);
+          copyBtn.textContent = "Kopiert";
+          setTimeout(function () {
+            copyBtn.textContent = "Kopieren";
+          }, 1500);
+        } catch (err) {
+          window.prompt("Passwort kopieren:", value);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
