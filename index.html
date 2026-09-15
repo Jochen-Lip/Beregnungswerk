@@ -279,7 +279,10 @@
       line-height: 1.45;
     }
 
-    .explain strong { color: var(--text); }
+    .explain a, .result a {
+      color: #7ec8ff;
+      word-break: break-all;
+    }
   </style>
 </head>
 <body>
@@ -315,7 +318,7 @@
           <dt>Modell</dt>
           <dd id="model"></dd>
           <dt>Web-UI</dt>
-          <dd id="webui"></dd>
+          <dd><a id="webui" href="http://192.168.100.1">http://192.168.100.1</a></dd>
           <dt>Modem-ID intern</dt>
           <dd id="cleanId"></dd>
           <dt id="lastFiveLabel">Letzte 5 Zeichen</dt>
@@ -379,8 +382,8 @@
           webui: "http://192.168.100.1",
           username: "1UND1",
           passwordMode: "derive",
-          explain: "<strong>1&amp;1:</strong> Web-Login braucht Benutzername und Passwort. Benutzername ist fest <code>1UND1</code>. Das Passwort wird aus der Modem-ID berechnet: <code>G6m%Z</code> plus die letzten 5 Zeichen (Hex <code>53434F4D</code> wird intern zu <code>SCOM</code>).",
-          note: "Bestätigt für die 1&1-Firmware. Prefix G6m%Z + letzte 5 Zeichen der intern übersetzten ID."
+          explain: "<strong>1&amp;1:</strong> Web-Login braucht Benutzername und Passwort. Benutzername ist fest <code>1UND1</code>. Das Passwort wird aus der Modem-ID berechnet: <code>G6m%Z</code> plus die letzten 5 Zeichen (Hex <code>53434F4D</code> wird intern zu <code>SCOM</code>). <strong>Web-UI:</strong> <a href=\"http://192.168.100.1\">http://192.168.100.1</a>",
+          note: "Bestätigt für die 1&1-Firmware. Prefix G6m%Z + letzte 5 Zeichen. Web-UI: http://192.168.100.1"
         },
         o2: {
           model: "o2 Glasfaser-Modem · Sercomm FG1000B.O2",
@@ -640,6 +643,7 @@
         fritzBlock.classList.add("hidden");
         modelEl.textContent = p.model;
         webuiEl.textContent = p.webui;
+        webuiEl.setAttribute("href", p.webui);
         cleanIdEl.textContent = parsed.cleanId;
         usernameEl.textContent = p.username;
         noteEl.textContent = p.note;
