@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ONT TOOL – 1und1, o2, Vodafone, Telekom SCom Modem Login</title>
-  <meta name="description" content="ONT TOOL: Zugangsdaten für Sercomm-Glasfaser-ONTs. 1&amp;1 (1UND1 / G6m%Z), o2, Vodafone und Telekom mit der jeweils funktionierenden Benutzername/Passwort-Kombination.">
-  <meta name="keywords" content="ONT TOOL, 1und1 ONT Tool, o2 ONT Tool, Vodafone ONT Login, Telekom Glasfaser-Modem 2, 1UND1, vodafone Benutzername, Sercomm FG1000B, SCOM Modem-ID">
+  <title>ONT TOOL – 1und1, o2, Vodafone, Telekom, FRITZ!Box Seriennummer</title>
+  <meta name="description" content="ONT TOOL: Sercomm-ONT-Logins (1&amp;1, o2, Vodafone, Telekom) und FRITZ!Box-Seriennummer entschlüsseln: Produktionsdatum, 2 Jahre Garantie, 5 Jahre Kulanz.">
+  <meta name="keywords" content="ONT TOOL, FRITZ!Box Seriennummer, Produktionsdatum, Garantie, Kulanz, 1und1 ONT, o2 ONT, Vodafone ONT, Telekom Glasfaser-Modem 2, 1UND1, Sercomm FG1000B">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://jochen-lip.github.io/Beregnungswerk/">
   <meta property="og:title" content="ONT TOOL – 1und1, o2, Vodafone, Telekom SCom Modem Login">
@@ -260,6 +260,13 @@
     .prov-o2 { background: #0019a5; }
     .prov-vodafone { background: #e60000; }
     .prov-telekom { background: #e20074; }
+    .prov-fritz { background: #e87722; }
+
+    .status-ok { color: #4db57f; font-weight: 650; }
+    .status-warn { color: #e6b35c; font-weight: 650; }
+    .status-bad { color: #e05c5c; font-weight: 650; }
+
+    .hidden { display: none !important; }
 
     .explain {
       margin: 0 0 1rem;
@@ -278,19 +285,20 @@
 <body>
   <main class="card">
     <h1>ONT TOOL</h1>
-    <p class="intro">Zugangsdaten für Sercomm-Glasfaser-ONTs (SCOM / FG1000B) je Anbieter. Es wird nur die dokumentiert funktionierende Kombination angezeigt.</p>
+    <p class="intro">ONT-Logins für Sercomm-Glasfaser-Modems und Entschlüsselung der FRITZ!Box-Seriennummer (Produktionsdatum, Garantie, Kulanz).</p>
 
     <div class="providers" role="group" aria-label="Anbieter">
       <button type="button" class="prov-1und1" data-provider="1und1" aria-pressed="true">1&amp;1</button>
       <button type="button" class="prov-o2" data-provider="o2" aria-pressed="false">o2</button>
       <button type="button" class="prov-vodafone" data-provider="vodafone" aria-pressed="false">Vodafone</button>
       <button type="button" class="prov-telekom" data-provider="telekom" aria-pressed="false">Telekom</button>
+      <button type="button" class="prov-fritz" data-provider="fritz" aria-pressed="false">FRITZ!Box</button>
     </div>
 
     <p class="explain" id="explain"></p>
 
     <form id="form" autocomplete="off">
-      <label for="modemId">Modem-ID / Seriennummer</label>
+      <label for="modemId" id="idLabel">Modem-ID / Seriennummer</label>
       <input id="modemId" type="text" name="modemId" spellcheck="false" autofocus
              placeholder="z. B. SCOM… oder 53434F4D…">
       <div class="row">
@@ -302,25 +310,45 @@
     <p class="error" id="error" role="alert"></p>
 
     <section class="result" id="result" aria-live="polite">
-      <dl>
-        <dt>Modell</dt>
-        <dd id="model"></dd>
-        <dt>Web-UI</dt>
-        <dd id="webui"></dd>
-        <dt>Modem-ID intern</dt>
-        <dd id="cleanId"></dd>
-        <dt id="lastFiveLabel">Letzte 5 Zeichen</dt>
-        <dd id="lastFive"></dd>
-      </dl>
-      <div class="cred">
-        <span class="label">Benutzername</span>
-        <code id="username"></code>
-        <button class="ghost copy" type="button" id="copyUser">Kopieren</button>
+      <div id="ontBlock">
+        <dl>
+          <dt>Modell</dt>
+          <dd id="model"></dd>
+          <dt>Web-UI</dt>
+          <dd id="webui"></dd>
+          <dt>Modem-ID intern</dt>
+          <dd id="cleanId"></dd>
+          <dt id="lastFiveLabel">Letzte 5 Zeichen</dt>
+          <dd id="lastFive"></dd>
+        </dl>
+        <div class="cred">
+          <span class="label">Benutzername</span>
+          <code id="username"></code>
+          <button class="ghost copy" type="button" id="copyUser">Kopieren</button>
+        </div>
+        <div class="cred">
+          <span class="label">Passwort</span>
+          <code id="password"></code>
+          <button class="ghost copy" type="button" id="copy">Kopieren</button>
+        </div>
       </div>
-      <div class="cred">
-        <span class="label">Passwort</span>
-        <code id="password"></code>
-        <button class="ghost copy" type="button" id="copy">Kopieren</button>
+      <div id="fritzBlock" class="hidden">
+        <dl>
+          <dt>Produktionsdatum</dt>
+          <dd id="fritzDate"></dd>
+          <dt>Kalenderwoche</dt>
+          <dd id="fritzWeek"></dd>
+          <dt>Hardware-Version</dt>
+          <dd id="fritzHw"></dd>
+          <dt>Alter</dt>
+          <dd id="fritzAge"></dd>
+          <dt>Garantie bis</dt>
+          <dd id="fritzGarantie"></dd>
+          <dt>Kulanz bis</dt>
+          <dd id="fritzKulanz"></dd>
+          <dt>Status</dt>
+          <dd id="fritzStatus"></dd>
+        </dl>
       </div>
       <p class="note" id="note"></p>
     </section>
@@ -330,7 +358,7 @@
       <p><strong>1&amp;1</strong> (FG1000B.11): Benutzername <code>1UND1</code>, Passwort <code>G6m%Z</code> + letzte 5 Zeichen der Modem-ID. Web-UI: <code>http://192.168.100.1</code>.</p>
       <p><strong>o2</strong> (FG1000B.O2): Web-Login fragt nur das Passwort — das steht auf dem Geräteaufkleber. Kein aus der ID berechnetes Passwort. Web-UI: <code>http://192.168.1.1</code>. SSH-Benutzer (falls aktiv): <code>o2</code>.</p>
       <p><strong>Vodafone</strong> (FG1000B.VF): Benutzername <code>vodafone</code> (klein), Passwort auf dem Aufkleber. Web-UI: <code>http://192.168.100.1</code>.</p>
-      <p><strong>Telekom</strong> (Glasfaser-Modem 2 / FG1000B.11): gebrandetes Webinterface <strong>ohne Login</strong> unter <code>http://192.168.100.1</code>.</p>
+      <p><strong>FRITZ!Box:</strong> Die ersten vier Zeichen der Seriennummer kodieren das Produktionsdatum (DIN EN 60062: Jahr-Buchstabe, Kalenderwoche, Wochentag 1=Mo–7=So). Daraus: 2 Jahre Garantie, danach bis 5 Jahre Kulanz — gerechnet ab Produktion, der Kaufbeleg gilt rechtlich vorrangig.</p>
 
       <h2>Unter diesen Begriffen finden</h2>
       <ul>
@@ -338,7 +366,7 @@
         <li>1und1 SCom Modem Passwort / Benutzername 1UND1</li>
         <li>o2 Glasfaser Modem Login / FG1000B.O2</li>
         <li>Vodafone ONT Passwort / FG1000B.VF / Benutzername vodafone</li>
-        <li>Telekom Glasfaser-Modem 2 Webinterface</li>
+        <li>FRITZ!Box Seriennummer Produktionsdatum Garantie Kulanz</li>
       </ul>
     </section>
   </main>
@@ -379,14 +407,30 @@
           passwordMode: "none",
           explain: "<strong>Telekom:</strong> Gebrandetes Webinterface ohne Benutzername und ohne Passwort. Einfach <code>http://192.168.100.1</code> öffnen.",
           note: "Kein Login. Die 1&1-Formel G6m%Z gilt hier nicht."
+        },
+        fritz: {
+          passwordMode: "fritz",
+          label: "FRITZ!Box-Seriennummer",
+          placeholder: "z. B. P223.764.30 123 456",
+          submit: "Seriennummer entschlüsseln",
+          explain: "<strong>FRITZ!Box:</strong> Die ersten vier Zeichen (z. B. <code>P223</code>) enthalten Jahr, Kalenderwoche und Wochentag. Daraus folgen Produktionsdatum, 2 Jahre Garantie und 5 Jahre Kulanz (ab Produktion; Kaufbeleg hat Vorrang).",
+          note: "Jahrbuchstabe nach DIN EN 60062 (ohne I, O, Q, Y, Z; G nur 2016 KW1–2). Garantie 2 Jahre, Kulanz bis 5 Jahre ab Produktion."
         }
       };
 
+      const YEAR_LETTERS = "ABCDEFHJKLMNPRSTUVWX";
+      const WEEKDAYS = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+      const MS_DAY = 86400000;
+
       const form = document.getElementById("form");
       const input = document.getElementById("modemId");
+      const idLabel = document.getElementById("idLabel");
+      const submitBtn = document.getElementById("submitBtn");
       const errorEl = document.getElementById("error");
       const resultEl = document.getElementById("result");
       const explainEl = document.getElementById("explain");
+      const ontBlock = document.getElementById("ontBlock");
+      const fritzBlock = document.getElementById("fritzBlock");
       const modelEl = document.getElementById("model");
       const webuiEl = document.getElementById("webui");
       const cleanIdEl = document.getElementById("cleanId");
@@ -417,6 +461,103 @@
         errorEl.classList.add("visible");
       }
 
+      function formatDe(date) {
+        return date.toLocaleDateString("de-DE", {
+          weekday: "long",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          timeZone: "UTC"
+        });
+      }
+
+      function addUtcYears(date, years) {
+        const d = new Date(date.getTime());
+        d.setUTCFullYear(d.getUTCFullYear() + years);
+        return d;
+      }
+
+      function dateFromIsoWeek(year, week, weekday) {
+        const jan4 = new Date(Date.UTC(year, 0, 4));
+        const dow = jan4.getUTCDay() || 7;
+        const mondayWeek1 = Date.UTC(year, 0, 4 - dow + 1);
+        return new Date(mondayWeek1 + (week - 1) * 7 * MS_DAY + (weekday - 1) * MS_DAY);
+      }
+
+      function yearsForLetter(letter) {
+        const L = letter.toUpperCase();
+        if (L === "G") return [2016];
+        const index = YEAR_LETTERS.indexOf(L);
+        if (index < 0) return [];
+        return [1990 + index, 2010 + index, 2030 + index];
+      }
+
+      function decodeFritzSerial(raw) {
+        const compact = String(raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+        if (compact.length < 4) {
+          return { error: "FRITZ!Box-Seriennummer zu kurz (mindestens die ersten 4 Zeichen, z. B. P223)." };
+        }
+        if (!/^[A-Z]\d{3}/.test(compact)) {
+          return { error: "Ungültiges Format. Erwartet: Buchstabe + Kalenderwoche + Wochentag, z. B. P223.764.…" };
+        }
+        const letter = compact[0];
+        const week = Number(compact.slice(1, 3));
+        const weekday = Number(compact[3]);
+        if (week < 1 || week > 53) {
+          return { error: "Kalenderwoche muss zwischen 01 und 53 liegen." };
+        }
+        if (weekday < 1 || weekday > 7) {
+          return { error: "Wochentag muss 1 (Montag) bis 7 (Sonntag) sein." };
+        }
+        const years = yearsForLetter(letter);
+        if (!years.length) {
+          return { error: "Unbekannter Jahrbuchstabe. Erlaubt: A–F, H, J–N, P, R–X (G nur 2016)." };
+        }
+        const now = Date.now();
+        let produced = null;
+        let year = null;
+        years.forEach(function (y) {
+          const d = dateFromIsoWeek(y, week, weekday);
+          if (d.getTime() - now > 14 * MS_DAY) return;
+          if (!produced || d.getTime() > produced.getTime()) {
+            produced = d;
+            year = y;
+          }
+        });
+        if (!produced) {
+          return { error: "Kein plausibles Produktionsjahr für diesen Buchstaben." };
+        }
+        const garantieUntil = addUtcYears(produced, 2);
+        const kulanzUntil = addUtcYears(produced, 5);
+        const ageDays = Math.max(0, Math.floor((now - produced.getTime()) / MS_DAY));
+        const ageYears = (ageDays / 365.25).toFixed(1).replace(".", ",");
+        let status;
+        let statusClass;
+        if (now <= garantieUntil.getTime()) {
+          status = "In der Garantie (2 Jahre)";
+          statusClass = "status-ok";
+        } else if (now <= kulanzUntil.getTime()) {
+          status = "In der Kulanzzeit (5 Jahre) – 2-Jahre-Garantie abgelaufen";
+          statusClass = "status-warn";
+        } else {
+          status = "Außerhalb Garantie und Kulanz";
+          statusClass = "status-bad";
+        }
+        const hw = compact.length >= 7 ? compact.slice(4, 7) : "—";
+        return {
+          produced: produced,
+          year: year,
+          week: week,
+          weekdayName: WEEKDAYS[weekday - 1],
+          hw: hw,
+          age: ageYears + " Jahre (" + ageDays + " Tage)",
+          garantieUntil: garantieUntil,
+          kulanzUntil: kulanzUntil,
+          status: status,
+          statusClass: statusClass
+        };
+      }
+
       function normalizeId(raw) {
         let cleanId = String(raw || "").trim();
         if (!cleanId) {
@@ -433,10 +574,20 @@
 
       function setProvider(id) {
         currentId = id;
+        const p = provider();
         providerBtns.forEach(function (btn) {
           btn.setAttribute("aria-pressed", btn.getAttribute("data-provider") === id ? "true" : "false");
         });
-        explainEl.innerHTML = provider().explain;
+        explainEl.innerHTML = p.explain;
+        if (id === "fritz") {
+          idLabel.textContent = p.label;
+          input.placeholder = p.placeholder;
+          submitBtn.textContent = p.submit;
+        } else {
+          idLabel.textContent = "Modem-ID / Seriennummer";
+          input.placeholder = "z. B. SCOM… oder 53434F4D…";
+          submitBtn.textContent = "Zugangsdaten anzeigen";
+        }
         hideError();
         resultEl.classList.remove("visible");
       }
@@ -455,6 +606,29 @@
       form.addEventListener("submit", function (event) {
         event.preventDefault();
         hideError();
+
+        if (currentId === "fritz") {
+          const decoded = decodeFritzSerial(input.value);
+          if (decoded.error) {
+            showError(decoded.error);
+            return;
+          }
+          ontBlock.classList.add("hidden");
+          fritzBlock.classList.remove("hidden");
+          document.getElementById("fritzDate").textContent = formatDe(decoded.produced);
+          document.getElementById("fritzWeek").textContent = "KW " + decoded.week + " / " + decoded.year + " · " + decoded.weekdayName;
+          document.getElementById("fritzHw").textContent = decoded.hw;
+          document.getElementById("fritzAge").textContent = decoded.age;
+          document.getElementById("fritzGarantie").textContent = formatDe(decoded.garantieUntil);
+          document.getElementById("fritzKulanz").textContent = formatDe(decoded.kulanzUntil);
+          const statusEl = document.getElementById("fritzStatus");
+          statusEl.textContent = decoded.status;
+          statusEl.className = decoded.statusClass;
+          noteEl.textContent = provider().note;
+          resultEl.classList.add("visible");
+          return;
+        }
+
         const parsed = normalizeId(input.value);
         if (parsed.error) {
           showError(parsed.error);
@@ -462,6 +636,8 @@
         }
 
         const p = provider();
+        ontBlock.classList.remove("hidden");
+        fritzBlock.classList.add("hidden");
         modelEl.textContent = p.model;
         webuiEl.textContent = p.webui;
         cleanIdEl.textContent = parsed.cleanId;
