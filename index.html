@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>1und1 SCom Modem Tool – Passwort berechnen | ONT TOOL</title>
-  <meta name="description" content="ONT TOOL: Passwort und Benutzername 1UND1 für das 1und1 SCom-/Sercomm-Glasfaser-Modem aus der Modem-ID berechnen. Für ONT FG1000B.11 und SCOM-Seriennummer.">
-  <meta name="keywords" content="ONT TOOL, 1und1 ONT Tool, 1und1 SCom Modem Tool, 1und1 SCom Modem Passwort, 1und1 Glasfaser Modem Passwort, Sercomm FG1000B.11, SCOM Modem-ID, 1UND1 Benutzername, ONT Login, 1und1 Zugangsdaten, Jochen Lip">
+  <title>ONT TOOL – 1und1, o2, Vodafone, Telekom SCom Modem Login</title>
+  <meta name="description" content="ONT TOOL: Zugangsdaten für Sercomm-Glasfaser-ONTs. 1&amp;1 (1UND1 / G6m%Z), o2, Vodafone und Telekom mit der jeweils funktionierenden Benutzername/Passwort-Kombination.">
+  <meta name="keywords" content="ONT TOOL, 1und1 ONT Tool, o2 ONT Tool, Vodafone ONT Login, Telekom Glasfaser-Modem 2, 1UND1, vodafone Benutzername, Sercomm FG1000B, SCOM Modem-ID">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://jochen-lip.github.io/Beregnungswerk/">
-  <meta property="og:title" content="1und1 SCom Modem Tool – Passwort berechnen | ONT TOOL">
-  <meta property="og:description" content="ONT TOOL berechnet Passwort und Benutzername 1UND1 für das 1und1 SCom / Sercomm Glasfaser-Modem aus der Modem-ID.">
+  <meta property="og:title" content="ONT TOOL – 1und1, o2, Vodafone, Telekom SCom Modem Login">
+  <meta property="og:description" content="Zugangsdaten für Sercomm-Glasfaser-ONTs: 1&amp;1, o2, Vodafone und Telekom mit der jeweils funktionierenden Login-Kombination.">
   <meta property="og:url" content="https://jochen-lip.github.io/Beregnungswerk/">
   <meta property="og:type" content="website">
   <script type="application/ld+json">
@@ -19,13 +19,13 @@
     "name": "ONT TOOL",
     "alternateName": [
       "1und1 SCom Modem Tool",
-      "1und1 ONT Tool",
-      "1und1 SCom Modem Passwort",
-      "1und1 Glasfaser Modem Passwort Rechner"
+      "o2 ONT Tool",
+      "Vodafone ONT Login",
+      "Telekom Glasfaser-Modem 2"
     ],
     "url": "https://jochen-lip.github.io/Beregnungswerk/",
-    "description": "Passwort und Benutzername 1UND1 für das 1und1 SCom-/Sercomm-Glasfaser-Modem (ONT) aus der Modem-ID bzw. SCOM-Seriennummer berechnen.",
-    "keywords": "ONT TOOL, 1und1 ONT Tool, 1und1 SCom Modem Tool, 1und1 SCom Modem Passwort, Glasfaser Modem, Sercomm FG1000B.11, Modem-ID",
+    "description": "Zugangsdaten für Sercomm-Glasfaser-ONTs von 1&1, o2, Vodafone und Telekom.",
+    "keywords": "ONT TOOL, 1und1, o2, Vodafone, Telekom, Sercomm FG1000B, 1UND1, vodafone",
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "Any",
     "inLanguage": "de",
@@ -237,20 +237,64 @@
       padding-left: 1.15rem;
     }
     .about li { margin: 0 0 0.2rem; }
+
+    .providers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem;
+      margin: 0 0 1rem;
+    }
+
+    .providers button {
+      flex: none;
+      border: 1px solid transparent;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    .providers button[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor;
+    }
+
+    .prov-1und1 { background: #003d8f; }
+    .prov-o2 { background: #0019a5; }
+    .prov-vodafone { background: #e60000; }
+    .prov-telekom { background: #e20074; }
+
+    .explain {
+      margin: 0 0 1rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: 8px;
+      background: #121820;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .explain strong { color: var(--text); }
   </style>
 </head>
 <body>
   <main class="card">
-    <h1>1und1 SCom ONT TOOL</h1>
-    <p class="intro">Das <strong>ONT TOOL</strong> berechnet Benutzername und Passwort für das 1&amp;1 SCom-Modem (Sercomm Glasfaser-ONT) aus der Modem-ID bzw. Seriennummer auf dem Aufkleber.</p>
-    <p class="hint">Modem-ID (Seriennummer) vom Aufkleber eingeben. Benutzername ist immer <code>1UND1</code>. Die Berechnung läuft nur lokal im Browser.</p>
+    <h1>ONT TOOL</h1>
+    <p class="intro">Zugangsdaten für Sercomm-Glasfaser-ONTs (SCOM / FG1000B) je Anbieter. Es wird nur die dokumentiert funktionierende Kombination angezeigt.</p>
+
+    <div class="providers" role="group" aria-label="Anbieter">
+      <button type="button" class="prov-1und1" data-provider="1und1" aria-pressed="true">1&amp;1</button>
+      <button type="button" class="prov-o2" data-provider="o2" aria-pressed="false">o2</button>
+      <button type="button" class="prov-vodafone" data-provider="vodafone" aria-pressed="false">Vodafone</button>
+      <button type="button" class="prov-telekom" data-provider="telekom" aria-pressed="false">Telekom</button>
+    </div>
+
+    <p class="explain" id="explain"></p>
 
     <form id="form" autocomplete="off">
       <label for="modemId">Modem-ID / Seriennummer</label>
       <input id="modemId" type="text" name="modemId" spellcheck="false" autofocus
              placeholder="z. B. SCOM… oder 53434F4D…">
       <div class="row">
-        <button class="primary" type="submit">Passwort berechnen</button>
+        <button class="primary" type="submit" id="submitBtn">Zugangsdaten anzeigen</button>
         <button class="ghost" type="button" id="reset">Leeren</button>
       </div>
     </form>
@@ -259,60 +303,108 @@
 
     <section class="result" id="result" aria-live="polite">
       <dl>
+        <dt>Modell</dt>
+        <dd id="model"></dd>
+        <dt>Web-UI</dt>
+        <dd id="webui"></dd>
         <dt>Modem-ID intern</dt>
         <dd id="cleanId"></dd>
-        <dt>Letzte 5 Zeichen</dt>
+        <dt id="lastFiveLabel">Letzte 5 Zeichen</dt>
         <dd id="lastFive"></dd>
       </dl>
       <div class="cred">
         <span class="label">Benutzername</span>
-        <code id="username">1UND1</code>
-        <button class="ghost copy" type="button" id="copyUser" data-copy="username">Kopieren</button>
+        <code id="username"></code>
+        <button class="ghost copy" type="button" id="copyUser">Kopieren</button>
       </div>
       <div class="cred">
         <span class="label">Passwort</span>
         <code id="password"></code>
-        <button class="ghost copy" type="button" id="copy" data-copy="password">Kopieren</button>
+        <button class="ghost copy" type="button" id="copy">Kopieren</button>
       </div>
-      <p class="note">Prefix <code>G6m%Z</code> + letzte 5 Zeichen der intern übersetzten ID. Hex-Prefix <code>53434F4D</code> wird als <code>SCOM</code> gelesen.</p>
+      <p class="note" id="note"></p>
     </section>
 
     <section class="about">
-      <h2>1und1 SCom Modem Passwort</h2>
-      <p>Mit diesem Rechner erhältst du die Zugangsdaten für das 1und1 Glasfaser-Modem: Benutzername <strong>1UND1</strong> und das Passwort aus der SCOM-Modem-ID. Das gilt für das Sercomm-ONT (u. a. FG1000B.11), also das 1&amp;1 Glasfaser-Netzanschlussgerät.</p>
-
-      <h2>ONT TOOL</h2>
-      <p>ONT TOOL berechnet die Zugangsdaten für das 1und1 SCom-Modem. Es hilft beim Login an der Weboberfläche des Glasfaser-ONT.</p>
+      <h2>Welche Kombination gilt?</h2>
+      <p><strong>1&amp;1</strong> (FG1000B.11): Benutzername <code>1UND1</code>, Passwort <code>G6m%Z</code> + letzte 5 Zeichen der Modem-ID. Web-UI: <code>http://192.168.100.1</code>.</p>
+      <p><strong>o2</strong> (FG1000B.O2): Web-Login fragt nur das Passwort — das steht auf dem Geräteaufkleber. Kein aus der ID berechnetes Passwort. Web-UI: <code>http://192.168.1.1</code>. SSH-Benutzer (falls aktiv): <code>o2</code>.</p>
+      <p><strong>Vodafone</strong> (FG1000B.VF): Benutzername <code>vodafone</code> (klein), Passwort auf dem Aufkleber. Web-UI: <code>http://192.168.100.1</code>.</p>
+      <p><strong>Telekom</strong> (Glasfaser-Modem 2 / FG1000B.11): gebrandetes Webinterface <strong>ohne Login</strong> unter <code>http://192.168.100.1</code>.</p>
 
       <h2>Unter diesen Begriffen finden</h2>
       <ul>
         <li>ONT TOOL</li>
-        <li>1und1 ONT Tool</li>
-        <li>1und1 SCom Modem Tool</li>
-        <li>1und1 SCom Modem Passwort</li>
-        <li>1und1 Glasfaser Modem Passwort</li>
-        <li>1und1 ONT Login / Zugangsdaten</li>
-        <li>Sercomm FG1000B.11 Passwort</li>
-        <li>SCOM Modem-ID Passwort berechnen</li>
-        <li>Benutzername 1UND1</li>
+        <li>1und1 SCom Modem Passwort / Benutzername 1UND1</li>
+        <li>o2 Glasfaser Modem Login / FG1000B.O2</li>
+        <li>Vodafone ONT Passwort / FG1000B.VF / Benutzername vodafone</li>
+        <li>Telekom Glasfaser-Modem 2 Webinterface</li>
       </ul>
     </section>
   </main>
 
   <script>
     (function () {
+      const PROVIDERS = {
+        "1und1": {
+          model: "1&1 Glasfaser-Modem · Sercomm FG1000B.11",
+          webui: "http://192.168.100.1",
+          username: "1UND1",
+          passwordMode: "derive",
+          explain: "<strong>1&amp;1:</strong> Web-Login braucht Benutzername und Passwort. Benutzername ist fest <code>1UND1</code>. Das Passwort wird aus der Modem-ID berechnet: <code>G6m%Z</code> plus die letzten 5 Zeichen (Hex <code>53434F4D</code> wird intern zu <code>SCOM</code>).",
+          note: "Bestätigt für die 1&1-Firmware. Prefix G6m%Z + letzte 5 Zeichen der intern übersetzten ID."
+        },
+        o2: {
+          model: "o2 Glasfaser-Modem · Sercomm FG1000B.O2",
+          webui: "http://192.168.1.1",
+          username: "— (Web-Login ohne Benutzername)",
+          copyUser: "o2",
+          passwordMode: "sticker",
+          explain: "<strong>o2:</strong> Die Login-Seite fragt nur das Passwort. Es steht auf dem Geräteaufkleber und lässt sich nicht aus der Modem-ID berechnen. Web-UI unter <code>http://192.168.1.1</code> (nicht .100.1). SSH-Benutzer, falls aktiv: <code>o2</code>.",
+          note: "Passwort vom Aufkleber. Kopieren beim Benutzernamen legt den SSH-User o2 in die Zwischenablage."
+        },
+        vodafone: {
+          model: "Vodafone Glasfaser-Modem · Sercomm FG1000B.VF",
+          webui: "http://192.168.100.1",
+          username: "vodafone",
+          passwordMode: "sticker",
+          explain: "<strong>Vodafone:</strong> Benutzername ist <code>vodafone</code> (kleingeschrieben, steht nicht auf dem Aufkleber). Das Passwort steht auf dem Label und wird nicht aus der Modem-ID berechnet. Web-UI: <code>http://192.168.100.1</code>.",
+          note: "Passwort vom Aufkleber. Benutzername vodafone ist fest und kopierbar."
+        },
+        telekom: {
+          model: "Telekom Glasfaser-Modem 2 · Sercomm FG1000B.11",
+          webui: "http://192.168.100.1",
+          username: "— (kein Login)",
+          copyUser: "",
+          passwordMode: "none",
+          explain: "<strong>Telekom:</strong> Gebrandetes Webinterface ohne Benutzername und ohne Passwort. Einfach <code>http://192.168.100.1</code> öffnen.",
+          note: "Kein Login. Die 1&1-Formel G6m%Z gilt hier nicht."
+        }
+      };
+
       const form = document.getElementById("form");
       const input = document.getElementById("modemId");
       const errorEl = document.getElementById("error");
       const resultEl = document.getElementById("result");
+      const explainEl = document.getElementById("explain");
+      const modelEl = document.getElementById("model");
+      const webuiEl = document.getElementById("webui");
       const cleanIdEl = document.getElementById("cleanId");
       const lastFiveEl = document.getElementById("lastFive");
-      const USERNAME = "1UND1";
-      const passwordEl = document.getElementById("password");
+      const lastFiveLabel = document.getElementById("lastFiveLabel");
       const usernameEl = document.getElementById("username");
+      const passwordEl = document.getElementById("password");
+      const noteEl = document.getElementById("note");
       const copyBtn = document.getElementById("copy");
       const copyUserBtn = document.getElementById("copyUser");
       const resetBtn = document.getElementById("reset");
+      const providerBtns = document.querySelectorAll("[data-provider]");
+
+      let currentId = "1und1";
+
+      function provider() {
+        return PROVIDERS[currentId];
+      }
 
       function hideError() {
         errorEl.classList.remove("visible");
@@ -325,39 +417,72 @@
         errorEl.classList.add("visible");
       }
 
-      function computePassword(raw) {
+      function normalizeId(raw) {
         let cleanId = String(raw || "").trim();
         if (!cleanId) {
           return { error: "Keine ID eingegeben." };
         }
-
         if (cleanId.toLowerCase().startsWith("53434f4d")) {
           cleanId = "SCOM" + cleanId.substring(8);
         }
-
         if (cleanId.length < 5) {
           return { error: "Die eingegebene ID ist zu kurz (mindestens 5 Zeichen erforderlich)." };
         }
-
-        const lastFive = cleanId.substring(cleanId.length - 5);
-        const password = "G6m%Z" + lastFive;
-        return { cleanId, lastFive, password };
+        return { cleanId, lastFive: cleanId.substring(cleanId.length - 5) };
       }
+
+      function setProvider(id) {
+        currentId = id;
+        providerBtns.forEach(function (btn) {
+          btn.setAttribute("aria-pressed", btn.getAttribute("data-provider") === id ? "true" : "false");
+        });
+        explainEl.innerHTML = provider().explain;
+        hideError();
+        resultEl.classList.remove("visible");
+      }
+
+      function copyableUser(p) {
+        if (p.copyUser !== undefined) return p.copyUser;
+        return p.username;
+      }
+
+      providerBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setProvider(btn.getAttribute("data-provider"));
+        });
+      });
 
       form.addEventListener("submit", function (event) {
         event.preventDefault();
         hideError();
-
-        const result = computePassword(input.value);
-        if (result.error) {
-          showError(result.error);
+        const parsed = normalizeId(input.value);
+        if (parsed.error) {
+          showError(parsed.error);
           return;
         }
 
-        cleanIdEl.textContent = result.cleanId;
-        lastFiveEl.textContent = result.lastFive;
-        usernameEl.textContent = USERNAME;
-        passwordEl.textContent = result.password;
+        const p = provider();
+        modelEl.textContent = p.model;
+        webuiEl.textContent = p.webui;
+        cleanIdEl.textContent = parsed.cleanId;
+        usernameEl.textContent = p.username;
+        noteEl.textContent = p.note;
+
+        if (p.passwordMode === "derive") {
+          lastFiveLabel.style.display = "";
+          lastFiveEl.style.display = "";
+          lastFiveEl.textContent = parsed.lastFive;
+          passwordEl.textContent = "G6m%Z" + parsed.lastFive;
+        } else if (p.passwordMode === "sticker") {
+          lastFiveLabel.style.display = "none";
+          lastFiveEl.style.display = "none";
+          passwordEl.textContent = "steht auf dem Geräteaufkleber";
+        } else {
+          lastFiveLabel.style.display = "none";
+          lastFiveEl.style.display = "none";
+          passwordEl.textContent = "nicht erforderlich";
+        }
+
         resultEl.classList.add("visible");
         copyBtn.textContent = "Kopieren";
         copyUserBtn.textContent = "Kopieren";
@@ -384,12 +509,16 @@
       }
 
       copyBtn.addEventListener("click", function () {
+        const p = provider();
+        if (p.passwordMode !== "derive") return;
         copyText(passwordEl.textContent, copyBtn, "Passwort kopieren:");
       });
 
       copyUserBtn.addEventListener("click", function () {
-        copyText(USERNAME, copyUserBtn, "Benutzername kopieren:");
+        copyText(copyableUser(provider()), copyUserBtn, "Benutzername kopieren:");
       });
+
+      setProvider("1und1");
     })();
   </script>
 </body>
