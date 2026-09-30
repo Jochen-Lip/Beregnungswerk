@@ -322,7 +322,7 @@
 <body>
   <main class="card">
     <h1>ONT TOOL</h1>
-    <p class="intro">ONT-Logins für Sercomm-Glasfaser-Modems und Entschlüsselung der FRITZ!Box-Seriennummer (Produktionsdatum, Garantie, Kulanz).</p>
+    <p class="intro">ONT-Logins für Sercomm-Glasfaser-Modems und Entschlüsselung der FRITZ!Box-Seriennummer (Produktionsdatum, Garantie, Kulanz). Programm-Erstellungsdatum: 2026 (zur Orientierung).</p>
 
     <div class="providers" role="group" aria-label="Anbieter">
       <button type="button" class="prov-1und1" data-provider="1und1" aria-pressed="true">1&amp;1</button>
@@ -407,10 +407,10 @@
       </ul>
     </section>
 
-    <p class="visits" id="visits" hidden>
+    <p class="visits" id="visits">
       <span class="visits-left">
         <span class="visits-dot" aria-hidden="true"></span>
-        Besucher
+        Besucherzähler
       </span>
       <span class="visits-num" id="visitCount">–</span>
     </p>
@@ -743,9 +743,8 @@
       setProvider("1und1");
 
       (function showVisitors() {
-        const box = document.getElementById("visits");
         const num = document.getElementById("visitCount");
-        if (!box || !num) return;
+        if (!num) return;
         const key = "ont-tool-visited";
         const ns = "https://abacus.jasoncameron.dev";
         const path = "jochen-lip.github.io/ont-tool";
@@ -758,7 +757,6 @@
             if (!isFinite(value) || value < 1) return;
             if (!already) localStorage.setItem(key, "1");
             num.textContent = value.toLocaleString("de-DE");
-            box.hidden = false;
           })
           .catch(function () {});
       })();
