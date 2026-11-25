@@ -756,7 +756,7 @@
                 },
                 "_visGalerie": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/vis-galerie.html?v=2",
+                    "url": "./adapter/beregnungswerk/vis-galerie.html?v=1",
                     "sandbox": "allow-same-origin allow-scripts",
                     "style": {
                         "width": "100%",
