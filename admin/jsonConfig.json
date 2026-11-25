@@ -361,7 +361,7 @@
             "items": {
                 "_tabLayoutCss": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1546",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1551",
                     "sandbox": "allow-same-origin allow-scripts",
                     "style": {
                         "height": 0,
@@ -504,7 +504,8 @@
                     "options": [
                         { "label": "Normal", "value": "normal" },
                         { "label": "Kurz", "value": "kurz" },
-                        { "label": "Ausführlich", "value": "ausfuehrlich" }
+                        { "label": "Ausführlich", "value": "ausfuehrlich" },
+                        { "label": "Eigene Auswahl", "value": "auswahl" }
                     ],
                     "sm": 4,
                     "default": "normal"
@@ -535,6 +536,90 @@
                         "de": "Nachricht nur bei Fehler",
                         "en": "Message only on error"
                     },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeNaechster": {
+                    "type": "checkbox",
+                    "label": { "de": "Nächster Start", "en": "Next start" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeAktuell": {
+                    "type": "checkbox",
+                    "label": { "de": "Gerade angesteuert", "en": "Currently running" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeStart": {
+                    "type": "checkbox",
+                    "label": { "de": "Start", "en": "Start" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeStopp": {
+                    "type": "checkbox",
+                    "label": { "de": "Stopp", "en": "Stop" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeUhrzeit": {
+                    "type": "checkbox",
+                    "label": { "de": "Uhrzeit", "en": "Time" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeTank": {
+                    "type": "checkbox",
+                    "label": { "de": "Wassertank", "en": "Water tank" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil1": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 1", "en": "Valve 1" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil2": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 2", "en": "Valve 2" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil3": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 3", "en": "Valve 3" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil4": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 4", "en": "Valve 4" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeDauer": {
+                    "type": "checkbox",
+                    "label": { "de": "Eingestellte Dauer", "en": "Set duration" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeWiederholungen": {
+                    "type": "checkbox",
+                    "label": { "de": "Schleife Wiederholungen", "en": "Loop repetitions" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeTankanzeige": {
+                    "type": "checkbox",
+                    "label": { "de": "Tankanzeige", "en": "Tank display" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigePumpe": {
+                    "type": "checkbox",
+                    "label": { "de": "Pumpenstatus", "en": "Pump status" },
                     "sm": 4,
                     "default": false
                 },
@@ -583,11 +668,20 @@
                     "sm": 4,
                     "default": false
                 },
-                "nachrichtenAnzeigeFrei": {
-                    "type": "text",
+                "nachrichtenAnzeigeFreiAktiv": {
+                    "type": "checkbox",
                     "label": {
                         "de": "Eigene Anzeige",
                         "en": "Custom display"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeFrei": {
+                    "type": "text",
+                    "label": {
+                        "de": "Eigene Anzeige Text",
+                        "en": "Custom display text"
                     },
                     "sm": 12,
                     "default": ""
@@ -655,8 +749,20 @@
                 "_infoPlaceholder7": {
                     "type": "staticText",
                     "text": {
-                        "de": "Platzhalter für später.",
-                        "en": "Placeholder for later."
+                        "de": "Bilder der ersten Visualisierung. Ein Klick zeigt das Bild größer.",
+                        "en": "Images from the first visualization. A click shows the image larger."
+                    },
+                    "sm": 12
+                },
+                "_visGalerie": {
+                    "type": "iframe",
+                    "url": "./adapter/beregnungswerk/vis-galerie.html?v=1",
+                    "sandbox": "allow-same-origin allow-scripts",
+                    "style": {
+                        "width": "100%",
+                        "height": "560px",
+                        "border": "none",
+                        "background": "transparent"
                     },
                     "sm": 12
                 }

@@ -55,7 +55,7 @@
   "main": "main.js",
   "files": [
     "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
-    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,jpeg,js}",
+    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,jpeg,gif,js}",
     "admin/build/",
     "lib/",
     "www/",

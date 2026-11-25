@@ -965,7 +965,14 @@
             '[data-bw-nachrichten-panel="1"] .bw-vip-checks{display:flex!important;flex-wrap:wrap!important;gap:8px 22px!important;margin-top:8px!important}',
             '[data-bw-nachrichten-panel="1"] [data-bw-field-service][hidden]{display:none!important}',
             '[data-bw-nachrichten-panel="1"] [data-bw-nachrichten-optional="1"]{flex:1 1 100%!important;margin:8px 0 0!important;font-size:13px!important;font-weight:700!important;color:#1b4332!important}',
+            '[data-bw-nachrichten-panel="1"] [data-bw-nachrichten-stil-scope="1"]{flex:1 1 100%!important;min-width:100%!important}',
+            '[data-bw-nachrichten-panel="1"] .bw-stil-zeile{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:wrap!important}',
+            '[data-bw-nachrichten-panel="1"] .bw-stil-zeile select.bw-vip-input{width:220px!important;flex:0 0 auto!important}',
+            '[data-bw-nachrichten-panel="1"] .bw-stil-umfang{font-size:13px!important;font-weight:400!important;color:#1b4332!important;flex:1 1 220px!important}',
+            '[data-bw-nachrichten-panel="1"] [data-bw-eigene-punkte="1"]{flex:1 1 100%!important;width:100%!important}',
+            '[data-bw-nachrichten-panel="1"] [data-bw-eigene-punkte="1"][data-bw-eigene-offen="0"]{display:none!important}',
             '[data-bw-nachrichten-panel="1"] [data-bw-nachrichten-frei="1"]{flex:1 1 100%!important;min-width:100%!important;margin-top:8px!important}',
+            '[data-bw-nachrichten-panel="1"] [data-bw-nachrichten-frei="1"][data-bw-frei-offen="0"]{display:none!important}',
             '[data-bw-nachrichten-panel="1"] .bw-vip-actions{display:flex!important;justify-content:flex-end!important;margin-top:12px!important}',
             '[data-bw-nachrichten="1"] [data-bw-nachrichten-status="1"]{margin:10px 0 0!important;padding:8px 12px!important;border-radius:8px!important;background:#f4f8f6!important;color:#1b4332!important;white-space:pre-wrap!important;font-size:14px!important;line-height:1.35!important}',
             '[data-bw-nachrichten="1"] .MuiInput-underline:before{border-bottom-color:#9e9e9e!important}',
@@ -17716,7 +17723,8 @@ function dedupeSprinkleNames(table) {
     }
 
     function parkNachrichtenNative(panel, caption) {
-        var nodes = panel.querySelectorAll('label, .MuiFormLabel-root, .MuiInputLabel-root, .MuiFormControlLabel-label');
+        var root = panel && panel.parentElement ? panel.parentElement : panel;
+        var nodes = root.querySelectorAll('label, .MuiFormLabel-root, .MuiInputLabel-root, .MuiFormControlLabel-label');
         var input = null;
         var i;
         for (i = 0; i < nodes.length; i += 1) {
@@ -17736,7 +17744,7 @@ function dedupeSprinkleNames(table) {
         }
         var grid = null;
         var walk = input;
-        while (walk && walk !== panel) {
+        while (walk && walk !== panel && walk !== root) {
             if (walk.matches && walk.matches('.MuiGrid-root, .MuiGrid-item, .MuiGrid2-root, .MuiFormControl-root')
                 && !walk.querySelector('[data-bw-nachrichten-lines="1"], [data-bw-nachrichten-panel="1"], [data-bw-nachrichten-status="1"]')) {
                 grid = walk;
@@ -17811,7 +17819,7 @@ function dedupeSprinkleNames(table) {
 
     function ensureNachrichtenSettingsPanel(panel) {
         var existing = panel.querySelector('[data-bw-nachrichten-panel="1"]');
-        if (existing && (!existing.querySelector('[data-bw-nachrichten-apply="1"]') || !existing.querySelector('[data-bw-nachrichten-frei="1"]'))) {
+        if (existing && (!existing.querySelector('[data-bw-nachrichten-apply="1"]') || !existing.querySelector('[data-bw-punkte-ver="1551"]') || !existing.querySelector('[data-bw-nachrichten-frei-schalt="1"]'))) {
             if (existing.parentElement) {
                 existing.parentElement.removeChild(existing);
             }
@@ -17902,43 +17910,132 @@ function dedupeSprinkleNames(table) {
         optionalHead.setAttribute('data-bw-nachrichten-optional', '1');
         optionalHead.textContent = 'Optional';
         box.appendChild(optionalHead);
-        addControl({ label: 'Benachrichtigungsstil', caption: 'Benachrichtigungsstil', suffix: 'Stil', kind: 'stil', service: 'optional' }, optionalFields);
+        var stilNative = parkNachrichtenNative(panel, 'Benachrichtigungsstil');
+        var stilWert = stilNative && stilNative.value ? stilNative.value : 'normal';
+        var stilBox = doc.createElement('div');
+        stilBox.className = 'bw-vip-field';
+        stilBox.setAttribute('data-bw-field-service', 'optional');
+        stilBox.setAttribute('data-bw-nachrichten-stil-scope', '1');
+        stilBox.setAttribute('data-bw-nachrichten-stil-select', '1');
+        var stilHead = doc.createElement('span');
+        stilHead.className = 'bw-vip-col-head';
+        stilHead.textContent = 'Benachrichtigungsstil';
+        stilBox.appendChild(stilHead);
+        var stilZeile = doc.createElement('div');
+        stilZeile.className = 'bw-stil-zeile';
+        var stilChoices = [
+            ['kurz', 'Kurz', 'Nächster Start und das Ventil, das gerade läuft.'],
+            ['normal', 'Normal', 'Dazu Auslösung, Uhrzeit, Wassertank und der Status jedes Ventils.'],
+            ['ausfuehrlich', 'Ausführlich', 'Wie Normal, zusätzlich der Hinweis auf gesperrte Ventile und nicht erfüllte Parameter.'],
+            ['auswahl', 'Eigene Auswahl', 'Nur die angehakten Punkte. Start nur beim Start, Stopp nur beim Stopp.']
+        ];
+        var punkteWrap = null;
+        var stilSelect = doc.createElement('select');
+        stilSelect.className = 'bw-vip-input';
+        var stilUmfang = doc.createElement('span');
+        stilUmfang.className = 'bw-stil-umfang';
+        function setzeStilText(wert) {
+            var treffer = stilChoices[1];
+            var s;
+            for (s = 0; s < stilChoices.length; s += 1) {
+                if (stilChoices[s][0] === wert) treffer = stilChoices[s];
+            }
+            stilUmfang.textContent = treffer[2];
+            if (punkteWrap) punkteWrap.setAttribute('data-bw-eigene-offen', wert === 'auswahl' ? '1' : '0');
+        }
+        var stilIndex;
+        for (stilIndex = 0; stilIndex < stilChoices.length; stilIndex += 1) {
+            var opt = doc.createElement('option');
+            opt.value = stilChoices[stilIndex][0];
+            opt.textContent = stilChoices[stilIndex][1];
+            stilSelect.appendChild(opt);
+        }
+        stilSelect.value = stilWert;
+        if (stilSelect.value !== stilWert) stilSelect.value = 'normal';
+        setzeStilText(stilSelect.value);
+        stilSelect.addEventListener('change', function () {
+            syncNachrichtenNative(stilNative, stilSelect.value, 'Stil', false);
+            setzeStilText(stilSelect.value);
+        });
+        stilZeile.appendChild(stilSelect);
+        stilZeile.appendChild(stilUmfang);
+        stilBox.appendChild(stilZeile);
+        optionalFields.appendChild(stilBox);
         addControl({ label: 'Warten auf den Versand (Sekunden)', caption: 'Warten auf den Versand (Sekunden)', suffix: 'WartenSekunden', kind: 'number', service: 'optional' }, optionalFields);
         box.appendChild(optionalFields);
+        punkteWrap = doc.createElement('div');
+        punkteWrap.setAttribute('data-bw-eigene-punkte', '1');
+        punkteWrap.setAttribute('data-bw-punkte-ver', '1551');
+        punkteWrap.setAttribute('data-bw-field-service', 'optional');
+        punkteWrap.setAttribute('data-bw-eigene-offen', stilSelect.value === 'auswahl' ? '1' : '0');
         var extraHead = doc.createElement('div');
         extraHead.className = 'bw-vip-col-head';
         extraHead.setAttribute('data-bw-nachrichten-optional', '1');
         extraHead.setAttribute('data-bw-nachrichten-extra', '1');
-        extraHead.textContent = 'Zusätzlich anzeigen';
-        box.appendChild(extraHead);
+        extraHead.textContent = 'Eigene Auswahl';
+        punkteWrap.appendChild(extraHead);
+        var extraHinweis = doc.createElement('div');
+        extraHinweis.className = 'bw-stil-umfang';
+        extraHinweis.textContent = 'Jeder Punkt wird einzeln gesendet. Start nur beim Start, Stopp nur beim Stopp.';
+        punkteWrap.appendChild(extraHinweis);
         var extras = doc.createElement('div');
         extras.className = 'bw-vip-checks';
         extras.setAttribute('data-bw-field-service', 'optional');
+        addControl({ label: 'Nächster Start', caption: 'Nächster Start', suffix: 'Anzeige_Naechster', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Gerade angesteuert', caption: 'Gerade angesteuert', suffix: 'Anzeige_Aktuell', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Start', caption: 'Start', suffix: 'Anzeige_Start', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Stopp', caption: 'Stopp', suffix: 'Anzeige_Stopp', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Uhrzeit', caption: 'Uhrzeit', suffix: 'Anzeige_Uhrzeit', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Wassertank', caption: 'Wassertank', suffix: 'Anzeige_Tank', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Ventil 1', caption: 'Ventil 1', suffix: 'Anzeige_Ventil1', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Ventil 2', caption: 'Ventil 2', suffix: 'Anzeige_Ventil2', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Ventil 3', caption: 'Ventil 3', suffix: 'Anzeige_Ventil3', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Ventil 4', caption: 'Ventil 4', suffix: 'Anzeige_Ventil4', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Eingestellte Dauer', caption: 'Eingestellte Dauer', suffix: 'Anzeige_Dauer', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Schleife Wiederholungen', caption: 'Schleife Wiederholungen', suffix: 'Anzeige_Wiederholungen', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Tankanzeige', caption: 'Tankanzeige', suffix: 'Anzeige_Tankanzeige', kind: 'check', service: 'optional' }, extras);
+        addControl({ label: 'Pumpenstatus', caption: 'Pumpenstatus', suffix: 'Anzeige_Pumpe', kind: 'check', service: 'optional' }, extras);
         addControl({ label: 'Zeitraum ohne Bewässerung', caption: 'Zeitraum ohne Bewässerung', suffix: 'Anzeige_Pause', kind: 'check', service: 'optional' }, extras);
         addControl({ label: 'Ventil-Einstellungen', caption: 'Ventil-Einstellungen', suffix: 'Anzeige_Ventil', kind: 'check', service: 'optional' }, extras);
         addControl({ label: 'Astro', caption: 'Astro', suffix: 'Anzeige_Astro', kind: 'check', service: 'optional' }, extras);
         addControl({ label: 'Schaltzeiten', caption: 'Schaltzeiten', suffix: 'Anzeige_Schaltzeit', kind: 'check', service: 'optional' }, extras);
         addControl({ label: 'Wartung', caption: 'Wartung', suffix: 'Anzeige_Wartung', kind: 'check', service: 'optional' }, extras);
-        box.appendChild(extras);
+        var freiAktivNative = parkNachrichtenNative(panel, 'Eigene Anzeige');
+        var freiOn = !!(freiAktivNative && freiAktivNative.checked);
+        var freiToggle = doc.createElement('label');
+        freiToggle.className = 'bw-vip-wartung-point';
+        freiToggle.setAttribute('data-bw-field-service', 'optional');
+        freiToggle.setAttribute('data-bw-nachrichten-frei-schalt', '1');
+        var freiCheck = doc.createElement('input');
+        freiCheck.type = 'checkbox';
+        freiCheck.checked = freiOn;
+        var freiSpan = doc.createElement('span');
+        freiSpan.textContent = 'Eigene Anzeige';
+        freiCheck.addEventListener('change', function () {
+            syncNachrichtenNative(freiAktivNative, freiCheck.checked, 'Anzeige_Frei_Aktiv', true);
+            freiWrap.setAttribute('data-bw-frei-offen', freiCheck.checked ? '1' : '0');
+        });
+        freiToggle.appendChild(freiCheck);
+        freiToggle.appendChild(freiSpan);
+        extras.appendChild(freiToggle);
+        punkteWrap.appendChild(extras);
         var freiWrap = doc.createElement('label');
         freiWrap.className = 'bw-vip-field';
         freiWrap.setAttribute('data-bw-field-service', 'optional');
         freiWrap.setAttribute('data-bw-nachrichten-frei', '1');
-        var freiHead = doc.createElement('span');
-        freiHead.className = 'bw-vip-col-head';
-        freiHead.textContent = 'Eigene Anzeige';
+        freiWrap.setAttribute('data-bw-frei-offen', freiOn ? '1' : '0');
         var freiInput = doc.createElement('textarea');
         freiInput.className = 'bw-vip-input';
         freiInput.setAttribute('rows', '3');
         freiInput.setAttribute('placeholder', 'Freier Text oder Objekt-ID, eine Zeile je Eintrag');
-        var freiNative = parkNachrichtenNative(panel, 'Eigene Anzeige');
+        var freiNative = parkNachrichtenNative(panel, 'Eigene Anzeige Text');
         freiInput.value = freiNative ? String(freiNative.value || '') : '';
         freiInput.addEventListener('change', function () {
             syncNachrichtenNative(freiNative, freiInput.value, 'Anzeige_Frei', false);
         });
-        freiWrap.appendChild(freiHead);
         freiWrap.appendChild(freiInput);
-        box.appendChild(freiWrap);
+        punkteWrap.appendChild(freiWrap);
+        box.appendChild(punkteWrap);
         addControl({ label: 'Stille Nachricht', caption: 'Stille Nachricht', suffix: 'Still', kind: 'check', service: 'optional' }, checks);
         addControl({ label: 'Nachricht nur bei Fehler', caption: 'Nachricht nur bei Fehler', suffix: 'NurFehler', kind: 'check', service: 'optional' }, checks);
         box.appendChild(checks);
@@ -17974,7 +18071,7 @@ function dedupeSprinkleNames(table) {
                 continue;
             }
             var cfg = line.querySelector('[data-bw-nachrichten-config="1"]');
-            if (cfg && cfg.getAttribute('data-bw-nachrichten-config-ver') === '1546') {
+            if (cfg && cfg.getAttribute('data-bw-nachrichten-config-ver') === '1551') {
                 continue;
             }
             if (!cfg) {
@@ -17990,7 +18087,7 @@ function dedupeSprinkleNames(table) {
                 cfg.parentElement.replaceChild(fresh, cfg);
                 cfg = fresh;
             }
-            cfg.setAttribute('data-bw-nachrichten-config-ver', '1546');
+            cfg.setAttribute('data-bw-nachrichten-config-ver', '1551');
             cfg.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -18010,7 +18107,7 @@ function dedupeSprinkleNames(table) {
                 }
             }, true);
         }
-        var hide = ['Telegram-Empfänger', 'Telegram-Chat-ID', 'E-Mail-Adresse', 'Benachrichtigungsstil', 'Warten auf den Versand (Sekunden)', 'Stille Nachricht', 'Nachricht nur bei Fehler', 'Zeitraum ohne Bewässerung', 'Ventil-Einstellungen', 'Astro', 'Schaltzeiten', 'Wartung', 'Eigene Anzeige'];
+        var hide = ['Telegram-Empfänger', 'Telegram-Chat-ID', 'E-Mail-Adresse', 'Benachrichtigungsstil', 'Warten auf den Versand (Sekunden)', 'Stille Nachricht', 'Nachricht nur bei Fehler', 'Nächster Start', 'Gerade angesteuert', 'Start', 'Stopp', 'Uhrzeit', 'Wassertank', 'Ventil 1', 'Ventil 2', 'Ventil 3', 'Ventil 4', 'Eingestellte Dauer', 'Schleife Wiederholungen', 'Tankanzeige', 'Pumpenstatus', 'Zeitraum ohne Bewässerung', 'Ventil-Einstellungen', 'Astro', 'Schaltzeiten', 'Wartung', 'Eigene Anzeige', 'Eigene Anzeige Text'];
         for (i = 0; i < hide.length; i += 1) {
             parkNachrichtenNative(panel, hide[i]);
         }
