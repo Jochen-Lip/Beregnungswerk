@@ -633,7 +633,7 @@
             '.bw-ventil-inline-panel .bw-vip-parallel-list{display:flex!important;flex-wrap:wrap!important;gap:6px 14px!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-item{display:flex!important;align-items:center!important;gap:6px!important;margin:0!important;font-size:14px!important;font-weight:700!important;color:#1565c0!important;cursor:pointer!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-item input{margin:0!important;cursor:pointer!important;}',
-            '[data-bw-parallel-mark="1"] svg{display:block!important;width:24px!important;height:24px!important;}',
+            '[data-bw-parallel-mark="1"] svg{display:block!important;width:26px!important;height:26px!important;}',
             '[data-bw-parallel-mark="1"]{display:inline-flex!important;position:static!important;transform:none!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;width:' + ERASER_BTN_SIZE + 'px!important;height:' + ERASER_BTN_SIZE + 'px!important;min-width:' + ERASER_BTN_SIZE + 'px!important;max-width:' + ERASER_BTN_SIZE + 'px!important;min-height:' + ERASER_BTN_SIZE + 'px!important;max-height:' + ERASER_BTN_SIZE + 'px!important;margin:0 0 0 4px!important;padding:0!important;border-radius:8px!important;background:#1565c0!important;color:#ffffff!important;font-size:16px!important;font-weight:800!important;line-height:1!important;letter-spacing:-0.4px!important;pointer-events:none!important;flex:0 0 ' + ERASER_BTN_SIZE + 'px!important;vertical-align:middle!important;}',
             '[data-bw-saison-row="1"]{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:nowrap!important;width:auto!important;max-width:100%!important;margin:0 0 0 auto!important;padding:0!important;flex:0 0 auto!important;}',
             '[data-bw-saison-toggle="1"]{cursor:pointer!important;}',
@@ -6783,7 +6783,7 @@
         });
     }
 
-    var PARALLEL_MARK_SVG = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="#ffffff" d="M14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zM4.5 5.41 9.67 10.6l1.42-1.42L5.91 4 4.5 5.41zM14.83 13.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>';
+    var PARALLEL_MARK_SVG = '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false"><g fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16.2h4.8L15.2 8.2H19"/><path d="M15.4 5.2 19.2 8.2 15.4 11.2"/><path d="M20 7.8h-4.8L8.8 15.8H5"/><path d="M8.6 18.8 4.8 15.8 8.6 12.8"/></g></svg>';
 
     function applyParallelRow(row, table, on, titel) {
         if (!row || !table || !isTab1VentilTable(table)) {
