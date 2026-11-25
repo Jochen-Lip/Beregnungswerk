@@ -4239,11 +4239,7 @@
         if (!isTab1VentilTable(table)) {
             return;
         }
-        if (checked) {
-            row.removeAttribute('data-bw-row-inactive');
-        } else {
-            row.setAttribute('data-bw-row-inactive', '1');
-        }
+        row.removeAttribute('data-bw-row-inactive');
     }
 
     var bwSchwelleFarbeCache = {};
@@ -6447,7 +6443,7 @@
         }
         var sw = tab1RowSwitch(row);
         if (sw) {
-            if (wartung || tab1ZeitOn(row.ownerDocument)) {
+            if (wartung) {
                 sw.setAttribute('data-bw-manual-locked', '1');
                 sw.style.setProperty('pointer-events', 'none', 'important');
                 sw.style.setProperty('cursor', 'not-allowed', 'important');
@@ -7397,21 +7393,21 @@
         if (!root) {
             return;
         }
-        var locked = tab1ZeitOn(doc);
         root.querySelectorAll('.MuiTable-root').forEach(function (table) {
             if (!isTab1VentilTable(table)) {
                 return;
             }
             getVentilDataRows(table).forEach(function (row) {
                 var sw = tab1RowSwitch(row);
+                row.removeAttribute('data-bw-row-inactive');
                 if (!sw) {
                     return;
                 }
-                if (locked) {
+                if (row.getAttribute('data-bw-wartung') === '1') {
                     sw.setAttribute('data-bw-manual-locked', '1');
                     sw.style.setProperty('pointer-events', 'none', 'important');
                     sw.style.setProperty('cursor', 'not-allowed', 'important');
-                } else if (row.getAttribute('data-bw-wartung') !== '1') {
+                } else {
                     sw.removeAttribute('data-bw-manual-locked');
                     sw.style.removeProperty('pointer-events');
                     sw.style.setProperty('cursor', 'pointer', 'important');
@@ -7461,7 +7457,7 @@
         if (!row || !table || !sw) {
             return;
         }
-        if (row.getAttribute('data-bw-wartung') === '1' || tab1ZeitOn(row.ownerDocument) || sw.getAttribute('data-bw-manual-locked') === '1') {
+        if (row.getAttribute('data-bw-wartung') === '1') {
             return;
         }
         var oid = tab1RowAusgangId(row, table);
