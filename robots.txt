@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jochen-lip.github.io/Beregnungswerk/sitemap.xml
