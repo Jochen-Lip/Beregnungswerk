@@ -14923,6 +14923,29 @@ function dedupeSprinkleNames(table) {
         return Number.isFinite(n) && n === 1;
     }
 
+    function fillBlankVentilNames(table) {
+        if (!table || isTab2VentilTable(table) || isPumpTable(table)) {
+            return;
+        }
+        getVentilDataRows(table).forEach(function (row, idx) {
+            if (row.getAttribute('data-bw-cleared') === '1') {
+                return;
+            }
+            var nameCell = getNameCell(row, table);
+            var nameInput = nameCell ? nameCell.querySelector('input, .MuiInputBase-input') : null;
+            if (!nameInput || nameInput.type === 'checkbox' || nameInput.type === 'radio') {
+                return;
+            }
+            if (!isBlankSprinkleNameValue(nameInput.value)) {
+                return;
+            }
+            var name = defaultVentilSprinkleName(idx + 1);
+            setReactInputValue(nameInput, name);
+            commitJsonConfigAttr(nameInput, 'sprinkleName', name);
+            nameInput._bwLastGoodName = name;
+        });
+    }
+
     function ensureHardFirstRow(table) {
         if (!table) {
             return;
@@ -14937,6 +14960,15 @@ function dedupeSprinkleNames(table) {
         if (isTab2VentilTable(table)) {
             row.setAttribute('data-bw-schaltzeit-slot', '1');
             return;
+        }
+        fillBlankVentilNames(table);
+        if (!table._bwNameFillTimer) {
+            table._bwNameFillTimer = window.setTimeout(function () {
+                table._bwNameFillTimer = null;
+                if (table.isConnected) {
+                    fillBlankVentilNames(table);
+                }
+            }, 300);
         }
         var oidCell = getObjectIdCell(row, table);
         var oidVal = oidCell ? String(getObjectIdCellValue(oidCell) || '').trim() : '';
