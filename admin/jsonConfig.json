@@ -24,7 +24,7 @@
             "items": {
                 "_tabLayoutCss": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1552",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1553",
                     "sandbox":
                      "allow-same-origin allow-scripts",
                     "style": {
@@ -756,7 +756,7 @@
                 },
                 "_visGalerie": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/vis-galerie.html?v=1",
+                    "url": "./adapter/beregnungswerk/vis-galerie.html?v=2",
                     "sandbox": "allow-same-origin allow-scripts",
                     "style": {
                         "width": "100%",
