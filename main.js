@@ -22,6 +22,7 @@ const { ensureAdapterStates, ensureVentilByNr, deleteVentilByNr, ensureSchaltzei
 const { startEngine } = require('./lib/engine');
 const { sendToWithTimeout } = require('./lib/sendToTimeout');
 const { preferBuiltinEngineStartup } = require('./lib/startupEnv');
+const { publishAdapterCatalog, watchAdapterCatalog } = require('./lib/adapterCatalog');
 
 const SCRIPT_FILE = 'Beregnungswerk.js';
 const JS_RELOAD_TIMEOUT_MS = 8000;
@@ -412,6 +413,10 @@ async function startLogic(statesOk) {
 
 async function main() {
     adapter.log.info(`Beregnungswerk-Adapter v${adapter.version} gestartet`);
+    watchAdapterCatalog(adapter);
+    await publishAdapterCatalog(adapter).catch((e) =>
+        adapter.log.warn(`Adapterkarte: ${e.message || e}`),
+    );
 
     adapter.on('reloadConfig', (config) => {
         adapter.config = config;
