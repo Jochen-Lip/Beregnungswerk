@@ -628,13 +628,12 @@
             '.bw-ventil-inline-panel .bw-vip-wartung-point input{margin:0!important;cursor:pointer!important}',
             '[data-bw-wartung-label="1"]{display:block!important;margin:2px 0 0!important;color:#ef6c00!important;font-size:12px!important;font-weight:700!important;letter-spacing:.04em!important;line-height:1.2!important}',
             '.bw-ventil-inline-panel .bw-vip-mode-points{display:flex!important;flex-wrap:wrap!important;gap:18px!important;align-items:center!important}',
-            '.bw-ventil-inline-panel .bw-vip-parallel-pick{display:none!important;}',
-            '.bw-ventil-inline-panel .bw-vip-parallel-pick[data-bw-open="1"]{display:block!important;margin:0 0 12px!important;padding:8px 10px!important;border:1px solid #90caf9!important;border-radius:8px!important;background:#e3f2fd!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-pick{display:block!important;margin:0 0 12px!important;padding:8px 10px!important;border:1px solid #90caf9!important;border-radius:8px!important;background:#e3f2fd!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-pick-title{font-size:13px!important;font-weight:700!important;color:#0d47a1!important;margin:0 0 6px!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-list{display:flex!important;flex-wrap:wrap!important;gap:6px 14px!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-item{display:flex!important;align-items:center!important;gap:6px!important;margin:0!important;font-size:14px!important;font-weight:700!important;color:#1565c0!important;cursor:pointer!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-item input{margin:0!important;cursor:pointer!important;}',
-            '[data-bw-parallel-mark="1"]{font-size:20px!important;}',
+            '[data-bw-parallel-mark="1"] svg{display:block!important;width:24px!important;height:24px!important;}',
             '[data-bw-parallel-mark="1"]{display:inline-flex!important;position:static!important;transform:none!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;width:' + ERASER_BTN_SIZE + 'px!important;height:' + ERASER_BTN_SIZE + 'px!important;min-width:' + ERASER_BTN_SIZE + 'px!important;max-width:' + ERASER_BTN_SIZE + 'px!important;min-height:' + ERASER_BTN_SIZE + 'px!important;max-height:' + ERASER_BTN_SIZE + 'px!important;margin:0 0 0 4px!important;padding:0!important;border-radius:8px!important;background:#1565c0!important;color:#ffffff!important;font-size:16px!important;font-weight:800!important;line-height:1!important;letter-spacing:-0.4px!important;pointer-events:none!important;flex:0 0 ' + ERASER_BTN_SIZE + 'px!important;vertical-align:middle!important;}',
             '[data-bw-saison-row="1"]{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:nowrap!important;width:auto!important;max-width:100%!important;margin:0 0 0 auto!important;padding:0!important;flex:0 0 auto!important;}',
             '[data-bw-saison-toggle="1"]{cursor:pointer!important;}',
@@ -6700,18 +6699,60 @@
         return name;
     }
 
-    function tab1ParallelKandidaten(table, eigeneNr) {
+    function tabelleFuerPanel(panel, row, table) {
+        if (table && table.isConnected) {
+            return table;
+        }
+        var live = livePanelRow(panel, row, table);
+        if (live.table && live.table.isConnected) {
+            return live.table;
+        }
+        var tr = panel && panel.closest ? panel.closest('tr') : null;
+        var prev = tr && tr.previousElementSibling;
+        var fromPrev = prev && prev.closest ? prev.closest('table, .MuiTable-root') : null;
+        if (fromPrev) {
+            return fromPrev;
+        }
+        var fromPanel = panel && panel.closest ? panel.closest('table, .MuiTable-root') : null;
+        if (fromPanel) {
+            return fromPanel;
+        }
+        return tab1Tabelle(panel && panel.ownerDocument);
+    }
+
+    function tab1ParallelKandidaten(table, eigeneNr, eigeneRow) {
         var liste = [];
+        var gesehen = {};
         if (!table) {
             return liste;
         }
-        getVentilDataRows(table).forEach(function (row) {
-            var n = ventilIdentityNr(row, table);
-            if (!n || n === eigeneNr) {
+        getVentilDataRows(table).forEach(function (row, idx) {
+            if (eigeneRow && row === eigeneRow) {
                 return;
             }
+            var n = ventilIdentityNr(row, table);
+            if (!n) {
+                n = idx + 1;
+            }
+            if (!n || n === eigeneNr || gesehen[n]) {
+                return;
+            }
+            gesehen[n] = true;
             liste.push({ nr: n, name: tab1VentilName(row, table, n), row: row });
         });
+        if (!liste.length) {
+            getVentilDataRows(table).forEach(function (row, idx) {
+                if (eigeneRow && row === eigeneRow) {
+                    return;
+                }
+                var n = idx + 1;
+                if (n === eigeneNr || gesehen[n]) {
+                    return;
+                }
+                gesehen[n] = true;
+                liste.push({ nr: n, name: tab1VentilName(row, table, n), row: row });
+            });
+        }
         liste.sort(function (a, b) {
             return a.nr - b.nr;
         });
@@ -6742,6 +6783,8 @@
         });
     }
 
+    var PARALLEL_MARK_SVG = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path fill="#ffffff" d="M14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zM4.5 5.41 9.67 10.6l1.42-1.42L5.91 4 4.5 5.41zM14.83 13.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>';
+
     function applyParallelRow(row, table, on, titel) {
         if (!row || !table || !isTab1VentilTable(table)) {
             return;
@@ -6763,7 +6806,7 @@
                 mark = row.ownerDocument.createElement('span');
                 mark.setAttribute('data-bw-parallel-mark', '1');
             }
-            mark.textContent = '\u2225';
+            mark.innerHTML = PARALLEL_MARK_SVG;
             mark.setAttribute('title', titel || 'Parallelbetrieb');
             mark.setAttribute('aria-label', 'Parallelbetrieb');
             if (pencil && pencil.parentNode) {
@@ -6877,25 +6920,19 @@
         });
     }
 
-    function renderParallelAuswahl(panel, table, eigeneNr) {
+    function renderParallelAuswahl(panel, table, eigeneNr, eigeneRow) {
         var host = panel.querySelector('[data-bw-vip-parallel-list="1"]');
-        var box = panel.querySelector('[data-bw-vip-parallel="1"]');
         var pick = panel.querySelector('[data-bw-vip-parallel-pick="1"]');
         if (!host || !pick) {
             return;
         }
-        var offen = !!(box && box.checked);
-        if (offen) {
-            pick.setAttribute('data-bw-open', '1');
-        } else {
-            pick.removeAttribute('data-bw-open');
-        }
-        if (!offen) {
-            host.innerHTML = '';
-            return;
-        }
-        var liveTable = table && table.isConnected ? table : tab1Tabelle(panel.ownerDocument);
-        var kandidaten = tab1ParallelKandidaten(liveTable, eigeneNr);
+        pick.setAttribute('data-bw-open', '1');
+        pick.style.setProperty('display', 'block', 'important');
+        host.style.setProperty('display', 'flex', 'important');
+        host.style.setProperty('flex-wrap', 'wrap', 'important');
+        host.style.setProperty('gap', '6px 14px', 'important');
+        var liveTable = tabelleFuerPanel(panel, eigeneRow, table);
+        var kandidaten = tab1ParallelKandidaten(liveTable, eigeneNr, eigeneRow);
         var gesetzt = {};
         (bwParallelAuswahlCache[eigeneNr] || []).forEach(function (n) {
             gesetzt[n] = true;
@@ -6908,6 +6945,7 @@
         kandidaten.forEach(function (k) {
             var label = panel.ownerDocument.createElement('label');
             label.className = 'bw-vip-parallel-item';
+            label.style.cssText = 'display:flex;align-items:center;gap:6px;margin:0;font-size:14px;font-weight:700;color:#1565c0;cursor:pointer;';
             var input = panel.ownerDocument.createElement('input');
             input.type = 'checkbox';
             input.setAttribute('data-bw-vip-parallel-nr', String(k.nr));
@@ -6949,18 +6987,18 @@
         }
         box.setAttribute('data-bw-parallel-wired', '1');
         function aktuelleTabelle() {
-            var live = livePanelRow(panel, row, table);
-            return (live.table && live.table.isConnected) ? live.table : tab1Tabelle(hostDoc);
+            return tabelleFuerPanel(panel, row, table) || tab1Tabelle(hostDoc);
         }
         function paint(val) {
             box.checked = !!val;
             bwParallelCache[nr] = !!val;
-            renderParallelAuswahl(panel, aktuelleTabelle(), nr);
+            renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
             var liveTable = aktuelleTabelle();
             if (liveTable) {
                 applyParallelRows(liveTable);
             }
         }
+        renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
         if (host && host.getAttribute('data-bw-parallel-list-wired') !== '1') {
             host.setAttribute('data-bw-parallel-list-wired', '1');
             host.addEventListener('change', function (ev) {
@@ -6978,16 +7016,23 @@
                         nums.push(gewaehlt);
                     }
                 });
-                speichereParallelAuswahl(socket, hostDoc, nr, nums, function (setErr) {
-                    if (setErr) {
-                        alertVentilErr(hostDoc, setErr);
-                        renderParallelAuswahl(panel, aktuelleTabelle(), nr);
-                        return;
-                    }
-                    var liveTable = aktuelleTabelle();
-                    if (liveTable) {
-                        applyParallelRows(liveTable);
-                    }
+                var an = nums.length > 0;
+                box.checked = an;
+                bwParallelCache[nr] = an;
+                ensureParallelState(socket, nr, function () {
+                    setStateViaAdmin(socket, parallelStateId(nr), an, function () {
+                        speichereParallelAuswahl(socket, hostDoc, nr, nums, function (setErr) {
+                            if (setErr) {
+                                alertVentilErr(hostDoc, setErr);
+                                renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
+                                return;
+                            }
+                            var liveTable = aktuelleTabelle();
+                            if (liveTable) {
+                                applyParallelRows(liveTable);
+                            }
+                        });
+                    });
                 });
             });
         }
@@ -7012,6 +7057,9 @@
         });
         box.addEventListener('change', function () {
             var next = !!box.checked;
+            if (!next) {
+                bwParallelAuswahlCache[nr] = [];
+            }
             paint(next);
             ensureParallelState(socket, nr, function (ensureErr) {
                 if (ensureErr) {
@@ -7022,6 +7070,10 @@
                     if (setErr) {
                         alertVentilErr(hostDoc, setErr);
                         paint(!next);
+                        return;
+                    }
+                    if (!next) {
+                        speichereParallelAuswahl(socket, hostDoc, nr, [], function () {});
                     }
                 });
             });
