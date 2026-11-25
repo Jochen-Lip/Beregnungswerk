@@ -24,7 +24,7 @@
             "items": {
                 "_tabLayoutCss": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1562",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1563",
                     "sandbox":
                      "allow-same-origin allow-scripts",
                     "style": {
