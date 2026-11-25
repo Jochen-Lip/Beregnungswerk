@@ -628,6 +628,13 @@
             '.bw-ventil-inline-panel .bw-vip-wartung-point input{margin:0!important;cursor:pointer!important}',
             '[data-bw-wartung-label="1"]{display:block!important;margin:2px 0 0!important;color:#ef6c00!important;font-size:12px!important;font-weight:700!important;letter-spacing:.04em!important;line-height:1.2!important}',
             '.bw-ventil-inline-panel .bw-vip-mode-points{display:flex!important;flex-wrap:wrap!important;gap:18px!important;align-items:center!important}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-pick{display:none!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-pick[data-bw-open="1"]{display:block!important;margin:0 0 12px!important;padding:8px 10px!important;border:1px solid #90caf9!important;border-radius:8px!important;background:#e3f2fd!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-pick-title{font-size:13px!important;font-weight:700!important;color:#0d47a1!important;margin:0 0 6px!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-list{display:flex!important;flex-wrap:wrap!important;gap:6px 14px!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-item{display:flex!important;align-items:center!important;gap:6px!important;margin:0!important;font-size:14px!important;font-weight:700!important;color:#1565c0!important;cursor:pointer!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-item input{margin:0!important;cursor:pointer!important;}',
+            '[data-bw-parallel-mark="1"]{font-size:20px!important;}',
             '[data-bw-parallel-mark="1"]{display:inline-flex!important;position:static!important;transform:none!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;width:' + ERASER_BTN_SIZE + 'px!important;height:' + ERASER_BTN_SIZE + 'px!important;min-width:' + ERASER_BTN_SIZE + 'px!important;max-width:' + ERASER_BTN_SIZE + 'px!important;min-height:' + ERASER_BTN_SIZE + 'px!important;max-height:' + ERASER_BTN_SIZE + 'px!important;margin:0 0 0 4px!important;padding:0!important;border-radius:8px!important;background:#1565c0!important;color:#ffffff!important;font-size:16px!important;font-weight:800!important;line-height:1!important;letter-spacing:-0.4px!important;pointer-events:none!important;flex:0 0 ' + ERASER_BTN_SIZE + 'px!important;vertical-align:middle!important;}',
             '[data-bw-saison-row="1"]{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:nowrap!important;width:auto!important;max-width:100%!important;margin:0 0 0 auto!important;padding:0!important;flex:0 0 auto!important;}',
             '[data-bw-saison-toggle="1"]{cursor:pointer!important;}',
@@ -6360,6 +6367,7 @@
 
     var bwWartungCache = {};
     var bwParallelCache = {};
+    var bwParallelAuswahlCache = {};
     var bwWartungBusy = false;
     var bwWartungAt = 0;
 
@@ -6369,6 +6377,10 @@
 
     function parallelStateId(nr) {
         return ventilDpId(nr, 'Konfig.Parallel');
+    }
+
+    function parallelVentileStateId(nr) {
+        return ventilDpId(nr, 'Konfig.ParallelVentile');
     }
 
     function ensureWartungState(socket, nr, done) {
@@ -6643,25 +6655,94 @@
         });
     }
 
-    function tab1VentilFreiFuerParallel(row, nr) {
-        if (!row || !nr) {
-            return false;
-        }
-        if (bwWartungCache[nr] || row.getAttribute('data-bw-wartung') === '1') {
-            return false;
-        }
-        if (row.getAttribute('data-bw-schwelle-farbe') === 'rot') {
-            return false;
-        }
-        var cell = getActiveCell(row);
-        var input = cell && cell.querySelector('input[type="checkbox"]');
-        if (input) {
-            return !!input.checked;
-        }
-        return true;
+    function parseParallelAuswahl(val) {
+        var gesehen = {};
+        var liste = [];
+        String(val == null ? '' : val).split(/[^0-9]+/).forEach(function (teil) {
+            var n = parseInt(teil, 10) || 0;
+            if (n > 0 && !gesehen[n]) {
+                gesehen[n] = true;
+                liste.push(n);
+            }
+        });
+        liste.sort(function (a, b) {
+            return a - b;
+        });
+        return liste;
     }
 
-    function applyParallelRow(row, table, on, rolle) {
+    function formatParallelAuswahl(liste) {
+        return parseParallelAuswahl((liste || []).join(',')).join(',');
+    }
+
+    function tab1Tabelle(doc) {
+        var root = getAdapterRoot(doc || parentDoc());
+        if (!root) {
+            return null;
+        }
+        var tables = root.querySelectorAll('table, .MuiTable-root');
+        var i;
+        for (i = 0; i < tables.length; i += 1) {
+            if (isTab1VentilTable(tables[i])) {
+                return tables[i];
+            }
+        }
+        return null;
+    }
+
+    function tab1VentilName(row, table, nr) {
+        var cell = row && table ? getNameCell(row, table) : null;
+        var input = cell ? cell.querySelector('input, .MuiInputBase-input') : null;
+        var name = input ? String(input.value || '').trim() : '';
+        if (!name) {
+            name = 'Ventil' + nr;
+        }
+        return name;
+    }
+
+    function tab1ParallelKandidaten(table, eigeneNr) {
+        var liste = [];
+        if (!table) {
+            return liste;
+        }
+        getVentilDataRows(table).forEach(function (row) {
+            var n = ventilIdentityNr(row, table);
+            if (!n || n === eigeneNr) {
+                return;
+            }
+            liste.push({ nr: n, name: tab1VentilName(row, table, n), row: row });
+        });
+        liste.sort(function (a, b) {
+            return a.nr - b.nr;
+        });
+        return liste;
+    }
+
+    function ensureParallelVentileState(socket, nr, done) {
+        var id = parallelVentileStateId(nr);
+        getObjectViaAdmin(socket, id, function (err, existing) {
+            if (existing && existing.type === 'state') {
+                done(null, id);
+                return;
+            }
+            setObjectViaAdmin(socket, id, {
+                type: 'state',
+                common: {
+                    name: 'Ventil ' + nr + ' Parallel-Ventile',
+                    type: 'string',
+                    role: 'text',
+                    read: true,
+                    write: true,
+                    def: ''
+                },
+                native: {}
+            }, function (setErr) {
+                done(setErr || null, id);
+            });
+        });
+    }
+
+    function applyParallelRow(row, table, on, titel) {
         if (!row || !table || !isTab1VentilTable(table)) {
             return;
         }
@@ -6682,14 +6763,9 @@
                 mark = row.ownerDocument.createElement('span');
                 mark.setAttribute('data-bw-parallel-mark', '1');
             }
-            mark.textContent = 'x2';
-            if (rolle === 'partner') {
-                mark.setAttribute('title', 'Parallelbetrieb: läuft mit dem vorherigen freien Ventil');
-                mark.setAttribute('aria-label', 'Parallelbetrieb x2 Partner');
-            } else {
-                mark.setAttribute('title', 'Parallelbetrieb: dieses Ventil und das nächste freie Ventil');
-                mark.setAttribute('aria-label', 'Parallelbetrieb x2');
-            }
+            mark.textContent = '\u2225';
+            mark.setAttribute('title', titel || 'Parallelbetrieb');
+            mark.setAttribute('aria-label', 'Parallelbetrieb');
             if (pencil && pencil.parentNode) {
                 pencil.parentNode.insertBefore(mark, pencil);
                 pencil.style.setProperty('display', 'none', 'important');
@@ -6726,24 +6802,38 @@
             return a.nr - b.nr;
         });
         var rolle = {};
-        rows.forEach(function (item, idx) {
+        var titel = {};
+        rows.forEach(function (item) {
             if (!bwParallelCache[item.nr]) {
                 return;
             }
-            rolle[item.nr] = 'lead';
-            for (var j = idx + 1; j < rows.length; j++) {
-                var next = rows[j];
-                if (!tab1VentilFreiFuerParallel(next.row, next.nr)) {
-                    continue;
-                }
-                if (rolle[next.nr] !== 'lead') {
-                    rolle[next.nr] = 'partner';
-                }
-                break;
+            var auswahl = bwParallelAuswahlCache[item.nr] || [];
+            if (!auswahl.length) {
+                return;
             }
+            rolle[item.nr] = rolle[item.nr] || 'lead';
+            var namen = [];
+            auswahl.forEach(function (pnr) {
+                if (!rolle[pnr]) {
+                    rolle[pnr] = 'partner';
+                }
+                var partner = null;
+                var i;
+                for (i = 0; i < rows.length; i += 1) {
+                    if (rows[i].nr === pnr) {
+                        partner = rows[i];
+                        break;
+                    }
+                }
+                namen.push(partner ? tab1VentilName(partner.row, table, pnr) : ('Ventil' + pnr));
+            });
+            titel[item.nr] = 'Parallelbetrieb: zusammen mit ' + namen.join(', ');
         });
         rows.forEach(function (item) {
-            applyParallelRow(item.row, table, !!rolle[item.nr], rolle[item.nr] || '');
+            if (rolle[item.nr] === 'partner' && !titel[item.nr]) {
+                titel[item.nr] = 'Parallelbetrieb: wird zusammen mit einem anderen Ventil gesteuert';
+            }
+            applyParallelRow(item.row, table, !!rolle[item.nr], titel[item.nr] || '');
         });
     }
 
@@ -6765,14 +6855,85 @@
             }
             getVentilDataRows(table).forEach(function (row) {
                 var nr = ventilIdentityNr(row, table);
+                if (!nr) {
+                    return;
+                }
                 getStateViaAdmin(socket, parallelStateId(nr), function (gErr, state) {
                     if (gErr || !row.isConnected) {
                         return;
                     }
-                    var val = !!(state && (state.val === true || state.val === 1 || state.val === 'true'));
-                    bwParallelCache[nr] = val;
-                    applyParallelRows(table);
+                    bwParallelCache[nr] = !!(state && (state.val === true || state.val === 1 || state.val === 'true'));
+                    getStateViaAdmin(socket, parallelVentileStateId(nr), function (aErr, auswahlState) {
+                        if (!row.isConnected) {
+                            return;
+                        }
+                        if (!aErr && auswahlState) {
+                            bwParallelAuswahlCache[nr] = parseParallelAuswahl(auswahlState.val);
+                        }
+                        applyParallelRows(table);
+                    });
                 });
+            });
+        });
+    }
+
+    function renderParallelAuswahl(panel, table, eigeneNr) {
+        var host = panel.querySelector('[data-bw-vip-parallel-list="1"]');
+        var box = panel.querySelector('[data-bw-vip-parallel="1"]');
+        var pick = panel.querySelector('[data-bw-vip-parallel-pick="1"]');
+        if (!host || !pick) {
+            return;
+        }
+        var offen = !!(box && box.checked);
+        if (offen) {
+            pick.setAttribute('data-bw-open', '1');
+        } else {
+            pick.removeAttribute('data-bw-open');
+        }
+        if (!offen) {
+            host.innerHTML = '';
+            return;
+        }
+        var liveTable = table && table.isConnected ? table : tab1Tabelle(panel.ownerDocument);
+        var kandidaten = tab1ParallelKandidaten(liveTable, eigeneNr);
+        var gesetzt = {};
+        (bwParallelAuswahlCache[eigeneNr] || []).forEach(function (n) {
+            gesetzt[n] = true;
+        });
+        host.innerHTML = '';
+        if (!kandidaten.length) {
+            host.textContent = 'Keine weiteren Ventile in der Tabelle.';
+            return;
+        }
+        kandidaten.forEach(function (k) {
+            var label = panel.ownerDocument.createElement('label');
+            label.className = 'bw-vip-parallel-item';
+            var input = panel.ownerDocument.createElement('input');
+            input.type = 'checkbox';
+            input.setAttribute('data-bw-vip-parallel-nr', String(k.nr));
+            input.checked = !!gesetzt[k.nr];
+            var span = panel.ownerDocument.createElement('span');
+            span.textContent = k.name;
+            label.appendChild(input);
+            label.appendChild(span);
+            host.appendChild(label);
+        });
+    }
+
+    function speichereParallelAuswahl(socket, hostDoc, nr, liste, done) {
+        var text = formatParallelAuswahl(liste);
+        bwParallelAuswahlCache[nr] = parseParallelAuswahl(text);
+        ensureParallelVentileState(socket, nr, function (ensureErr) {
+            if (ensureErr) {
+                if (done) {
+                    done(ensureErr);
+                }
+                return;
+            }
+            setStateViaAdmin(socket, parallelVentileStateId(nr), text, function (setErr) {
+                if (done) {
+                    done(setErr || null);
+                }
             });
         });
     }
@@ -6782,25 +6943,71 @@
             return;
         }
         var box = panel.querySelector('[data-bw-vip-parallel="1"]');
+        var host = panel.querySelector('[data-bw-vip-parallel-list="1"]');
         if (!box || box.getAttribute('data-bw-parallel-wired') === '1') {
             return;
         }
         box.setAttribute('data-bw-parallel-wired', '1');
+        function aktuelleTabelle() {
+            var live = livePanelRow(panel, row, table);
+            return (live.table && live.table.isConnected) ? live.table : tab1Tabelle(hostDoc);
+        }
         function paint(val) {
             box.checked = !!val;
             bwParallelCache[nr] = !!val;
-            var live = livePanelRow(panel, row, table);
-            if (live.table) {
-                applyParallelRows(live.table);
+            renderParallelAuswahl(panel, aktuelleTabelle(), nr);
+            var liveTable = aktuelleTabelle();
+            if (liveTable) {
+                applyParallelRows(liveTable);
             }
         }
-        ensureParallelState(socket, nr, function () {
-            getStateViaAdmin(socket, parallelStateId(nr), function (err, state) {
-                if (!box.isConnected) {
+        if (host && host.getAttribute('data-bw-parallel-list-wired') !== '1') {
+            host.setAttribute('data-bw-parallel-list-wired', '1');
+            host.addEventListener('change', function (ev) {
+                var ziel = ev.target;
+                if (!ziel || ziel.getAttribute('data-bw-vip-parallel-nr') == null) {
                     return;
                 }
-                var val = !err && state && (state.val === true || state.val === 1 || state.val === 'true');
-                paint(val);
+                var nums = [];
+                host.querySelectorAll('input[data-bw-vip-parallel-nr]').forEach(function (inp) {
+                    if (!inp.checked) {
+                        return;
+                    }
+                    var gewaehlt = parseInt(inp.getAttribute('data-bw-vip-parallel-nr'), 10) || 0;
+                    if (gewaehlt > 0 && gewaehlt !== nr) {
+                        nums.push(gewaehlt);
+                    }
+                });
+                speichereParallelAuswahl(socket, hostDoc, nr, nums, function (setErr) {
+                    if (setErr) {
+                        alertVentilErr(hostDoc, setErr);
+                        renderParallelAuswahl(panel, aktuelleTabelle(), nr);
+                        return;
+                    }
+                    var liveTable = aktuelleTabelle();
+                    if (liveTable) {
+                        applyParallelRows(liveTable);
+                    }
+                });
+            });
+        }
+        ensureParallelState(socket, nr, function () {
+            ensureParallelVentileState(socket, nr, function () {
+                getStateViaAdmin(socket, parallelStateId(nr), function (err, state) {
+                    if (!box.isConnected) {
+                        return;
+                    }
+                    var val = !err && state && (state.val === true || state.val === 1 || state.val === 'true');
+                    getStateViaAdmin(socket, parallelVentileStateId(nr), function (aErr, auswahlState) {
+                        if (!box.isConnected) {
+                            return;
+                        }
+                        if (!aErr && auswahlState) {
+                            bwParallelAuswahlCache[nr] = parseParallelAuswahl(auswahlState.val);
+                        }
+                        paint(val);
+                    });
+                });
             });
         });
         box.addEventListener('change', function () {
@@ -7580,6 +7787,10 @@
             '<input type="checkbox" data-bw-vip-parallel="1">' +
             '<span>Parallelbetrieb</span>' +
             '</label>' +
+            '</div>' +
+            '<div class="bw-vip-parallel-pick" data-bw-vip-parallel-pick="1">' +
+            '<div class="bw-vip-parallel-pick-title">Ventile für den Parallelbetrieb</div>' +
+            '<div class="bw-vip-parallel-list" data-bw-vip-parallel-list="1"></div>' +
             '</div>';
         html +=
             '<div class="bw-vip-section bw-vip-modern"><div class="bw-vip-groups">' +
@@ -16139,6 +16350,15 @@ function dedupeSprinkleNames(table) {
         if (parallel) {
             parallel.checked = false;
         }
+        var pick = panel.querySelector('[data-bw-vip-parallel-pick="1"]');
+        if (pick) {
+            pick.removeAttribute('data-bw-open');
+        }
+        var parallelListe = panel.querySelector('[data-bw-vip-parallel-list="1"]');
+        if (parallelListe) {
+            parallelListe.innerHTML = '';
+        }
+        bwParallelAuswahlCache[nr] = [];
     }
 
     function resetVentilRowSettings(table, row) {
@@ -16183,6 +16403,7 @@ function dedupeSprinkleNames(table) {
         row.removeAttribute('data-bw-parallel');
         bwWartungCache[nr] = false;
         bwParallelCache[nr] = false;
+        bwParallelAuswahlCache[nr] = [];
         var kanal = BW_ADAPTER_NS + '.Ventil' + nr;
         var hw = rawOid && rawOid !== kanal ? rawOid : (BW_ADAPTER_NS + '.Test.Ventil' + nr);
         bwAusgangCache[hw] = false;
@@ -16214,6 +16435,7 @@ function dedupeSprinkleNames(table) {
                 setStateViaAdmin(socket, id, false, function () {});
             });
             setStateViaAdmin(socket, ventilDpId(nr, 'Konfig.Ventil' + nr + 'Ausgang'), '', function () {});
+            setStateViaAdmin(socket, ventilDpId(nr, 'Konfig.ParallelVentile'), '', function () {});
             setStateViaAdmin(socket, ventilDpId(nr, 'Konfig.Bewaesserungsdauer'), 1, function () {});
             setStateViaAdmin(socket, ventilDpId(nr, 'Konfig.Wiederholungen'), 2, function () {});
             setStateViaAdmin(socket, ventilDpId(nr, 'Schwelle.FeuchtigkeitWert'), 40, function () {});
