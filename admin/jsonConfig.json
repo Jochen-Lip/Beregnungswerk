@@ -1,0 +1,799 @@
+{
+    "type": "tabs",
+    "i18n": true,
+    "iconPosition": "top",
+    "tabsStyle": {
+        "backgroundColor": "transparent",
+        "minHeight": 96,
+        "alignItems": "flex-end",
+        "boxSizing": "border-box",
+        "backgroundImage": "linear-gradient(180deg, rgba(0, 52, 26, 0.32) 0%, rgba(0, 28, 14, 0.08) 48%, rgba(0, 28, 14, 0.58) 82%, rgba(0, 28, 14, 0.72) 100%), url(adapter/beregnungswerk/gras-hintergrund.png)",
+        "backgroundSize": "cover",
+        "backgroundPosition": "center bottom",
+        "backgroundRepeat": "no-repeat",
+        "color": "#e0e0e0"
+    },
+    "items": {
+        "tabSettings": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxnPjxwYXRoIGQ9Ik01IDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjciIGN5PSIxMiIgcj0iMi44IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS42Ii8+PHBhdGggZD0iTTcgOS4yVjdNNS44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSI3IiBjeT0iMTIiIHI9IjEiIGZpbGw9IiM0MDkxNmMiLz48L2c+PGc+PHBhdGggZD0iTTEwIDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjIuOCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNiIvPjxwYXRoIGQ9Ik0xMiA5LjJWN00xMC44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxIiBmaWxsPSIjNDA5MTZjIi8+PC9nPjxnPjxwYXRoIGQ9Ik0xNSAxMmg0IiBzdHJva2U9IiM0MDkxNmMiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjEyIiByPSIyLjgiIHN0cm9rZT0iIzJkNmE0ZiIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48cGF0aCBkPSJNMTcgOS4yVjdNMTUuOCA3aDIuNCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTciIGN5PSIxMiIgcj0iMSIgZmlsbD0iIzQwOTE2YyIvPjwvZz48L3N2Zz4=",
+            "label": {
+                "en": "Valve selection",
+                "de": "Ventilauswahl"
+            },
+            "items": {
+                "_tabLayoutCss": {
+                    "type": "iframe",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1526",
+                    "sandbox":
+                     "allow-same-origin allow-scripts",
+                    "style": {
+                        "height": 0,
+                        "width": 0,
+                        "border": "none",
+                        "opacity": 0,
+                        "position": "absolute",
+                        "pointerEvents": "none"
+                    },
+                    "sm": 12
+                },
+                "_hVentile": {
+                    "type": "header",
+                    "text": {
+                        "de": "Ventilauswahl",
+                        "en": "Valve selection"
+                    },
+                    "size": 4,
+                    "sm": 12
+                },
+                "_infoEventsDp": {
+                    "type": "staticText",
+                    "text": {
+                        "de": "Magnetventile und Aktoren per Objekt-ID zuordnen. Stift öffnet Inline-Panel (Bewässerung & Schwellen je Ventil). Grün wird bewässert. Rot wird nicht bewässert. Weiß bewässert ohne Schwelle. Orange = Wartung/Rep.",
+                        "en": "Assign valves via object ID. Pencil opens inline panel (irrigation & thresholds per valve). Green is watered. Red is not watered. White waters without a threshold. Orange = maintenance/repair."
+                    },
+                    "sm": 12
+                },
+                "ventilModus": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Manuall/Zeitsteuerung",
+                        "en": "Manuall/Zeitsteuerung"
+                    },
+                    "sm": 12,
+                    "default": false
+                },
+                "events": {
+                    "type": "table",
+                    "sm": 12,
+                    "clone": true,
+                    "showSecondAddAt": 9999,
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "_nr",
+                            "title": {
+                                "en": "No.",
+                                "de": "Nr"
+                            },
+                            "readOnly": true,
+                            "width": 44,
+                            "doNotSave": true,
+                            "defaultFunc": "return '';"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "enabled",
+                            "title": {
+                                "en": "Active",
+                                "de": "Aktiv"
+                            },
+                            "width": 56,
+                            "default": false
+                        },
+                        {
+                            "type": "text",
+                            "attr": "sprinkleName",
+                            "title": {
+                                "en": "Name",
+                                "de": "Name"
+                            },
+                            "width": "18%",
+                            "defaultFunc": "return 'Ventil' + (arrayIndex + 1);"
+                        },
+                        {
+                            "type": "objectId",
+                            "attr": "name",
+                            "title": {
+                                "en": "Object ID (output)",
+                                "de": "Objekt-ID (Ausgang)"
+                            },
+                            "defaultFunc": "return 'beregnungswerk.0.Ventil' + (arrayIndex + 1);"
+                        }
+                    ]
+                }
+            }
+        },
+        "tabTimeSettings": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxnPjxwYXRoIGQ9Ik01IDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjciIGN5PSIxMiIgcj0iMi44IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS42Ii8+PHBhdGggZD0iTTcgOS4yVjdNNS44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSI3IiBjeT0iMTIiIHI9IjEiIGZpbGw9IiM0MDkxNmMiLz48L2c+PGc+PHBhdGggZD0iTTEwIDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjIuOCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNiIvPjxwYXRoIGQ9Ik0xMiA5LjJWN00xMC44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxIiBmaWxsPSIjNDA5MTZjIi8+PC9nPjxnPjxwYXRoIGQ9Ik0xNSAxMmg0IiBzdHJva2U9IiM0MDkxNmMiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjEyIiByPSIyLjgiIHN0cm9rZT0iIzJkNmE0ZiIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48cGF0aCBkPSJNMTcgOS4yVjdNMTUuOCA3aDIuNCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTciIGN5PSIxMiIgcj0iMSIgZmlsbD0iIzQwOTE2YyIvPjwvZz48L3N2Zz4=",
+            "label": {
+                "de": "Zeiteinstellung",
+                "en": "Time settings"
+            },
+            "items": {
+                "_tabLayoutCss": {
+                    "type": "iframe",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1528",
+                    "sandbox": "allow-same-origin allow-scripts",
+                    "style": {
+                        "height": 0,
+                        "width": 0,
+                        "border": "none",
+                        "opacity": 0,
+                        "position": "absolute",
+                        "pointerEvents": "none"
+                    },
+                    "sm": 12
+                },
+                "_hVentile": {
+                    "type": "header",
+                    "text": {
+                        "de": "Zeiteinstellung",
+                        "en": "Time settings"
+                    },
+                    "size": 4,
+                    "sm": 12
+                },
+                "_infoEventsDp": {
+                    "type": "staticText",
+                    "text": {
+                        "de": "Zeitsteuerung für die automatische Bewässerung ein- und ausschalten.",
+                        "en": "Enable or disable timed automatic irrigation."
+                    },
+                    "sm": 12
+                },
+                "schleifeAktiv": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Zeitsteuerung",
+                        "en": "Time control"
+                    },
+                    "sm": 12,
+                    "default": false
+                },
+                "timeEvents": {
+                    "type": "table",
+                    "sm": 12,
+                    "clone": true,
+                    "showSecondAddAt": 9999,
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "_nr",
+                            "title": {
+                                "en": "No.",
+                                "de": "Nr"
+                            },
+                            "readOnly": true,
+                            "width": 40,
+                            "doNotSave": true,
+                            "defaultFunc": "return String(arrayIndex + 1);"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "enabled",
+                            "title": {
+                                "en": "Active",
+                                "de": "Aktiv"
+                            },
+                            "width": 56,
+                            "default": false
+                        },
+                        {
+                            "type": "text",
+                            "attr": "zeit",
+                            "title": {
+                                "en": "Next switch",
+                                "de": "Nächste Zeitschalt"
+                            },
+                            "width": 170,
+                            "defaultFunc": "return '';"
+                        },
+                        {
+                            "type": "text",
+                            "attr": "wochentag",
+                            "title": {
+                                "en": "Weekdays/Holidays",
+                                "de": "Wochentage/Feiertage"
+                            },
+                            "width": 380,
+                            "default": ""
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "astroEin",
+                            "title": {
+                                "en": "Active",
+                                "de": "Aktiv"
+                            },
+                            "width": 56,
+                            "default": false
+                        },
+                        {
+                            "type": "text",
+                            "attr": "astro",
+                            "title": {
+                                "en": "Astro time switch",
+                                "de": "Astrozeitschaltuhr"
+                            },
+                            "width": 0,
+                            "default": ""
+                        }
+                    ]
+                }
+            }
+        },
+        "tabPumpe": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxyZWN0IHg9IjYuMiIgeT0iOC4yIiB3aWR0aD0iOS4yIiBoZWlnaHQ9IjcuNiIgcng9IjEuNiIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNiIvPjxwYXRoIGQ9Ik0xMC42IDguMlY1LjJoNS4yIiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSIxNS44IiBjeT0iNS4yIiByPSIxLjM1IiBmaWxsPSIjNDA5MTZjIi8+PC9zdmc+",
+            "label": {
+                "de": "Pumpensteuerung",
+                "en": "Pump control"
+            },
+            "items": {
+                "_tabLayoutCss": {
+                    "type": "iframe",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1529",
+                    "sandbox": "allow-same-origin allow-scripts",
+                    "style": {
+                        "height": 0,
+                        "width": 0,
+                        "border": "none",
+                        "opacity": 0,
+                        "position": "absolute",
+                        "pointerEvents": "none"
+                    },
+                    "sm": 12
+                },
+                "_hPumpe": {
+                    "type": "header",
+                    "text": {
+                        "de": "Pumpensteuerung",
+                        "en": "Pump control"
+                    },
+                    "size": 4,
+                    "sm": 12
+                },
+                "pumpModus": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Manual/Auto",
+                        "en": "Manual/Auto"
+                    },
+                    "sm": 12,
+                    "default": false
+                },
+                "pumpEvents": {
+                    "type": "table",
+                    "sm": 12,
+                    "clone": true,
+                    "showSecondAddAt": 9999,
+                    "default": [
+                        {
+                            "enabled": false,
+                            "sprinkleName": "Pumpe1",
+                            "name": ""
+                        }
+                    ],
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "_nr",
+                            "title": {
+                                "en": "No.",
+                                "de": "Nr"
+                            },
+                            "readOnly": true,
+                            "width": 44,
+                            "doNotSave": true,
+                            "defaultFunc": "return '';"
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "enabled",
+                            "title": {
+                                "en": "Active",
+                                "de": "Aktiv"
+                            },
+                            "width": 56,
+                            "default": false
+                        },
+                        {
+                            "type": "text",
+                            "attr": "sprinkleName",
+                            "title": {
+                                "en": "Name",
+                                "de": "Name"
+                            },
+                            "width": "18%",
+                            "defaultFunc": "return 'Pumpe' + (arrayIndex + 1);"
+                        },
+                        {
+                            "type": "objectId",
+                            "attr": "name",
+                            "title": {
+                                "en": "Object ID (output)",
+                                "de": "Objekt-ID (Ausgang)"
+                            },
+                            "defaultFunc": "return '';"
+                        }
+                    ]
+                }
+            }
+        },
+        "tabWasser": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxwYXRoIGQ9Ik0xMiA1LjJjMi42IDMuMSA0LjIgNS4xIDQuMiA3LjRhNC4yIDQuMiAwIDEgMS04LjQgMGMwLTIuMyAxLjYtNC4zIDQuMi03LjR6IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+",
+            "label": {
+                "de": "Wassersteuerung",
+                "en": "Water control"
+            },
+            "items": {
+                "_hWasser": {
+                    "type": "header",
+                    "text": {
+                        "de": "Wassersteuerung",
+                        "en": "Water control"
+                    },
+                    "size": 4,
+                    "sm": 12
+                }
+            }
+        },
+        "tabPlaceholder5": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxwYXRoIGQ9Ik01IDguMmgxNGExIDEgMCAwIDEgMSAxdjcuNmExIDEgMCAwIDEtMSAxSDVhMSAxIDAgMCAxLTEtMVY5LjJhMSAxIDAgMCAxIDEtMXoiIHN0cm9rZT0iIzJkNmE0ZiIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48cGF0aCBkPSJNNC42IDkuMSAxMiAxMy40IDE5LjQgOS4xIiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=",
+            "label": {
+                "de": "Nachrichten",
+                "en": "Messages"
+            },
+            "items": {
+                "_tabLayoutCss": {
+                    "type": "iframe",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1551",
+                    "sandbox": "allow-same-origin allow-scripts",
+                    "style": {
+                        "height": 0,
+                        "width": 0,
+                        "border": "none",
+                        "opacity": 0,
+                        "position": "absolute",
+                        "pointerEvents": "none"
+                    },
+                    "sm": 12
+                },
+                "_hNachrichten": {
+                    "type": "header",
+                    "text": {
+                        "de": "Nachrichten",
+                        "en": "Messages"
+                    },
+                    "size": 4,
+                    "sm": 12
+                },
+                "_infoNachrichten": {
+                    "type": "staticText",
+                    "text": {
+                        "de": "Die Nachricht nennt den nächsten Start und das Ventil, das gerade angesteuert wird. Gesperrte Ventile und nicht erfüllte Parameter werden vermerkt. E-Mail-Betreff: Bewässerung.",
+                        "en": "The message names the next start and the valve that is currently active. Locked valves and unmet parameters are noted. Email subject: Bewässerung."
+                    },
+                    "sm": 12
+                },
+                "nachrichtenWhatsAppAktiv": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "WhatsApp",
+                        "en": "WhatsApp"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenWhatsAppInstanz": {
+                    "type": "text",
+                    "label": {
+                        "de": "WhatsApp-Adapter",
+                        "en": "WhatsApp adapter"
+                    },
+                    "placeholder": "whatsapp.0",
+                    "sm": 8,
+                    "default": ""
+                },
+                "nachrichtenTelegramAktiv": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Telegram",
+                        "en": "Telegram"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenTelegramInstanz": {
+                    "type": "text",
+                    "label": {
+                        "de": "Telegram-Adapter",
+                        "en": "Telegram adapter"
+                    },
+                    "placeholder": "telegram.0",
+                    "sm": 8,
+                    "default": ""
+                },
+                "nachrichtenTelegramUser": {
+                    "type": "text",
+                    "label": {
+                        "de": "Telegram-Empfänger",
+                        "en": "Telegram recipient"
+                    },
+                    "placeholder": "Name oder @user",
+                    "sm": 6,
+                    "default": ""
+                },
+                "nachrichtenTelegramChatId": {
+                    "type": "text",
+                    "label": {
+                        "de": "Telegram-Chat-ID",
+                        "en": "Telegram chat ID"
+                    },
+                    "sm": 6,
+                    "default": ""
+                },
+                "nachrichtenEmailAktiv": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "E-Mail",
+                        "en": "Email"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenEmailInstanz": {
+                    "type": "text",
+                    "label": {
+                        "de": "E-Mail-Instanz",
+                        "en": "Email instance"
+                    },
+                    "placeholder": "email.0",
+                    "sm": 4,
+                    "default": ""
+                },
+                "nachrichtenEmailAdresse": {
+                    "type": "text",
+                    "label": {
+                        "de": "E-Mail-Adresse",
+                        "en": "Email address"
+                    },
+                    "placeholder": "name@example.com",
+                    "sm": 4,
+                    "default": ""
+                },
+                "nachrichtenPushoverAktiv": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Pushover",
+                        "en": "Pushover"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenPushoverInstanz": {
+                    "type": "text",
+                    "label": {
+                        "de": "Pushover-Instanz",
+                        "en": "Pushover instance"
+                    },
+                    "placeholder": "pushover.0",
+                    "sm": 8,
+                    "default": ""
+                },
+                "nachrichtenStil": {
+                    "type": "select",
+                    "label": {
+                        "de": "Benachrichtigungsstil",
+                        "en": "Notification style"
+                    },
+                    "options": [
+                        { "label": "Normal", "value": "normal" },
+                        { "label": "Kurz", "value": "kurz" },
+                        { "label": "Ausführlich", "value": "ausfuehrlich" },
+                        { "label": "Eigene Auswahl", "value": "auswahl" }
+                    ],
+                    "sm": 4,
+                    "default": "normal"
+                },
+                "nachrichtenWartenSekunden": {
+                    "type": "number",
+                    "label": {
+                        "de": "Warten auf den Versand (Sekunden)",
+                        "en": "Wait before sending (seconds)"
+                    },
+                    "min": 0,
+                    "max": 300,
+                    "sm": 4,
+                    "default": 0
+                },
+                "nachrichtenStill": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Stille Nachricht",
+                        "en": "Silent message"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenNurFehler": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Nachricht nur bei Fehler",
+                        "en": "Message only on error"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeNaechster": {
+                    "type": "checkbox",
+                    "label": { "de": "Nächster Start", "en": "Next start" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeAktuell": {
+                    "type": "checkbox",
+                    "label": { "de": "Gerade angesteuert", "en": "Currently running" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeStart": {
+                    "type": "checkbox",
+                    "label": { "de": "Start", "en": "Start" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeStopp": {
+                    "type": "checkbox",
+                    "label": { "de": "Stopp", "en": "Stop" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeUhrzeit": {
+                    "type": "checkbox",
+                    "label": { "de": "Uhrzeit", "en": "Time" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeTank": {
+                    "type": "checkbox",
+                    "label": { "de": "Wassertank", "en": "Water tank" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil1": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 1", "en": "Valve 1" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil2": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 2", "en": "Valve 2" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil3": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 3", "en": "Valve 3" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil4": {
+                    "type": "checkbox",
+                    "label": { "de": "Ventil 4", "en": "Valve 4" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeDauer": {
+                    "type": "checkbox",
+                    "label": { "de": "Eingestellte Dauer", "en": "Set duration" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeWiederholungen": {
+                    "type": "checkbox",
+                    "label": { "de": "Schleife Wiederholungen", "en": "Loop repetitions" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeTankanzeige": {
+                    "type": "checkbox",
+                    "label": { "de": "Tankanzeige", "en": "Tank display" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigePumpe": {
+                    "type": "checkbox",
+                    "label": { "de": "Pumpenstatus", "en": "Pump status" },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigePause": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Zeitraum ohne Bewässerung",
+                        "en": "Period without irrigation"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeVentil": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Ventil-Einstellungen",
+                        "en": "Valve settings"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeAstro": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Astro",
+                        "en": "Astro"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeSchaltzeit": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Schaltzeiten",
+                        "en": "Switch times"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeWartung": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Wartung",
+                        "en": "Maintenance"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeFreiAktiv": {
+                    "type": "checkbox",
+                    "label": {
+                        "de": "Eigene Anzeige",
+                        "en": "Custom display"
+                    },
+                    "sm": 4,
+                    "default": false
+                },
+                "nachrichtenAnzeigeFrei": {
+                    "type": "text",
+                    "label": {
+                        "de": "Eigene Anzeige Text",
+                        "en": "Custom display text"
+                    },
+                    "sm": 12,
+                    "default": ""
+                }
+            }
+        },
+        "tabPlaceholder6": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxnPjxwYXRoIGQ9Ik01IDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjciIGN5PSIxMiIgcj0iMi44IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS42Ii8+PHBhdGggZD0iTTcgOS4yVjdNNS44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSI3IiBjeT0iMTIiIHI9IjEiIGZpbGw9IiM0MDkxNmMiLz48L2c+PGc+PHBhdGggZD0iTTEwIDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjIuOCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNiIvPjxwYXRoIGQ9Ik0xMiA5LjJWN00xMC44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxIiBmaWxsPSIjNDA5MTZjIi8+PC9nPjxnPjxwYXRoIGQ9Ik0xNSAxMmg0IiBzdHJva2U9IiM0MDkxNmMiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjEyIiByPSIyLjgiIHN0cm9rZT0iIzJkNmE0ZiIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48cGF0aCBkPSJNMTcgOS4yVjdNMTUuOCA3aDIuNCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTciIGN5PSIxMiIgcj0iMSIgZmlsbD0iIzQwOTE2YyIvPjwvZz48L3N2Zz4=",
+            "label": {
+                "de": "Wartung",
+                "en": "Maintenance"
+            },
+            "items": {
+                "_tabLayoutCss": {
+                    "type": "iframe",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1540",
+                    "sandbox": "allow-same-origin allow-scripts",
+                    "style": {
+                        "height": 0,
+                        "width": 0,
+                        "border": "none",
+                        "opacity": 0,
+                        "position": "absolute",
+                        "pointerEvents": "none"
+                    },
+                    "sm": 12
+                },
+                "_hWartung": {
+                    "type": "header",
+                    "text": {
+                        "de": "Wartung",
+                        "en": "Maintenance"
+                    },
+                    "size": 4,
+                    "sm": 12
+                },
+                "_infoWartung": {
+                    "type": "staticText",
+                    "text": {
+                        "de": "Test der Ausgänge. Jeder Schalter schaltet nur diesen Ausgang ein oder aus, ohne weitere Steuerung. Eingeschaltet ist grün.",
+                        "en": "Output test. Each switch turns only that output on or off, without further control. On is green."
+                    },
+                    "sm": 12
+                }
+            }
+        },
+        "tabPlaceholder7": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxnPjxwYXRoIGQ9Ik01IDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjciIGN5PSIxMiIgcj0iMi44IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS42Ii8+PHBhdGggZD0iTTcgOS4yVjdNNS44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSI3IiBjeT0iMTIiIHI9IjEiIGZpbGw9IiM0MDkxNmMiLz48L2c+PGc+PHBhdGggZD0iTTEwIDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjIuOCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNiIvPjxwYXRoIGQ9Ik0xMiA5LjJWN00xMC44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxIiBmaWxsPSIjNDA5MTZjIi8+PC9nPjxnPjxwYXRoIGQ9Ik0xNSAxMmg0IiBzdHJva2U9IiM0MDkxNmMiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjEyIiByPSIyLjgiIHN0cm9rZT0iIzJkNmE0ZiIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48cGF0aCBkPSJNMTcgOS4yVjdNMTUuOCA3aDIuNCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTciIGN5PSIxMiIgcj0iMSIgZmlsbD0iIzQwOTE2YyIvPjwvZz48L3N2Zz4=",
+            "label": {
+                "de": "Visualisierung",
+                "en": "Visualization"
+            },
+            "items": {
+                "_hPlaceholder7": {
+                    "type": "header",
+                    "text": {
+                        "de": "Visualisierung",
+                        "en": "Visualization"
+                    },
+                    "size": 4,
+                    "sm": 12
+                },
+                "_infoPlaceholder7": {
+                    "type": "staticText",
+                    "text": {
+                        "de": "Bilder der ersten Visualisierung. Ein Klick zeigt das Bild größer.",
+                        "en": "Images from the first visualization. A click shows the image larger."
+                    },
+                    "sm": 12
+                },
+                "_visGalerie": {
+                    "type": "iframe",
+                    "url": "./adapter/beregnungswerk/vis-galerie.html?v=1",
+                    "sandbox": "allow-same-origin allow-scripts",
+                    "style": {
+                        "width": "100%",
+                        "height": "560px",
+                        "border": "none",
+                        "background": "transparent"
+                    },
+                    "sm": 12
+                }
+            }
+        },
+        "tabPlaceholder8": {
+            "type": "panel",
+            "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTIgMTJoMjAiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iMC40NSIvPjxnPjxwYXRoIGQ9Ik01IDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjciIGN5PSIxMiIgcj0iMi44IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS42Ii8+PHBhdGggZD0iTTcgOS4yVjdNNS44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSI3IiBjeT0iMTIiIHI9IjEiIGZpbGw9IiM0MDkxNmMiLz48L2c+PGc+PHBhdGggZD0iTTEwIDEyaDQiIHN0cm9rZT0iIzQwOTE2YyIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjIuOCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNiIvPjxwYXRoIGQ9Ik0xMiA5LjJWN00xMC44IDdoMi40IiBzdHJva2U9IiMyZDZhNGYiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxIiBmaWxsPSIjNDA5MTZjIi8+PC9nPjxnPjxwYXRoIGQ9Ik0xNSAxMmg0IiBzdHJva2U9IiM0MDkxNmMiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjEyIiByPSIyLjgiIHN0cm9rZT0iIzJkNmE0ZiIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48cGF0aCBkPSJNMTcgOS4yVjdNMTUuOCA3aDIuNCIgc3Ryb2tlPSIjMmQ2YTRmIiBzdHJva2Utd2lkdGg9IjEuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTciIGN5PSIxMiIgcj0iMSIgZmlsbD0iIzQwOTE2YyIvPjwvZz48L3N2Zz4=",
+            "label": {
+                "de": "Hilfe",
+                "en": "Help"
+            },
+            "items": {
+                "_hPlaceholder8": {
+                    "type": "header",
+                    "text": {
+                        "de": "Hilfe",
+                        "en": "Help"
+                    },
+                    "size": 4,
+                    "sm": 12
+                },
+                "_infoPlaceholder8": {
+                    "type": "staticText",
+                    "text": {
+                        "de": "Platzhalter für später.",
+                        "en": "Placeholder for later."
+                    },
+                    "sm": 12
+                }
+            }
+        }
+    }
+}
