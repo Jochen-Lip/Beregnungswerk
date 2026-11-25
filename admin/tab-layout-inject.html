@@ -6926,7 +6926,7 @@
         var leads = Object.keys(bwParallelAuswahlCache).map(function (key) {
             return parseInt(key, 10) || 0;
         }).filter(function (n) {
-            return n && bwParallelCache[n] && (bwParallelAuswahlCache[n] || []).length;
+            return n && (bwParallelAuswahlCache[n] || []).length;
         }).sort(function (a, b) {
             return a - b;
         });
@@ -7001,14 +7001,15 @@
             var fremd = ids[i];
             i += 1;
             var alt = (bwParallelAuswahlCache[fremd] || []).slice();
-            var liste = (gewaehlt || []).indexOf(fremd) >= 0 ? [] : alt.filter(function (n) {
+            var istPartner = (gewaehlt || []).indexOf(fremd) >= 0;
+            var liste = istPartner ? [] : alt.filter(function (n) {
                 return n !== eigeneNr && (gewaehlt || []).indexOf(n) < 0;
             });
-            if (liste.join(',') === alt.join(',')) {
+            var an = istPartner || liste.length > 0;
+            if (liste.join(',') === alt.join(',') && !!bwParallelCache[fremd] === an) {
                 next();
                 return;
             }
-            var an = liste.length > 0;
             bwParallelCache[fremd] = an;
             speichereParallelAuswahl(socket, null, fremd, liste, function () {
                 ensureParallelState(socket, fremd, function () {
@@ -7021,19 +7022,94 @@
         next();
     }
 
+    function setzeParallelHaken(socket, nrs, an, done) {
+        var liste = [];
+        (nrs || []).forEach(function (n) {
+            n = parseInt(n, 10) || 0;
+            if (n && liste.indexOf(n) < 0) {
+                liste.push(n);
+            }
+        });
+        var i = 0;
+        function next() {
+            if (i >= liste.length) {
+                if (done) {
+                    done();
+                }
+                return;
+            }
+            var n = liste[i];
+            i += 1;
+            if (!an && (bwParallelAuswahlCache[n] || []).length) {
+                next();
+                return;
+            }
+            if (!!bwParallelCache[n] === !!an) {
+                next();
+                return;
+            }
+            bwParallelCache[n] = !!an;
+            ensureParallelState(socket, n, function () {
+                setStateViaAdmin(socket, parallelStateId(n), !!an, function () {
+                    next();
+                });
+            });
+        }
+        next();
+    }
+
+    function syncPartnerHaken(socket, done) {
+        var belegt = parallelBelegtDurch();
+        var nrs = [];
+        function merke(key) {
+            var n = parseInt(key, 10) || 0;
+            if (n && nrs.indexOf(n) < 0) {
+                nrs.push(n);
+            }
+        }
+        Object.keys(bwParallelCache).forEach(merke);
+        Object.keys(bwParallelAuswahlCache).forEach(merke);
+        Object.keys(belegt).forEach(merke);
+        var i = 0;
+        function next() {
+            if (i >= nrs.length) {
+                if (done) {
+                    done();
+                }
+                return;
+            }
+            var n = nrs[i];
+            i += 1;
+            var owner = belegt[n];
+            var soll = owner === n || (!!owner && owner !== n);
+            if (!!bwParallelCache[n] === soll) {
+                next();
+                return;
+            }
+            bwParallelCache[n] = soll;
+            ensureParallelState(socket, n, function () {
+                setStateViaAdmin(socket, parallelStateId(n), soll, function () {
+                    next();
+                });
+            });
+        }
+        next();
+    }
+
     function bereinigeEigeneAuswahl(socket, nr, done) {
         var belegt = parallelBelegtDurch();
+        var istPartner = !!(belegt[nr] && belegt[nr] !== nr);
         var alt = (bwParallelAuswahlCache[nr] || []).slice();
-        var neu = (belegt[nr] && belegt[nr] !== nr) ? [] : alt.filter(function (n) {
+        var neu = istPartner ? [] : alt.filter(function (n) {
             return !belegt[n] || belegt[n] === nr;
         });
-        if (neu.join(',') === alt.join(',')) {
+        var an = istPartner || neu.length > 0;
+        if (neu.join(',') === alt.join(',') && !!bwParallelCache[nr] === an) {
             if (done) {
                 done();
             }
             return;
         }
-        var an = neu.length > 0;
         bwParallelCache[nr] = an;
         speichereParallelAuswahl(socket, null, nr, neu, function () {
             ensureParallelState(socket, nr, function () {
@@ -7070,7 +7146,36 @@
         var belegt = parallelBelegtDurch();
         host.innerHTML = '';
         if (belegt[eigeneNr] && belegt[eigeneNr] !== eigeneNr) {
-            host.textContent = 'Dieses Ventil ist bereits einem anderen Parallelbetrieb zugeordnet.';
+            var leadNr = belegt[eigeneNr];
+            var gruppe = {};
+            gruppe[leadNr] = true;
+            (bwParallelAuswahlCache[leadNr] || []).forEach(function (n) {
+                if (n !== eigeneNr) {
+                    gruppe[n] = true;
+                }
+            });
+            var zeigen = alle.filter(function (k) {
+                return !!gruppe[k.nr];
+            });
+            if (!zeigen.length) {
+                host.textContent = 'Parallelbetrieb ist aktiv.';
+                return;
+            }
+            zeigen.forEach(function (k) {
+                var label = panel.ownerDocument.createElement('label');
+                label.className = 'bw-vip-parallel-item';
+                label.style.cssText = 'display:flex;align-items:center;gap:6px;margin:0;font-size:14px;font-weight:700;color:#1565c0;cursor:default;';
+                var input = panel.ownerDocument.createElement('input');
+                input.type = 'checkbox';
+                input.checked = true;
+                input.disabled = true;
+                input.setAttribute('data-bw-vip-parallel-nr', String(k.nr));
+                var span = panel.ownerDocument.createElement('span');
+                span.textContent = k.name;
+                label.appendChild(input);
+                label.appendChild(span);
+                host.appendChild(label);
+            });
             return;
         }
         var gesetzt = {};
@@ -7139,8 +7244,11 @@
             return tabelleFuerPanel(panel, row, table) || tab1Tabelle(hostDoc);
         }
         function paint(val) {
-            box.checked = !!val;
-            bwParallelCache[nr] = !!val;
+            var belegt = parallelBelegtDurch();
+            var partner = !!(belegt[nr] && belegt[nr] !== nr);
+            var an = partner || !!val;
+            box.checked = an;
+            bwParallelCache[nr] = partner ? true : !!val;
             renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
             var liveTable = aktuelleTabelle();
             if (liveTable) {
@@ -7160,6 +7268,7 @@
                     renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
                     return;
                 }
+                var vorher = (bwParallelAuswahlCache[nr] || []).slice();
                 var nums = [];
                 host.querySelectorAll('input[data-bw-vip-parallel-nr]').forEach(function (inp) {
                     if (!inp.checked) {
@@ -7182,11 +7291,18 @@
                                 return;
                             }
                             entferneDoppelbelegung(socket, nr, nums, function () {
-                                renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
-                                var liveTable = aktuelleTabelle();
-                                if (liveTable) {
-                                    applyParallelRows(liveTable);
-                                }
+                                var weg = vorher.filter(function (n) {
+                                    return nums.indexOf(n) < 0;
+                                });
+                                setzeParallelHaken(socket, nums, true, function () {
+                                    setzeParallelHaken(socket, weg, false, function () {
+                                        renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
+                                        var liveTable = aktuelleTabelle();
+                                        if (liveTable) {
+                                            applyParallelRows(liveTable);
+                                        }
+                                    });
+                                });
                             });
                         });
                     });
@@ -7203,15 +7319,51 @@
                         if (!box.isConnected) {
                             return;
                         }
-                        paint(!!bwParallelCache[nr]);
+                        syncPartnerHaken(socket, function () {
+                            if (!box.isConnected) {
+                                return;
+                            }
+                            paint(!!bwParallelCache[nr]);
+                        });
                     });
                 });
             });
         });
         box.addEventListener('change', function () {
             var next = !!box.checked;
+            var belegt = parallelBelegtDurch();
+            var alsPartner = !!(belegt[nr] && belegt[nr] !== nr);
+            var vorher = (bwParallelAuswahlCache[nr] || []).slice();
+            if (!next && alsPartner) {
+                var lead = belegt[nr];
+                var rest = (bwParallelAuswahlCache[lead] || []).filter(function (n) {
+                    return n !== nr;
+                });
+                bwParallelAuswahlCache[lead] = rest.slice();
+                bwParallelCache[lead] = rest.length > 0;
+                bwParallelCache[nr] = false;
+                paint(false);
+                speichereParallelAuswahl(socket, hostDoc, lead, rest, function () {
+                    var leadAn = rest.length > 0;
+                    bwParallelCache[lead] = leadAn;
+                    ensureParallelState(socket, lead, function () {
+                        setStateViaAdmin(socket, parallelStateId(lead), leadAn, function () {
+                            ensureParallelState(socket, nr, function () {
+                                setStateViaAdmin(socket, parallelStateId(nr), false, function () {
+                                    var liveTable = aktuelleTabelle();
+                                    if (liveTable) {
+                                        applyParallelRows(liveTable);
+                                    }
+                                });
+                            });
+                        });
+                    });
+                });
+                return;
+            }
             if (!next) {
                 bwParallelAuswahlCache[nr] = [];
+                bwParallelCache[nr] = false;
             }
             paint(next);
             ensureParallelState(socket, nr, function (ensureErr) {
@@ -7226,7 +7378,14 @@
                         return;
                     }
                     if (!next) {
-                        speichereParallelAuswahl(socket, hostDoc, nr, [], function () {});
+                        speichereParallelAuswahl(socket, hostDoc, nr, [], function () {
+                            setzeParallelHaken(socket, vorher, false, function () {
+                                var liveTable = aktuelleTabelle();
+                                if (liveTable) {
+                                    applyParallelRows(liveTable);
+                                }
+                            });
+                        });
                     }
                 });
             });
