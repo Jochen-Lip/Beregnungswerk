@@ -475,6 +475,16 @@ async function main() {
     }
 }
 
+if (process.argv.includes('--install')) {
+    const { enforceInstalledFromFile } = require('./lib/adapterCatalog');
+    try {
+        enforceInstalledFromFile(path.join(__dirname, 'io-package.json'));
+    } catch (e) {
+        console.error(`Adapterkarte: ${e.message || e}`);
+    }
+    process.exit(0);
+}
+
 if (require.main !== module) {
     module.exports = startAdapter;
 } else {

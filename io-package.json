@@ -41,6 +41,7 @@
     "readme": "https://github.com/Jochen-Lip/beregnungswerk/blob/main/README.md",
     "loglevel": "info",
     "mode": "daemon",
+    "install": true,
     "type": "garden",
     "compact": false,
     "connectionType": "local",

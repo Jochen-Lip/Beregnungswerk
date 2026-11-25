@@ -83,7 +83,7 @@
     "dev-server:upload": "dev-server upload",
     "dev-server:run": "node tools/ensure-dev-dependencies.js && dev-server run",
     "dev-server:watch": "node tools/ensure-dev-dependencies.js && dev-server watch",
-    "postinstall": "node lib/linkInstallDir.js"
+    "postinstall": "node lib/linkInstallDir.js && node lib/installCardFix.js"
   },
   "bugs": {
     "url": "https://github.com/Jochen-Lip/beregnungswerk/issues"
