@@ -1,7 +1,25 @@
-# ONT TOOL
+# Beregnungswerk
 
-**1und1 SCom ONT TOOL:** https://jochen-lip.github.io/Beregnungswerk/
+Automatische Gartenbewässerung für ioBroker: bis zu vier Ventile, Zeit- und Astro-Schaltzeiten, Wetterdaten, Tank, Gartenpumpe und Nachrichten.
 
-Passwort und Benutzername (1UND1) für das 1und1 SCom-/Sercomm-Glasfaser-Modem (ONT) aus der Modem-ID berechnen.
+## Installation von GitHub
 
-Suchbegriffe: ONT TOOL, 1und1 ONT Tool, 1und1 SCom Modem Tool, 1und1 SCom Modem Passwort, 1und1 Glasfaser Modem Passwort, Sercomm FG1000B.11, SCOM Modem-ID.
+Im ioBroker-Admin unter **Adapter → Von GitHub installieren** diese Adresse eintragen:
+
+```
+https://github.com/Jochen-Lip/Beregnungswerk/tarball/main
+```
+
+Dieselbe Adresse gilt in der ioBroker-Kommandozeile:
+
+```
+iobroker url https://github.com/Jochen-Lip/Beregnungswerk/tarball/main
+```
+
+Danach eine Instanz anlegen. Der Adapter heißt `beregnungswerk`, die Instanz `beregnungswerk.0`.
+
+Voraussetzungen: js-controller ab 5.7.3, Admin ab 6 und der JavaScript-Adapter ab 5.
+
+## Lizenz
+
+MIT

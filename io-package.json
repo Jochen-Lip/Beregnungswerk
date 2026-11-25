@@ -1,0 +1,325 @@
+{
+  "common": {
+    "name": "beregnungswerk",
+    "version": "0.2.0",
+    "titleLang": {
+      "en": "Beregnungswerk",
+      "de": "Beregnungswerk"
+    },
+    "authors": [
+      "Jochen Lip <jochen.lip@gmail.com>"
+    ],
+    "news": {
+      "0.2.0": {
+        "en": "Installable from GitHub. Messages can include pause, valve settings, astro, schedules, maintenance and a user-defined section.",
+        "de": "Direkt von GitHub installierbar. Nachrichten können Pause, Ventil-Einstellungen, Astro, Schaltzeiten, Wartung und eine eigene Anzeige enthalten."
+      },
+      "0.1.0": {
+        "en": "Fresh project: local dev-server, all data points under beregnungswerk.0, test hardware under beregnungswerk.0.Test",
+        "de": "Neues Projekt: lokaler Dev-Server, alle Datenpunkte unter beregnungswerk.0, Test-Hardware unter beregnungswerk.0.Test"
+      }
+    },
+    "desc": {
+      "en": "Automatic irrigation for up to 4 valves: loop mode, weather data, cistern pump, notifications.",
+      "de": "Automatische Bewässerung für bis zu 4 Ventile: Schleifenmodus, Wetterdaten, Brunnenpumpe, Nachrichten."
+    },
+    "keywords": [
+      "Bewässerung",
+      "Beregnung",
+      "Garten",
+      "Sprinkler",
+      "Ventil"
+    ],
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "beregnungswerk.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Jochen-Lip/Beregnungswerk/main/admin/beregnungswerk.png",
+    "readme": "https://github.com/Jochen-Lip/Beregnungswerk/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "garden",
+    "compact": false,
+    "connectionType": "local",
+    "dataSource": "push",
+    "tier": 3,
+    "dependencies": [
+      {
+        "js-controller": ">=5.7.3"
+      },
+      {
+        "javascript": ">=5.0.0"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.0.0"
+      }
+    ],
+    "adminUI": {
+      "config": "json"
+    },
+    "localLinks": {
+      "_default": {
+        "link": "http://192.168.222.6:8082/vis-2/edit.html",
+        "name": {
+          "en": "VIS-2",
+          "de": "VIS-2"
+        }
+      }
+    }
+  },
+  "native": {
+    "javascriptInstance": "javascript.0",
+    "autoInstallJavascript": true,
+    "autoEnableScript": true,
+    "overwriteScript": true,
+    "preferBuiltinEngine": true,
+    "schleifeAktiv": false,
+    "schleifePauseZwischenSek": 5,
+    "schleifeGesamtzeitMaxMin": 5,
+    "schleifeBrunnenpumpePauseSek": 30,
+    "schleifeVentil1": true,
+    "schleifeVentil2": false,
+    "schleifeVentil3": false,
+    "schleifeVentil4": false,
+    "zsSchaltzeit1": "",
+    "zsSchaltzeit1Aktiv": true,
+    "zsSchaltzeit1Astro": false,
+    "zsSchaltzeit1AstroTyp": "sunrise",
+    "zsSchaltzeit1AstroOffset": 0,
+    "zsSchaltzeit2": "",
+    "zsSchaltzeit2Aktiv": false,
+    "zsSchaltzeit2Astro": false,
+    "zsSchaltzeit2AstroTyp": "sunset",
+    "zsSchaltzeit2AstroOffset": 0,
+    "wetterAnbieter": "open-meteo-weather.0",
+    "wetterOpenMeteoOrt": "Neu_Wulmstorf",
+    "wetterSchwelleFeuchtAktiv": false,
+    "wetterSchwelleFeuchtWert": 40,
+    "wetterSchwelleTempAktiv": false,
+    "wetterSchwelleTempWert": 25,
+    "wetterSchwelleRegenHeuteAktiv": false,
+    "wetterSchwelleRegenHeuteWert": 5,
+    "wetterSchwelleRegenMorgenAktiv": false,
+    "wetterSchwelleRegenMorgenWert": 5,
+    "wetterQuellpfadTemperatur": "",
+    "wetterQuellpfadLuftfeuchtigkeit": "",
+    "wetterQuellpfadNiederschlagHeute": "",
+    "wetterQuellpfadNiederschlagMorgen": "",
+    "wetterQuellpfadStandort": "",
+    "tankUntenSoll": 20,
+    "tankObenSoll": 90,
+    "tankManuellPumpe": true,
+    "tankPfadUnten": "beregnungswerk.0.WassertankSteuerung.Anzeigen.Tank_unten_Soll",
+    "tankPfadOben": "beregnungswerk.0.WassertankSteuerung.Anzeigen.Tank_oben_Soll",
+    "tankPfadIstwert": "beregnungswerk.0.Test.TankIstwert",
+    "tankBrunnenpumpe": "beregnungswerk.0.Test.Brunnenpumpe",
+    "nachrichtenWhatsAppAktiv": false,
+    "nachrichtenWhatsAppInstanz": "whatsapp-cmb.0",
+    "nachrichtenTelegramAktiv": false,
+    "nachrichtenTelegramInstanz": "telegram.0",
+    "nachrichtenTelegramUser": "",
+    "nachrichtenEmailAktiv": false,
+    "nachrichtenEmailAdresse": "",
+    "gartenNachtruheVon": "22:00 Uhr",
+    "gartenNachtruheBis": "07:00 Uhr",
+    "gartenNachtruheAktiv": true,
+    "gartenPumpeAusgang": "beregnungswerk.0.Test.Gartenpumpe",
+    "ventile": [
+      {
+        "inSchleife": true,
+        "dauer": 1,
+        "wiederholungen": 2,
+        "ausgang": "beregnungswerk.0.Ventil1",
+        "feuchtSensor": "beregnungswerk.0.Test.luft",
+        "tempSensor": "beregnungswerk.0.Test.temp",
+        "schwelleVergleich": false,
+        "schwelleFeuchtAktiv": false,
+        "schwelleFeuchtWert": 40,
+        "schwelleTempAktiv": false,
+        "schwelleTempWert": 25
+      }
+    ],
+    "events": [
+      {
+        "enabled": false,
+        "sprinkleName": "Ventil1",
+        "name": "beregnungswerk.0.Test.Ventil1"
+      }
+    ],
+    "timeEvents": [
+      {
+        "enabled": true,
+        "zeit": "",
+        "wochentag": ""
+      },
+      {
+        "enabled": false,
+        "zeit": "",
+        "wochentag": ""
+      }
+    ]
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.scriptDeployed",
+      "type": "state",
+      "common": {
+        "name": "Skript bereitgestellt",
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.scriptPath",
+      "type": "state",
+      "common": {
+        "name": "Skript-Pfad",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.scriptVersion",
+      "type": "state",
+      "common": {
+        "name": "Skript-Version (Adapter)",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.dataNamespace",
+      "type": "state",
+      "common": {
+        "name": "Datenpunkt-Namespace",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": "beregnungswerk.0"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.statesTotal",
+      "type": "state",
+      "common": {
+        "name": "Datenpunkte gesamt",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.statesCreated",
+      "type": "state",
+      "common": {
+        "name": "Datenpunkte neu angelegt",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.setupError",
+      "type": "state",
+      "common": {
+        "name": "Setup-Fehler",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "Steuerung",
+      "type": "channel",
+      "common": {
+        "name": "Steuerung"
+      },
+      "native": {}
+    },
+    {
+      "_id": "SchleifenSteuerung",
+      "type": "channel",
+      "common": {
+        "name": "Schleifensteuerung"
+      },
+      "native": {}
+    },
+    {
+      "_id": "WassertankSteuerung",
+      "type": "channel",
+      "common": {
+        "name": "Wassertank"
+      },
+      "native": {}
+    },
+    {
+      "_id": "GartenpumpeSteuerung",
+      "type": "channel",
+      "common": {
+        "name": "Gartenpumpe"
+      },
+      "native": {}
+    },
+    {
+      "_id": "Nachrichten",
+      "type": "channel",
+      "common": {
+        "name": "Nachrichten"
+      },
+      "native": {}
+    },
+    {
+      "_id": "Test",
+      "type": "channel",
+      "common": {
+        "name": "Test (Hardware-Simulation)"
+      },
+      "native": {}
+    },
+    {
+      "_id": "Ventil1",
+      "type": "channel",
+      "common": {
+        "name": "Ventil 1"
+      },
+      "native": {}
+    }
+  ]
+}

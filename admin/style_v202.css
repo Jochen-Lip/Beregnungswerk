@@ -1,0 +1,60 @@
+/* style_v202.css - Symbolbuttons ohne 3D */
+
+.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"] [data-bw-symbol-action-cell="1"],
+.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"] [data-bw-symbol-action-cell="1"] {
+display: grid !important;
+grid-template-columns: repeat(4, 44px) !important;
+gap: 8px !important;
+justify-content: end !important;
+align-items: center !important;
+width: 200px !important;
+min-width: 200px !important;
+max-width: 200px !important;
+padding-right: 10px !important;
+padding-left: 6px !important;
+box-sizing: border-box !important;
+}
+
+.m.adapter-beregnungswerk [data-bw-symbol-btn="1"],
+.adapter-beregnungswerk [data-bw-symbol-btn="1"] {
+width: 44px !important;
+height: 44px !important;
+min-width: 44px !important;
+min-height: 44px !important;
+margin: 0 !important;
+padding: 0 !important;
+border: none !important;
+border-radius: 0 !important;
+background: transparent !important;
+background-color: transparent !important;
+background-image: none !important;
+box-shadow: none !important;
+color: #444 !important;
+font-size: 30px !important;
+font-weight: 600 !important;
+line-height: 1 !important;
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+cursor: pointer !important;
+text-transform: none !important;
+}
+
+.m.adapter-beregnungswerk [data-bw-symbol-btn="1"]:hover,
+.adapter-beregnungswerk [data-bw-symbol-btn="1"]:hover {
+color: #1976d2 !important;
+background: transparent !important;
+background-color: transparent !important;
+box-shadow: none !important;
+}
+
+.m.adapter-beregnungswerk [data-bw-symbol-btn="1"]:disabled,
+.adapter-beregnungswerk [data-bw-symbol-btn="1"]:disabled {
+color: #bdbdbd !important;
+opacity: 1 !important;
+cursor: default !important;
+pointer-events: none !important;
+background: transparent !important;
+background-color: transparent !important;
+box-shadow: none !important;
+}
