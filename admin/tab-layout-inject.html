@@ -628,7 +628,8 @@
             '.bw-ventil-inline-panel .bw-vip-wartung-point input{margin:0!important;cursor:pointer!important}',
             '[data-bw-wartung-label="1"]{display:block!important;margin:2px 0 0!important;color:#ef6c00!important;font-size:12px!important;font-weight:700!important;letter-spacing:.04em!important;line-height:1.2!important}',
             '.bw-ventil-inline-panel .bw-vip-mode-points{display:flex!important;flex-wrap:wrap!important;gap:18px!important;align-items:center!important}',
-            '.bw-ventil-inline-panel .bw-vip-parallel-pick{display:block!important;margin:0 0 12px!important;padding:8px 10px!important;border:1px solid #90caf9!important;border-radius:8px!important;background:#e3f2fd!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-pick{display:none!important;margin:0 0 12px!important;padding:8px 10px!important;border:1px solid #90caf9!important;border-radius:8px!important;background:#e3f2fd!important;}',
+            '.bw-ventil-inline-panel .bw-vip-parallel-pick[data-bw-open="1"]{display:block!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-pick-title{font-size:13px!important;font-weight:700!important;color:#0d47a1!important;margin:0 0 6px!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-list{display:flex!important;flex-wrap:wrap!important;gap:6px 14px!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-item{display:flex!important;align-items:center!important;gap:6px!important;margin:0!important;font-size:14px!important;font-weight:700!important;color:#1565c0!important;cursor:pointer!important;}',
@@ -6920,10 +6921,143 @@
         });
     }
 
+    function parallelBelegtDurch() {
+        var belegt = {};
+        var leads = Object.keys(bwParallelAuswahlCache).map(function (key) {
+            return parseInt(key, 10) || 0;
+        }).filter(function (n) {
+            return n && bwParallelCache[n] && (bwParallelAuswahlCache[n] || []).length;
+        }).sort(function (a, b) {
+            return a - b;
+        });
+        leads.forEach(function (lead) {
+            if (belegt[lead]) {
+                return;
+            }
+            var frei = (bwParallelAuswahlCache[lead] || []).filter(function (pnr) {
+                return pnr !== lead && !belegt[pnr];
+            });
+            if (!frei.length) {
+                return;
+            }
+            belegt[lead] = lead;
+            frei.forEach(function (pnr) {
+                belegt[pnr] = lead;
+            });
+        });
+        return belegt;
+    }
+
+    function ladeAlleParallelZustaende(socket, table, done) {
+        var rows = table ? getVentilDataRows(table) : [];
+        var nrs = [];
+        rows.forEach(function (row, idx) {
+            var n = ventilIdentityNr(row, table) || (idx + 1);
+            if (n && nrs.indexOf(n) < 0) {
+                nrs.push(n);
+            }
+        });
+        var i = 0;
+        function next() {
+            if (i >= nrs.length) {
+                done();
+                return;
+            }
+            var n = nrs[i];
+            i += 1;
+            getStateViaAdmin(socket, parallelStateId(n), function (err, state) {
+                if (!err && state) {
+                    bwParallelCache[n] = !!(state.val === true || state.val === 1 || state.val === 'true');
+                }
+                getStateViaAdmin(socket, parallelVentileStateId(n), function (aErr, auswahlState) {
+                    if (!aErr && auswahlState) {
+                        bwParallelAuswahlCache[n] = parseParallelAuswahl(auswahlState.val);
+                    }
+                    next();
+                });
+            });
+        }
+        next();
+    }
+
+    function entferneDoppelbelegung(socket, eigeneNr, gewaehlt, done) {
+        var ids = [];
+        function merke(n) {
+            n = parseInt(n, 10) || 0;
+            if (n && n !== eigeneNr && ids.indexOf(n) < 0) {
+                ids.push(n);
+            }
+        }
+        Object.keys(bwParallelAuswahlCache).forEach(merke);
+        (gewaehlt || []).forEach(merke);
+        var i = 0;
+        function next() {
+            if (i >= ids.length) {
+                if (done) {
+                    done();
+                }
+                return;
+            }
+            var fremd = ids[i];
+            i += 1;
+            var alt = (bwParallelAuswahlCache[fremd] || []).slice();
+            var liste = (gewaehlt || []).indexOf(fremd) >= 0 ? [] : alt.filter(function (n) {
+                return n !== eigeneNr && (gewaehlt || []).indexOf(n) < 0;
+            });
+            if (liste.join(',') === alt.join(',')) {
+                next();
+                return;
+            }
+            var an = liste.length > 0;
+            bwParallelCache[fremd] = an;
+            speichereParallelAuswahl(socket, null, fremd, liste, function () {
+                ensureParallelState(socket, fremd, function () {
+                    setStateViaAdmin(socket, parallelStateId(fremd), an, function () {
+                        next();
+                    });
+                });
+            });
+        }
+        next();
+    }
+
+    function bereinigeEigeneAuswahl(socket, nr, done) {
+        var belegt = parallelBelegtDurch();
+        var alt = (bwParallelAuswahlCache[nr] || []).slice();
+        var neu = (belegt[nr] && belegt[nr] !== nr) ? [] : alt.filter(function (n) {
+            return !belegt[n] || belegt[n] === nr;
+        });
+        if (neu.join(',') === alt.join(',')) {
+            if (done) {
+                done();
+            }
+            return;
+        }
+        var an = neu.length > 0;
+        bwParallelCache[nr] = an;
+        speichereParallelAuswahl(socket, null, nr, neu, function () {
+            ensureParallelState(socket, nr, function () {
+                setStateViaAdmin(socket, parallelStateId(nr), an, function () {
+                    if (done) {
+                        done();
+                    }
+                });
+            });
+        });
+    }
+
     function renderParallelAuswahl(panel, table, eigeneNr, eigeneRow) {
         var host = panel.querySelector('[data-bw-vip-parallel-list="1"]');
         var pick = panel.querySelector('[data-bw-vip-parallel-pick="1"]');
         if (!host || !pick) {
+            return;
+        }
+        var box = panel.querySelector('[data-bw-vip-parallel="1"]');
+        var offen = !!(box && box.checked);
+        if (!offen) {
+            pick.removeAttribute('data-bw-open');
+            pick.style.setProperty('display', 'none', 'important');
+            host.innerHTML = '';
             return;
         }
         pick.setAttribute('data-bw-open', '1');
@@ -6932,14 +7066,29 @@
         host.style.setProperty('flex-wrap', 'wrap', 'important');
         host.style.setProperty('gap', '6px 14px', 'important');
         var liveTable = tabelleFuerPanel(panel, eigeneRow, table);
-        var kandidaten = tab1ParallelKandidaten(liveTable, eigeneNr, eigeneRow);
+        var alle = tab1ParallelKandidaten(liveTable, eigeneNr, eigeneRow);
+        var belegt = parallelBelegtDurch();
+        host.innerHTML = '';
+        if (belegt[eigeneNr] && belegt[eigeneNr] !== eigeneNr) {
+            host.textContent = 'Dieses Ventil ist bereits einem anderen Parallelbetrieb zugeordnet.';
+            return;
+        }
         var gesetzt = {};
         (bwParallelAuswahlCache[eigeneNr] || []).forEach(function (n) {
-            gesetzt[n] = true;
+            if (!belegt[n] || belegt[n] === eigeneNr) {
+                gesetzt[n] = true;
+            }
         });
-        host.innerHTML = '';
-        if (!kandidaten.length) {
+        var kandidaten = alle.filter(function (k) {
+            var owner = belegt[k.nr];
+            return !owner || owner === eigeneNr;
+        });
+        if (!alle.length) {
             host.textContent = 'Keine weiteren Ventile in der Tabelle.';
+            return;
+        }
+        if (!kandidaten.length) {
+            host.textContent = 'Keine weiteren freien Ventile.';
             return;
         }
         kandidaten.forEach(function (k) {
@@ -7006,13 +7155,18 @@
                 if (!ziel || ziel.getAttribute('data-bw-vip-parallel-nr') == null) {
                     return;
                 }
+                var belegt = parallelBelegtDurch();
+                if (belegt[nr] && belegt[nr] !== nr) {
+                    renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
+                    return;
+                }
                 var nums = [];
                 host.querySelectorAll('input[data-bw-vip-parallel-nr]').forEach(function (inp) {
                     if (!inp.checked) {
                         return;
                     }
                     var gewaehlt = parseInt(inp.getAttribute('data-bw-vip-parallel-nr'), 10) || 0;
-                    if (gewaehlt > 0 && gewaehlt !== nr) {
+                    if (gewaehlt > 0 && gewaehlt !== nr && (!belegt[gewaehlt] || belegt[gewaehlt] === nr)) {
                         nums.push(gewaehlt);
                     }
                 });
@@ -7027,10 +7181,13 @@
                                 renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
                                 return;
                             }
-                            var liveTable = aktuelleTabelle();
-                            if (liveTable) {
-                                applyParallelRows(liveTable);
-                            }
+                            entferneDoppelbelegung(socket, nr, nums, function () {
+                                renderParallelAuswahl(panel, aktuelleTabelle(), nr, row);
+                                var liveTable = aktuelleTabelle();
+                                if (liveTable) {
+                                    applyParallelRows(liveTable);
+                                }
+                            });
                         });
                     });
                 });
@@ -7038,19 +7195,15 @@
         }
         ensureParallelState(socket, nr, function () {
             ensureParallelVentileState(socket, nr, function () {
-                getStateViaAdmin(socket, parallelStateId(nr), function (err, state) {
+                ladeAlleParallelZustaende(socket, aktuelleTabelle(), function () {
                     if (!box.isConnected) {
                         return;
                     }
-                    var val = !err && state && (state.val === true || state.val === 1 || state.val === 'true');
-                    getStateViaAdmin(socket, parallelVentileStateId(nr), function (aErr, auswahlState) {
+                    bereinigeEigeneAuswahl(socket, nr, function () {
                         if (!box.isConnected) {
                             return;
                         }
-                        if (!aErr && auswahlState) {
-                            bwParallelAuswahlCache[nr] = parseParallelAuswahl(auswahlState.val);
-                        }
-                        paint(val);
+                        paint(!!bwParallelCache[nr]);
                     });
                 });
             });
@@ -16405,6 +16558,7 @@ function dedupeSprinkleNames(table) {
         var pick = panel.querySelector('[data-bw-vip-parallel-pick="1"]');
         if (pick) {
             pick.removeAttribute('data-bw-open');
+            pick.style.setProperty('display', 'none', 'important');
         }
         var parallelListe = panel.querySelector('[data-bw-vip-parallel-list="1"]');
         if (parallelListe) {
