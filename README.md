@@ -4,16 +4,16 @@ Automatische Gartenbewässerung für ioBroker: bis zu vier Ventile, Zeit- und As
 
 ## Installation von GitHub
 
-Im ioBroker-Admin unter **Adapter → Von GitHub installieren** diese Adresse eintragen:
+Im ioBroker-Admin unter **Befehl ausführen** diese Zeile eintragen. `beregnungswerk` muss kleingeschrieben sein, sonst bricht die Installation mit Code 25 ab:
 
 ```
-https://github.com/Jochen-Lip/Beregnungswerk/tarball/main
+url https://github.com/Jochen-Lip/beregnungswerk/tarball/main --host iobroker --debug
 ```
 
-Dieselbe Adresse gilt in der ioBroker-Kommandozeile:
+Dieselbe Adresse gilt, wenn das Feld nur eine URL erwartet:
 
 ```
-iobroker url https://github.com/Jochen-Lip/Beregnungswerk/tarball/main
+https://github.com/Jochen-Lip/beregnungswerk/tarball/main
 ```
 
 Danach eine Instanz anlegen. Der Adapter heißt `beregnungswerk`, die Instanz `beregnungswerk.0`.

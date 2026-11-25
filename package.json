@@ -11,7 +11,7 @@
       "name": "Jochen-Lip"
     }
   ],
-  "homepage": "https://github.com/Jochen-Lip/Beregnungswerk",
+  "homepage": "https://github.com/Jochen-Lip/beregnungswerk",
   "license": "MIT",
   "keywords": [
     "Bewässerung",
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jochen-Lip/Beregnungswerk.git"
+    "url": "https://github.com/Jochen-Lip/beregnungswerk.git"
   },
   "engines": {
     "node": ">= 20"
@@ -86,7 +86,7 @@
     "postinstall": "node lib/linkInstallDir.js"
   },
   "bugs": {
-    "url": "https://github.com/Jochen-Lip/Beregnungswerk/issues"
+    "url": "https://github.com/Jochen-Lip/beregnungswerk/issues"
   },
   "readmeFilename": "README.md"
 }
