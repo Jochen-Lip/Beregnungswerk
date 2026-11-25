@@ -24,7 +24,7 @@
             "items": {
                 "_tabLayoutCss": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1563",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1569",
                     "sandbox":
                      "allow-same-origin allow-scripts",
                     "style": {
@@ -49,8 +49,8 @@
                 "_infoEventsDp": {
                     "type": "staticText",
                     "text": {
-                        "de": "Magnetventile und Aktoren per Objekt-ID zuordnen. Stift öffnet Inline-Panel (Bewässerung & Schwellen je Ventil). Grün wird bewässert. Rot wird nicht bewässert. Weiß bewässert ohne Schwelle. Orange = Wartung/Rep.",
-                        "en": "Assign valves via object ID. Pencil opens inline panel (irrigation & thresholds per valve). Green is watered. Red is not watered. White waters without a threshold. Orange = maintenance/repair."
+                        "de": "Magnetventile und Aktoren per Objekt-ID zuordnen. Der Stift öffnet das Inline-Panel für Bewässerung und Schwellen je Ventil. Grün wird bewässert. Rot wird nicht bewässert. Weiß bewässert ohne Schwelle. Orange: Reparatur, Ventil gesperrt. Hellorange: Wartung, Ventil dauerhaft ein.",
+                        "en": "Assign solenoid valves and actuators by object ID. The pencil opens the inline panel for irrigation and thresholds per valve. Green is watered. Red is not watered. White waters without a threshold. Orange: repair, valve locked. Light orange: maintenance, valve stays on."
                     },
                     "sm": 12
                 },
@@ -244,7 +244,7 @@
             "items": {
                 "_tabLayoutCss": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1529",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1580",
                     "sandbox": "allow-same-origin allow-scripts",
                     "style": {
                         "height": 0,
@@ -263,6 +263,14 @@
                         "en": "Pump control"
                     },
                     "size": 4,
+                    "sm": 12
+                },
+                "_infoPumpe": {
+                    "type": "staticText",
+                    "text": {
+                        "de": "Der Stift öffnet die Pumpenart. Tankpumpe: untere und obere Schwelle, Timer, Schleife wartet. Brunnenpumpe: läuft mit Schleife und Wartung, danach Erholpause. Hauswasserwerk: Freigabe für den Druckschalter.",
+                        "en": "The pencil opens extra functions per pump: tank filling on high or low threshold, pause the loop while the tank fills, night quiet hours, invert on/off, pressure during maintenance and the loop, integrated pressure switch."
+                    },
                     "sm": 12
                 },
                 "pumpModus": {
@@ -698,7 +706,7 @@
             "items": {
                 "_tabLayoutCss": {
                     "type": "iframe",
-                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1540",
+                    "url": "./adapter/beregnungswerk/tab-layout-inject.html?v=1564",
                     "sandbox": "allow-same-origin allow-scripts",
                     "style": {
                         "height": 0,

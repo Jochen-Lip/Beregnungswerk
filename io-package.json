@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "beregnungswerk",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "titleLang": {
       "en": "Beregnungswerk",
       "de": "Beregnungswerk"
@@ -10,6 +10,10 @@
       "Jochen Lip <jochen.lip@gmail.com>"
     ],
     "news": {
+      "0.2.1": {
+        "en": "Update without reinstall. Pump types tank, well and domestic waterworks with thresholds, switch, flow meter and timer. Maintenance and repair stay separate.",
+        "de": "Update ohne Neuinstallation. Pumpenarten Tank, Brunnen und Hauswasserwerk mit Schwellen, Schalter, Durchfluss und Timer. Wartung und Reparatur bleiben getrennt."
+      },
       "0.2.0": {
         "en": "Installable from GitHub. Messages can include pause, valve settings, astro, schedules, maintenance and a user-defined section.",
         "de": "Direkt von GitHub installierbar. Nachrichten können Pause, Ventil-Einstellungen, Astro, Schaltzeiten, Wartung und eine eigene Anzeige enthalten."

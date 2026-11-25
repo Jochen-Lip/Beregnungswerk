@@ -143,7 +143,7 @@
         add: 'Neue Schaltzeit anlegen (Steuerung.Zeitschaltuhr.SchaltzeitN)',
     };
     var PUMP_ROLE_TIPS = {
-        edit: '',
+        edit: 'Zusatzfunktionen dieser Pumpe',
         clone: 'Diese Zeile kopieren',
         up: 'Eine Position nach oben verschieben',
         down: 'Eine Position nach unten verschieben',
@@ -627,6 +627,31 @@
             '.bw-ventil-inline-panel .bw-vip-wartung-point{display:flex!important;align-items:center!important;gap:8px!important;margin:4px 0 8px!important;font-size:14px!important;font-weight:700!important;color:#424242!important;cursor:pointer!important}',
             '.bw-ventil-inline-panel .bw-vip-wartung-point input{margin:0!important;cursor:pointer!important}',
             '[data-bw-wartung-label="1"]{display:block!important;margin:2px 0 0!important;color:#ef6c00!important;font-size:12px!important;font-weight:700!important;letter-spacing:.04em!important;line-height:1.2!important}',
+            'tr[data-bw-wartung-art="wartung"] [data-bw-wartung-label="1"],.adapter-beregnungswerk tr[data-bw-wartung-art="wartung"] [data-bw-wartung-label="1"],.m.adapter-beregnungswerk tr[data-bw-wartung-art="wartung"] [data-bw-wartung-label="1"]{color:#ffcc80!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario{display:block!important;width:100%!important;box-sizing:border-box!important;padding:4px 2px 0!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-vip-fields{display:flex!important;flex-wrap:wrap!important;gap:10px 18px!important;align-items:flex-end!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-vip-field{display:flex!important;flex-direction:column!important;gap:4px!important;min-width:180px!important;margin:0!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-klein{min-width:0!important;width:auto!important;flex:0 0 auto!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-klein .bw-vip-input{width:76px!important;min-width:76px!important;max-width:76px!important;padding:7px 4px!important;text-align:center!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-zeit{min-width:0!important;width:auto!important;flex:0 0 auto!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-zeit .bw-vip-input{width:176px!important;min-width:176px!important;max-width:176px!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-nacht-kopf{margin:8px 0 0!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-nacht-kopf .bw-vip-wartung-point{margin:0 0 2px!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-nacht-zeiten{gap:4px 28px!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-nacht-invert{margin-top:2px!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-pump-nacht-invert .bw-vip-wartung-point{margin:0!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-vip-input,.bw-ventil-inline-panel .bw-pump-szenario select.bw-vip-input,.bw-ventil-inline-panel .bw-pump-szenario input[type="time"]{padding:7px 10px!important;font-size:14px!important;border:1px solid #cfd8dc!important;border-radius:6px!important;background:#fff!important;color:#212121!important;width:220px!important;max-width:100%!important;height:auto!important;min-height:36px!important;box-sizing:border-box!important;font-weight:400!important;text-align:left!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-vip-checks{display:flex!important;flex-wrap:wrap!important;gap:8px 22px!important;margin-top:8px!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario [data-bw-pump-section="1"]{display:block!important;width:100%!important;margin:8px 0 0!important;font-size:13px!important;font-weight:700!important;color:#1b4332!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario [data-bw-pump-scope="1"]{flex:1 1 100%!important;min-width:100%!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-stil-zeile{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:wrap!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-stil-zeile select.bw-vip-input{width:220px!important;flex:0 0 auto!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-stil-umfang{font-size:13px!important;font-weight:400!important;color:#1b4332!important;flex:1 1 220px!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-vip-oid-wrap{display:flex!important;align-items:center!important;gap:6px!important;width:220px!important;max-width:100%!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-vip-oid{flex:1 1 auto!important;width:auto!important;min-width:0!important;max-width:none!important;border:1px solid #cfd8dc!important;border-radius:6px!important;background:#fff!important;padding:7px 10px!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario .bw-vip-actions{display:flex!important;justify-content:flex-end!important;align-items:center!important;gap:12px!important;margin-top:12px!important;padding:0!important;border:none!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario [data-bw-pump-status="1"]{margin-right:auto!important}',
+            '.bw-ventil-inline-panel .bw-pump-szenario [data-bw-pump-for][hidden]{display:none!important}',
             '.bw-ventil-inline-panel .bw-vip-mode-points{display:flex!important;flex-wrap:wrap!important;gap:18px!important;align-items:center!important}',
             '.bw-ventil-inline-panel .bw-vip-parallel-pick{display:none!important;margin:0 0 12px!important;padding:8px 10px!important;border:1px solid #90caf9!important;border-radius:8px!important;background:#e3f2fd!important;}',
             '.bw-ventil-inline-panel .bw-vip-parallel-pick[data-bw-open="1"]{display:block!important;}',
@@ -938,14 +963,14 @@
             '.adapter-beregnungswerk [data-bw-astro-idle="1"],.m.adapter-beregnungswerk [data-bw-astro-idle="1"]{display:inline!important;font-size:14px!important;font-weight:600!important;color:#9e9e9e!important;line-height:' + BTN_SIZE + 'px!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) [data-bw-name-pencil="1"] img.bw-eraser-icon,.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) [data-bw-name-pencil="1"] img.bw-eraser-icon,.MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) [data-bw-name-pencil="1"] img.bw-eraser-icon{filter:brightness(0) saturate(100%) invert(29%) sepia(98%) saturate(1752%) hue-rotate(201deg) brightness(97%) contrast(91%)!important;opacity:1!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) .MuiTableHead-root .MuiTableRow-root>.MuiTableCell-root[data-bw-name-head="1"],.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) .MuiTableHead-root .MuiTableRow-root>.MuiTableCell-root[data-bw-name-head="1"],.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) .MuiTableHead-root .MuiTableRow-root>.MuiTableCell-root[data-bw-name-head="1"] .MuiTypography-root,.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) .MuiTableHead-root .MuiTableRow-root>.MuiTableCell-root[data-bw-name-head="1"] .MuiTypography-root,.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) .MuiTableHead-root .MuiTableRow-root>.MuiTableCell-root[data-bw-name-head="1"] span,.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) .MuiTableHead-root .MuiTableRow-root>.MuiTableCell-root[data-bw-name-head="1"] span{font-weight:700!important}',
-            '.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] input:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] input:not([data-bw-cloned-name="1"]),.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] textarea:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] textarea:not([data-bw-cloned-name="1"]),.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] .MuiInputBase-input:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] .MuiInputBase-input:not([data-bw-cloned-name="1"]),.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-input="1"]:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-input="1"]:not([data-bw-cloned-name="1"]){font-weight:700!important}',
+            '.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] input:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] input:not([data-bw-cloned-name="1"]),.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] textarea:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] textarea:not([data-bw-cloned-name="1"]),.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] .MuiInputBase-input:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-cell="1"] .MuiInputBase-input:not([data-bw-cloned-name="1"]),.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-input="1"]:not([data-bw-cloned-name="1"]),.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]):not([data-bw-pump-table="1"]) [data-bw-name-input="1"]:not([data-bw-cloned-name="1"]){font-weight:700!important;color:inherit!important;-webkit-text-fill-color:currentColor!important;opacity:1!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"]>.MuiTableCell-root:not([data-bw-active-cell="1"])>*,.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"]>.MuiTableCell-root:not([data-bw-active-cell="1"])>*,.MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"]>.MuiTableCell-root:not([data-bw-active-cell="1"])>*{opacity:.42!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"][data-bw-row="first"]>.MuiTableCell-root:first-child::before,.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"][data-bw-row="first"]>.MuiTableCell-root:first-child::before,.MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"][data-bw-row="first"]>.MuiTableCell-root:first-child::before{color:#c5c9d1!important;opacity:1!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"][data-bw-row="first"]>.MuiTableCell-root:first-child::after,.m.adapter-beregnungswerk .MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"][data-bw-row="first"]>.MuiTableCell-root:first-child::after,.MuiTable-root[data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row-inactive="1"][data-bw-row="first"]>.MuiTableCell-root:first-child::after{opacity:.42!important}',
-            '.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child{font-size:' + BW_TAB1_INPUT_FS + '!important;line-height:1.2!important;color:#212121!important}',
+            '.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child{font-size:' + BW_TAB1_INPUT_FS + '!important;line-height:1.2!important;color:inherit!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child::before,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child::before,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child::before,.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child::after,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child::after,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child::after{content:none!important;display:none!important;background:none!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child *,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child *,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child *{display:revert!important;visibility:visible!important;height:auto!important;max-height:none!important;overflow:visible!important;opacity:1!important;pointer-events:auto!important}',
-            '.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child input,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child input,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child input,.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child .MuiInputBase-input,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child .MuiInputBase-input,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child .MuiInputBase-input{color:#212121!important;font-size:' + BW_TAB1_INPUT_FS + '!important;font-weight:700!important;text-align:center!important;pointer-events:none!important;background:transparent!important;-webkit-text-fill-color:#212121!important}',
+            '.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child input,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child input,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child input,.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child .MuiInputBase-input,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child .MuiInputBase-input,.MuiTable-root[data-bw-pump-table="1"][data-bw-events-table="1"]:not([data-bw-tab2-events-table="1"]) .MuiTableBody-root .MuiTableRow-root[data-bw-row="first"]>.MuiTableCell-root:first-child .MuiInputBase-input{color:inherit!important;font-size:' + BW_TAB1_INPUT_FS + '!important;font-weight:700!important;text-align:center!important;pointer-events:none!important;background:transparent!important;-webkit-text-fill-color:currentColor!important}',
             '.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"] input[data-bw-oid-hint="1"]::placeholder,.m.adapter-beregnungswerk .MuiTable-root[data-bw-pump-table="1"] input[data-bw-oid-hint="1"]::placeholder,.MuiTable-root[data-bw-pump-table="1"] input[data-bw-oid-hint="1"]::placeholder,.MuiTable-root[data-bw-pump-table="1"] input[data-bw-oid-hint="1"]::-webkit-input-placeholder{color:#9e9e9e!important;-webkit-text-fill-color:#9e9e9e!important;font-style:italic!important;opacity:1!important}',
             '[data-bw-nachrichten-lines="1"]{display:flex!important;flex-direction:column!important;width:100%!important;margin:0!important;padding:0!important}',
             '[data-bw-nachrichten-line="1"]{display:flex!important;align-items:center!important;gap:12px!important;width:100%!important;min-height:40px!important;padding:2px 0!important;border-bottom:1px solid #eeeeee!important;flex-wrap:nowrap!important}',
@@ -3227,16 +3252,6 @@
         return null;
     }
 
-    function tab1SchwelleNameColor(farbe) {
-        if (farbe === 'gruen') {
-            return '#69f0ae';
-        }
-        if (farbe === 'rot') {
-            return '#ff5252';
-        }
-        return '#212121';
-    }
-
     function applyPressableVisual(el, mode) {
         if (!el) {
             return;
@@ -4283,11 +4298,13 @@
             if (!nameCell) {
                 return;
             }
-            var nameColor = tab1SchwelleNameColor(farbe);
             nameCell.querySelectorAll('input, textarea').forEach(function (inp) {
                 inp.setAttribute('data-bw-name-input', '1');
-                inp.style.setProperty('color', nameColor, 'important');
-                inp.style.setProperty('-webkit-text-fill-color', nameColor, 'important');
+                if (inp.getAttribute('data-bw-cloned-name') === '1') {
+                    return;
+                }
+                inp.style.removeProperty('color');
+                inp.style.removeProperty('-webkit-text-fill-color');
             });
             var edit = row.querySelector('[data-bw-edit-btn="1"]');
             if (edit) {
@@ -6364,6 +6381,7 @@
     }
 
     var bwWartungCache = {};
+    var bwWartungTabCache = {};
     var bwParallelCache = {};
     var bwParallelAuswahlCache = {};
     var bwWartungBusy = false;
@@ -6371,6 +6389,24 @@
 
     function wartungStateId(nr) {
         return ventilDpId(nr, 'Konfig.Wartung');
+    }
+
+    function wartungTabStateId(nr) {
+        return ventilDpId(nr, 'Konfig.InWartung');
+    }
+
+    function stateIstAn(state) {
+        return !!(state && (state.val === true || state.val === 1 || state.val === '1' || state.val === 'true'));
+    }
+
+    function wartungArt(nr) {
+        if (bwWartungTabCache[nr]) {
+            return 'wartung';
+        }
+        if (bwWartungCache[nr]) {
+            return 'reparatur';
+        }
+        return '';
     }
 
     function parallelStateId(nr) {
@@ -6391,7 +6427,7 @@
             setObjectViaAdmin(socket, id, {
                 type: 'state',
                 common: {
-                    name: 'Ventil ' + nr + ' Wartung/Reparatur',
+                    name: 'Ventil ' + nr + ' Reparatur',
                     type: 'boolean',
                     role: 'switch',
                     read: true,
@@ -6405,15 +6441,17 @@
         });
     }
 
-    function applyWartungRow(row, table, on) {
+    function applyWartungRow(row, table, art) {
         if (!row || !table || !isTab1VentilTable(table)) {
             return;
         }
-        var wartung = !!on;
+        var wartung = art === 'wartung' || art === 'reparatur';
         if (wartung) {
             row.setAttribute('data-bw-wartung', '1');
+            row.setAttribute('data-bw-wartung-art', art);
         } else {
             row.removeAttribute('data-bw-wartung');
+            row.removeAttribute('data-bw-wartung-art');
         }
         var nameCell = getNameCell(row, table);
         if (nameCell) {
@@ -6422,9 +6460,9 @@
                 if (!label) {
                     label = row.ownerDocument.createElement('div');
                     label.setAttribute('data-bw-wartung-label', '1');
-                    label.textContent = 'WARTUNG';
                     nameCell.appendChild(label);
                 }
+                label.textContent = art === 'wartung' ? 'WARTUNG' : 'REPARATUR';
             } else if (label) {
                 label.remove();
             }
@@ -6537,7 +6575,7 @@
         }
         getVentilDataRows(table).forEach(function (row) {
             var nr = resolveVentilNrForRow(row, table);
-            applyWartungRow(row, table, !!bwWartungCache[nr]);
+            applyWartungRow(row, table, wartungArt(nr));
         });
         applyParallelRows(table);
     }
@@ -6561,9 +6599,16 @@
                     if (gErr || !row.isConnected) {
                         return;
                     }
-                    var val = !!(state && (state.val === true || state.val === 1 || state.val === 'true'));
-                    bwWartungCache[nr] = val;
-                    applyWartungRow(row, table, val);
+                    bwWartungCache[nr] = stateIstAn(state);
+                    applyWartungRow(row, table, wartungArt(nr));
+                    applyParallelRows(table);
+                });
+                getStateViaAdmin(socket, wartungTabStateId(nr), function (gErr, state) {
+                    if (gErr || !row.isConnected) {
+                        return;
+                    }
+                    bwWartungTabCache[nr] = stateIstAn(state);
+                    applyWartungRow(row, table, wartungArt(nr));
                     applyParallelRows(table);
                 });
             });
@@ -6580,11 +6625,11 @@
         }
         box.setAttribute('data-bw-wartung-wired', '1');
         function paint(val) {
-            box.checked = !!val;
             bwWartungCache[nr] = !!val;
+            box.checked = !!val && !bwWartungTabCache[nr];
             var live = livePanelRow(panel, row, table);
             if (live.row && live.table) {
-                applyWartungRow(live.row, live.table, !!val);
+                applyWartungRow(live.row, live.table, wartungArt(nr));
                 applyParallelRows(live.table);
             }
         }
@@ -6593,17 +6638,29 @@
                 if (!box.isConnected) {
                     return;
                 }
-                var val = !err && state && (state.val === true || state.val === 1 || state.val === 'true');
-                paint(val);
+                paint(!err && stateIstAn(state));
+            });
+            getStateViaAdmin(socket, wartungTabStateId(nr), function (err, state) {
+                if (!box.isConnected) {
+                    return;
+                }
+                bwWartungTabCache[nr] = !err && stateIstAn(state);
+                paint(!!bwWartungCache[nr]);
             });
         });
         box.addEventListener('change', function () {
             var next = !!box.checked;
+            if (next) {
+                bwWartungTabCache[nr] = false;
+            }
             paint(next);
             ensureWartungState(socket, nr, function (ensureErr) {
                 if (ensureErr) {
                     alertVentilErr(hostDoc, ensureErr);
                     return;
+                }
+                if (next) {
+                    setStateViaAdmin(socket, wartungTabStateId(nr), false, function () {});
                 }
                 setStateViaAdmin(socket, wartungStateId(nr), next, function (setErr) {
                     if (setErr) {
@@ -8143,7 +8200,7 @@
             '<div class="bw-vip-mode-points">' +
             '<label class="bw-vip-wartung-point">' +
             '<input type="checkbox" data-bw-vip-wartung="1">' +
-            '<span>Wartung/Reparatur</span>' +
+            '<span>Reparatur</span>' +
             '</label>' +
             '<label class="bw-vip-wartung-point">' +
             '<input type="checkbox" data-bw-vip-parallel="1">' +
@@ -13638,6 +13695,309 @@
         });
     }
 
+    var PUMP_SZENARIO_KEYS = [
+        'Art', 'TankAktiv', 'TankSensor', 'TankSchwelleUnten', 'TankSchwelleOben',
+        'SchalterAktiv', 'SchalterSensor', 'FlussAktiv', 'FlussSensor', 'FlussMindest',
+        'TimerAktiv', 'TimerMinuten', 'TimerSekunden',
+        'TankPauseSchleife', 'BeiSchleife', 'BeiWartung', 'ErholSekunden',
+        'NachtruheAktiv', 'NachtruheVon', 'NachtruheBis', 'Invertieren'
+    ];
+
+    function pumpFeldId(nr, key) {
+        return BW_ADAPTER_NS + '.Pumpen.Pumpe' + nr + '.Konfig.' + key;
+    }
+
+    function pumpStatusId(nr) {
+        return BW_ADAPTER_NS + '.Pumpen.Pumpe' + nr + '.Anzeigen.Status';
+    }
+
+    function pumpRowText(row, table, headers) {
+        var cell = getCellByHeader(row, table, headers);
+        if (!cell) return '';
+        var input = cell.querySelector('input, textarea');
+        if (input && input.type !== 'checkbox' && input.type !== 'radio') {
+            return String(input.value || '').trim();
+        }
+        return String(cell.textContent || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function pumpRowAktiv(row, table) {
+        var cell = getCellByHeader(row, table, ['Aktiv', 'Active']);
+        if (!cell) return false;
+        var toggle = cell.querySelector('[data-bw-active-toggle="1"]');
+        if (toggle) return toggle.getAttribute('data-bw-active') === '1';
+        var cb = cell.querySelector('input[type="checkbox"]');
+        return !!(cb && cb.checked);
+    }
+
+    function pumpPanelHtml(nr, name) {
+        return '<div class="bw-vip-header bw-vip-header-inline">' +
+            '<h3 class="bw-vip-title">Pumpe ' + nr + (name ? ' – ' + name : '') + '</h3>' +
+            '</div>' +
+            '<div class="bw-pump-szenario">' +
+            '<div class="bw-vip-fields">' +
+            '<div class="bw-vip-field" data-bw-pump-scope="1">' +
+            '<span class="bw-vip-col-head">Pumpenart</span>' +
+            '<div class="bw-stil-zeile">' +
+            '<select class="bw-vip-input" data-bw-pump="Art">' +
+            '<option value="tank">Tankpumpe</option>' +
+            '<option value="brunnen">Brunnenpumpe</option>' +
+            '<option value="hauswasser">Hauswasserwerk</option>' +
+            '</select>' +
+            '<span class="bw-stil-umfang" data-bw-pump-umfang="1">Untere Schwelle schaltet ein, obere Schwelle schaltet aus.</span>' +
+            '</div></div></div>' +
+            '<div class="bw-vip-col-head" data-bw-pump-section="1">Schwellen</div>' +
+            '<div class="bw-vip-checks">' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="TankAktiv"><span>Schwellen nutzen</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-fields">' +
+            '<div class="bw-vip-field"><span class="bw-vip-col-head">Sensor</span>' +
+            '<div class="bw-vip-oid-wrap">' +
+            '<input class="bw-vip-oid" type="text" data-bw-pump="TankSensor" placeholder="Füllstand oder Endschalter">' +
+            '<button type="button" class="bw-vip-picker" data-bw-pump-pick="TankSensor">…</button>' +
+            '</div></div>' +
+            '<div class="bw-vip-field bw-pump-klein"><span class="bw-vip-col-head">Untere Schwelle</span>' +
+            '<input class="bw-vip-input" type="number" data-bw-pump="TankSchwelleUnten" step="0.1" value="20"></div>' +
+            '<div class="bw-vip-field bw-pump-klein"><span class="bw-vip-col-head">Obere Schwelle</span>' +
+            '<input class="bw-vip-input" type="number" data-bw-pump="TankSchwelleOben" step="0.1" value="90"></div>' +
+            '</div>' +
+            '<div class="bw-stil-umfang">Untere Schwelle schaltet ein, obere Schwelle schaltet aus.</div>' +
+            '<div class="bw-vip-col-head" data-bw-pump-section="1">Ein/Aus-Schalter</div>' +
+            '<div class="bw-vip-checks">' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="SchalterAktiv"><span>Analogen Schalter nutzen</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-fields">' +
+            '<div class="bw-vip-field"><span class="bw-vip-col-head">Schalter</span>' +
+            '<div class="bw-vip-oid-wrap">' +
+            '<input class="bw-vip-oid" type="text" data-bw-pump="SchalterSensor" placeholder="analoger Ein/Aus-Schalter">' +
+            '<button type="button" class="bw-vip-picker" data-bw-pump-pick="SchalterSensor">…</button>' +
+            '</div></div>' +
+            '</div>' +
+            '<div class="bw-stil-umfang">Ein schaltet ein, Aus schaltet aus.</div>' +
+            '<div class="bw-vip-col-head" data-bw-pump-section="1">Durchfluss</div>' +
+            '<div class="bw-vip-checks">' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="FlussAktiv"><span>Durchflussmesser nutzen</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-fields">' +
+            '<div class="bw-vip-field"><span class="bw-vip-col-head">Durchflussmesser</span>' +
+            '<div class="bw-vip-oid-wrap">' +
+            '<input class="bw-vip-oid" type="text" data-bw-pump="FlussSensor" placeholder="Durchfluss">' +
+            '<button type="button" class="bw-vip-picker" data-bw-pump-pick="FlussSensor">…</button>' +
+            '</div></div>' +
+            '<div class="bw-vip-field bw-pump-klein"><span class="bw-vip-col-head">Mindestfluss</span>' +
+            '<input class="bw-vip-input" type="number" data-bw-pump="FlussMindest" min="0" step="0.1" value="1"></div>' +
+            '</div>' +
+            '<div class="bw-stil-umfang">Liegt der Durchfluss unter dem Mindestwert, stoppt die Pumpe.</div>' +
+            '<div class="bw-vip-checks">' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="TankPauseSchleife" checked><span>Schleife pausieren, bis die Befüllung stoppt</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-checks" data-bw-pump-for="brunnen" hidden>' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="BeiSchleife" checked><span>Bei Schleife</span></label>' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="BeiWartung" checked><span>Bei Wartung</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-fields" data-bw-pump-for="brunnen" hidden>' +
+            '<div class="bw-vip-field bw-pump-klein"><span class="bw-vip-col-head">Erholpause</span>' +
+            '<input class="bw-vip-input" type="number" data-bw-pump="ErholSekunden" min="0" step="1" value="30"></div>' +
+            '</div>' +
+            '<div class="bw-vip-col-head" data-bw-pump-section="1">Timer</div>' +
+            '<div class="bw-vip-checks">' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="TimerAktiv"><span>Timer nutzen</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-fields">' +
+            '<div class="bw-vip-field bw-pump-klein"><span class="bw-vip-col-head">Minuten</span>' +
+            '<input class="bw-vip-input" type="number" data-bw-pump="TimerMinuten" min="0" step="1" value="10"></div>' +
+            '<div class="bw-vip-field bw-pump-klein"><span class="bw-vip-col-head">Sekunden</span>' +
+            '<input class="bw-vip-input" type="number" data-bw-pump="TimerSekunden" min="0" max="59" step="1" value="0"></div>' +
+            '</div>' +
+            '<div class="bw-stil-umfang" data-bw-pump-timer-hint="1">Allein oder zusätzlich, wenn kein Endschalter da ist oder er defekt ist.</div>' +
+            '<div class="bw-vip-checks bw-pump-nacht-kopf">' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="NachtruheAktiv"><span>Nachtruhe, Pumpe bleibt aus</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-fields bw-pump-nacht-zeiten">' +
+            '<div class="bw-vip-field bw-pump-zeit"><span class="bw-vip-col-head">von</span><input class="bw-vip-input" type="time" data-bw-pump="NachtruheVon" value="22:00"></div>' +
+            '<div class="bw-vip-field bw-pump-zeit"><span class="bw-vip-col-head">bis</span><input class="bw-vip-input" type="time" data-bw-pump="NachtruheBis" value="06:00"></div>' +
+            '</div>' +
+            '<div class="bw-vip-checks bw-pump-nacht-invert">' +
+            '<label class="bw-vip-wartung-point"><input type="checkbox" data-bw-pump="Invertieren"><span>Ein/Aus invertieren</span></label>' +
+            '</div>' +
+            '<div class="bw-vip-actions">' +
+            '<span class="bw-stil-umfang" data-bw-pump-status="1"></span>' +
+            '<button type="button" class="bw-vip-apply bw-vip-close" data-bw-pump-save="1">Übernehmen</button>' +
+            '</div></div>';
+    }
+
+    function liesPumpWerte(socket, nr, done) {
+        var ids = PUMP_SZENARIO_KEYS.map(function (key) { return pumpFeldId(nr, key); });
+        ids.push(pumpStatusId(nr));
+        var left = ids.length;
+        var values = {};
+        if (!left) {
+            done(null, values);
+            return;
+        }
+        ids.forEach(function (id) {
+            getStateViaAdmin(socket, id, function (err, state) {
+                var key = id.split('.').pop();
+                if (!err && state && state.val != null) values[key] = state.val;
+                left -= 1;
+                if (left <= 0) done(null, values);
+            });
+        });
+    }
+
+    function schreibePumpWerte(socket, nr, werte, done) {
+        var keys = Object.keys(werte);
+        var i = 0;
+        function next(err) {
+            if (err) {
+                done(err);
+                return;
+            }
+            if (i >= keys.length) {
+                done(null);
+                return;
+            }
+            var key = keys[i];
+            i += 1;
+            setStateViaAdmin(socket, pumpFeldId(nr, key), werte[key], next);
+        }
+        next(null);
+    }
+
+    function zeigePumpArt(panel) {
+        if (!panel) return;
+        var sel = panel.querySelector('[data-bw-pump="Art"]');
+        var art = sel && sel.value ? sel.value : 'tank';
+        panel.querySelectorAll('[data-bw-pump-for]').forEach(function (el) {
+            el.hidden = el.getAttribute('data-bw-pump-for').split(/\s+/).indexOf(art) < 0;
+        });
+        var umfang = panel.querySelector('[data-bw-pump-umfang="1"]');
+        if (umfang) {
+            if (art === 'brunnen') umfang.textContent = 'Untere Schwelle schaltet ein, obere Schwelle schaltet aus. Danach wartet die Schleife die Erholpause.';
+            else if (art === 'hauswasser') umfang.textContent = 'Freigabe für den Druckschalter, solange ein Ventil, die Schleife oder Wartung Wasser braucht.';
+            else umfang.textContent = 'Untere Schwelle schaltet ein, obere Schwelle schaltet aus. Die Schleife wartet, solange gefüllt wird.';
+        }
+        var hint = panel.querySelector('[data-bw-pump-timer-hint="1"]');
+        if (hint) {
+            if (art === 'brunnen') hint.textContent = 'Maximale Laufzeit, wenn kein Strömungswächter da ist.';
+            else if (art === 'hauswasser') hint.textContent = 'Not-Aus, wenn der Druckschalter nicht abschaltet.';
+            else hint.textContent = 'Allein oder zusätzlich, wenn kein Endschalter da ist oder er defekt ist.';
+        }
+    }
+
+    function fuellePumpPanel(panel, werte) {
+        var art = werte && werte.Art ? String(werte.Art) : '';
+        if (art) {
+            panel.querySelectorAll('[data-bw-pump-art]').forEach(function (radio) {
+                radio.checked = radio.value === art;
+            });
+        }
+        PUMP_SZENARIO_KEYS.forEach(function (key) {
+            var el = panel.querySelector('[data-bw-pump="' + key + '"]');
+            if (!el || werte[key] == null) return;
+            if (el.type === 'checkbox') el.checked = werte[key] === true || werte[key] === 'true';
+            else el.value = String(werte[key]);
+        });
+        var status = panel.querySelector('[data-bw-pump-status="1"]');
+        if (status) status.textContent = werte.Status ? String(werte.Status) : '';
+        zeigePumpArt(panel);
+    }
+
+    function openPumpInlinePanel(row) {
+        if (!row) return;
+        var doc = parentDoc() || row.ownerDocument;
+        var table = row.closest('.MuiTable-root') || findVentilTable(doc);
+        if (!table || !isPumpTable(table)) return;
+        var nr = getVentilNrFromRow(row, table, getDataRowIndex(row, doc));
+        var existing = getInlinePanelRow(row);
+        if (existing && bwOpenInlinePanelRow === row) {
+            closeInlinePanelRow(existing, row);
+            return;
+        }
+        closeAllInlinePanels(table);
+        var name = pumpRowText(row, table, ['Name']).replace(/[&<>"]/g, '');
+        var colSpan = countVentilTableColumns(table);
+        var tr = doc.createElement('tr');
+        tr.className = 'MuiTableRow-root bw-ventil-inline-panel-row';
+        tr.setAttribute('data-bw-inline-panel', '1');
+        tr.setAttribute('data-bw-pump-panel', String(nr));
+        var td = doc.createElement('td');
+        td.className = 'MuiTableCell-root bw-ventil-inline-panel-cell';
+        td.colSpan = colSpan;
+        var panel = doc.createElement('div');
+        panel.className = 'bw-ventil-inline-panel';
+            panel.innerHTML = pumpPanelHtml(nr, name);
+            var artSel = panel.querySelector('[data-bw-pump="Art"]');
+            if (artSel) artSel.addEventListener('change', function () { zeigePumpArt(panel); });
+            zeigePumpArt(panel);
+        td.appendChild(panel);
+        tr.appendChild(td);
+        row.insertAdjacentElement('afterend', tr);
+        bwOpenInlinePanelRow = row;
+        var editBtn = row.querySelector('[data-bw-edit-btn="1"] .bw-edit-btn');
+        if (editBtn) editBtn.classList.add('bw-edit-btn-active');
+        getAdminSocketAsync(doc, function (err, socket) {
+            if (err || !socket) {
+                var status = panel.querySelector('[data-bw-pump-status="1"]');
+                if (status) status.textContent = 'Keine Admin-Verbindung';
+                return;
+            }
+            var nachLesen = function () {
+                liesPumpWerte(socket, nr, function (leseErr, werte) {
+                    fuellePumpPanel(panel, werte || {});
+                    if (leseErr) {
+                        var status = panel.querySelector('[data-bw-pump-status="1"]');
+                        if (status && !status.textContent) status.textContent = String(leseErr);
+                    }
+                });
+            };
+            nachLesen();
+            if (typeof socket.sendTo === 'function') {
+                try {
+                    var ensured = socket.sendTo(BW_ADAPTER_NS, 'ensurePumpe', { nr: nr });
+                    if (ensured && typeof ensured.then === 'function') {
+                        ensured.then(nachLesen).catch(nachLesen);
+                    }
+                } catch (eEnsure) {}
+            }
+            panel.querySelectorAll('[data-bw-pump-pick]').forEach(function (pick) {
+                pick.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var key = pick.getAttribute('data-bw-pump-pick');
+                    var inp = panel.querySelector('[data-bw-pump="' + key + '"]');
+                    openNativeRowObjectIdPicker(row, table, inp ? inp.value : '', function (chosen) {
+                        if (inp) inp.value = chosen || '';
+                    });
+                });
+            });
+            panel.querySelector('[data-bw-pump-save="1"]').addEventListener('click', function () {
+                var oidCell = getObjectIdCell(row, table);
+                var werte = {
+                    Aktiv: pumpRowAktiv(row, table),
+                    Ausgang: oidCell ? String(getObjectIdCellValue(oidCell) || '').trim() : ''
+                };
+                var artEl = panel.querySelector('[data-bw-pump-art]:checked');
+                werte.Art = artEl ? artEl.value : 'tank';
+                PUMP_SZENARIO_KEYS.forEach(function (key) {
+                    var el = panel.querySelector('[data-bw-pump="' + key + '"]');
+                    if (!el) return;
+                    if (el.type === 'checkbox') werte[key] = !!el.checked;
+                    else if (el.type === 'number') werte[key] = el.value === '' ? 0 : Number(el.value);
+                    else werte[key] = el.value;
+                });
+                var status = panel.querySelector('[data-bw-pump-status="1"]');
+                if (status) status.textContent = 'speichert…';
+                schreibePumpWerte(socket, nr, werte, function (saveErr) {
+                    if (saveErr) {
+                        if (status) status.textContent = String(saveErr);
+                        return;
+                    }
+                    closeInlinePanelRow(tr, row);
+                });
+            });
+        });
+    }
+
     function openVentilConfigPanel(row) {
         openVentilInlinePanel(row);
     }
@@ -14201,7 +14561,11 @@
             btn.onclick = function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                if (isPumpTable(table) || tab2) {
+                if (tab2) {
+                    return;
+                }
+                if (isPumpTable(table)) {
+                    openPumpInlinePanel(row);
                     return;
                 }
                 openVentilConfigPanel(row);
@@ -18005,12 +18369,14 @@ function dedupeSprinkleNames(table) {
             var html = '';
             if (text.indexOf('Grün wird bewässert') >= 0) {
                 html = text
+                    .replace('Hellorange', '<span style="color:#ffcc80;font-weight:700">Hellorange</span>')
                     .replace('Grün', '<span style="color:#69f0ae;font-weight:700">Grün</span>')
                     .replace('Rot', '<span style="color:#ff5252;font-weight:700">Rot</span>')
                     .replace('Weiß', '<span style="color:#ffffff;font-weight:700">Weiß</span>')
-                    .replace('Orange', '<span style="color:#ef6c00;font-weight:700">Orange</span>');
+                    .replace(/(?<!Hell)Orange/, '<span style="color:#ef6c00;font-weight:700">Orange</span>');
             } else if (text.indexOf('Green is watered') >= 0) {
                 html = text
+                    .replace('Light orange', '<span style="color:#ffcc80;font-weight:700">Light orange</span>')
                     .replace('Green', '<span style="color:#69f0ae;font-weight:700">Green</span>')
                     .replace('Red', '<span style="color:#ff5252;font-weight:700">Red</span>')
                     .replace('White', '<span style="color:#ffffff;font-weight:700">White</span>')

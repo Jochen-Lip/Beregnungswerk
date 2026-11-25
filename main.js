@@ -18,7 +18,7 @@ const {
     afterTimeRowDelete,
 } = require('./lib/configSync');
 const { ensureJavascriptAdapter, enableScriptObject } = require('./lib/ensureJavascript');
-const { ensureAdapterStates, ensureVentilByNr, deleteVentilByNr, ensureSchaltzeitByNr, deleteSchaltzeitByNr } = require('./lib/ensureAdapterStates');
+const { ensureAdapterStates, ensureVentilByNr, ensurePumpeByNr, deleteVentilByNr, ensureSchaltzeitByNr, deleteSchaltzeitByNr } = require('./lib/ensureAdapterStates');
 const { startEngine } = require('./lib/engine');
 const { sendToWithTimeout } = require('./lib/sendToTimeout');
 const { preferBuiltinEngineStartup } = require('./lib/startupEnv');
@@ -64,6 +64,23 @@ async function onMessage(obj) {
             }
         } catch (e) {
             adapter.log.error(`syncVentilTableFromDp: ${e.message || e}`);
+            if (typeof obj.callback === 'function') {
+                obj.callback({ error: e.message || String(e) });
+            }
+        }
+        return true;
+    }
+
+    if (obj.command === 'ensurePumpe') {
+        const nr = obj.message && obj.message.nr;
+        try {
+            adapter.log.info(`ensurePumpe angefordert für Pumpe${nr}`);
+            const stats = await ensurePumpeByNr(adapter, nr);
+            if (typeof obj.callback === 'function') {
+                obj.callback({ error: null, stats });
+            }
+        } catch (e) {
+            adapter.log.error(`ensurePumpe: ${e.message || e}`);
             if (typeof obj.callback === 'function') {
                 obj.callback({ error: e.message || String(e) });
             }
