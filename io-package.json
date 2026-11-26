@@ -69,10 +69,10 @@
     },
     "localLinks": {
       "_default": {
-        "link": "http://192.168.222.6:8082/vis-2/edit.html",
+        "link": "%web_protocol%://%ip%:%web_port%/vis-2/edit.html?beregnungswerk#Uebersicht",
         "name": {
-          "en": "VIS-2",
-          "de": "VIS-2"
+          "en": "VIS-2 editor",
+          "de": "Vis-2 Editor"
         }
       }
     }
@@ -139,7 +139,7 @@
         "inSchleife": true,
         "dauer": 1,
         "wiederholungen": 2,
-        "ausgang": "beregnungswerk.0.Ventil1",
+        "ausgang": "",
         "feuchtSensor": "beregnungswerk.0.Test.luft",
         "tempSensor": "beregnungswerk.0.Test.temp",
         "schwelleVergleich": false,
@@ -153,7 +153,7 @@
       {
         "enabled": false,
         "sprinkleName": "Ventil1",
-        "name": "beregnungswerk.0.Test.Ventil1"
+        "name": ""
       }
     ],
     "timeEvents": [

@@ -23,6 +23,7 @@ const { startEngine } = require('./lib/engine');
 const { sendToWithTimeout } = require('./lib/sendToTimeout');
 const { preferBuiltinEngineStartup } = require('./lib/startupEnv');
 const { publishAdapterCatalog, watchAdapterCatalog } = require('./lib/adapterCatalog');
+const { ensureVis2Project } = require('./lib/ensureVis2');
 
 const SCRIPT_FILE = 'Beregnungswerk.js';
 const JS_RELOAD_TIMEOUT_MS = 8000;
@@ -476,6 +477,10 @@ async function main() {
 
         adapter.log.info('Start Phase 5/5: Bewässerungslogik …');
         const { logicMode, jsInstance } = await startLogic(statesOk);
+
+        await ensureVis2Project(adapter).catch((e) =>
+            adapter.log.warn(`Vis-2: ${e.message || e}`),
+        );
 
         adapter.log.info(
             `Beregnungswerk bereit – ${stats.total} Definitionen, ` +

@@ -15,9 +15,11 @@
             font-size: 15px;
         }
         .ueber {
+            display: block;
             width: 100%;
             max-height: 280px;
             object-fit: contain;
+            object-position: left center;
             background: #111;
             border-radius: 8px;
             cursor: pointer;
@@ -43,6 +45,9 @@
             object-fit: contain;
             background: #111;
             border-radius: 6px;
+        }
+        button.kachel.hell img {
+            background: #f7f7f7;
         }
         button.kachel span {
             display: block;
@@ -83,25 +88,27 @@
             ['schalter-ein.png', 'Ein'],
             ['schalter-aus.png', 'Aus'],
             ['kreuz.png', 'Gesperrt'],
-            ['regen.png', 'Regen'],
-            ['sonnenaufgang.png', 'Sonnenaufgang'],
-            ['sonnenuntergang.png', 'Sonnenuntergang'],
-            ['temperatur.png', 'Temperatur'],
-            ['feuchtigkeit.png', 'Feuchtigkeit'],
+            ['regen.png', 'Regen', 'hell'],
+            ['sonnenaufgang.png', 'Sonnenaufgang', 'hell'],
+            ['sonnenuntergang.png', 'Sonnenuntergang', 'hell'],
+            ['temperatur.png', 'Temperatur', 'hell'],
+            ['feuchtigkeit.png', 'Feuchtigkeit', 'hell'],
             ['kies.png', 'Tankfüllung']
         ];
         var raster = document.getElementById('raster');
         var dialog = document.getElementById('gross');
         var dialogBild = dialog.querySelector('img');
+        var offenSeit = 0;
         function zeige(src, name) {
             dialogBild.src = src;
             dialogBild.alt = name;
+            offenSeit = Date.now();
             dialog.showModal();
         }
         bilder.forEach(function (eintrag) {
             var knopf = document.createElement('button');
             knopf.type = 'button';
-            knopf.className = 'kachel';
+            knopf.className = 'kachel' + (eintrag[2] ? ' ' + eintrag[2] : '');
             var bild = document.createElement('img');
             bild.src = './vis-bilder/' + eintrag[0];
             bild.alt = eintrag[1];
@@ -118,6 +125,7 @@
             zeige(e.currentTarget.src, 'Erste Ansicht');
         });
         dialog.addEventListener('click', function () {
+            if (Date.now() - offenSeit < 300) return;
             dialog.close();
         });
     </script>

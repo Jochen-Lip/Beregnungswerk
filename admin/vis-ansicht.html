@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title>Beregnungswerk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #buehne {
+            position: absolute;
+            width: 1280px;
+            height: 800px;
+            transform-origin: 0 0;
+            background: #000;
+        }
+        button {
+            border: 0;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+            color: inherit;
+            font: inherit;
+        }
+        .kopf {
+            position: absolute;
+            left: 18px;
+            top: 10px;
+            right: 16px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .schalter {
+            width: 118px;
+            height: 46px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex: 0 0 auto;
+        }
+        .schalter.an { background-image: url("vis-bilder/schalter-ein.png"); }
+        .schalter.aus { background-image: url("vis-bilder/schalter-aus.png"); }
+        .autostart {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.15;
+            color: #f0a000;
+        }
+        .autostart.aus { color: #ef1f2b; }
+        .datum {
+            margin-left: auto;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .uhr {
+            min-width: 210px;
+            text-align: right;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .ventile {
+            position: absolute;
+            left: 10px;
+            top: 78px;
+            width: 760px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .ventil {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 340px;
+        }
+        .haken {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 2px solid #7eb0ff;
+            background: #0b2f86;
+            color: #fff;
+            font-size: 14px;
+            line-height: 14px;
+            font-weight: 700;
+        }
+        .haken.an { background: #1a5cff; }
+        .symbol {
+            position: relative;
+            width: 168px;
+            height: 196px;
+            display: grid;
+            place-items: center;
+        }
+        .symbol img.gross {
+            width: 150px;
+            height: 170px;
+            object-fit: contain;
+        }
+        .kreuz {
+            position: absolute;
+            inset: 0;
+            background: url("vis-bilder/kreuz.png") center/78% no-repeat;
+            pointer-events: none;
+        }
+        .kreis {
+            width: 124px;
+            height: 124px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: conic-gradient(from -90deg, #39e23a calc(var(--fort) * 1turn), #f4f4f4 0);
+        }
+        .kreis span {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #000;
+            display: grid;
+            place-items: center;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .rest {
+            margin-top: -6px;
+            color: #e6c200;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-align: center;
+        }
+        .feuchte {
+            margin: 4px 0 8px;
+            color: #27f91a;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+        }
+        .wetter {
+            position: absolute;
+            top: 72px;
+            right: 22px;
+            width: 360px;
+            background: #141a22;
+            border-radius: 12px;
+            padding: 12px 16px 8px;
+            box-sizing: border-box;
+        }
+        .wetterzeile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 34px;
+            font-size: 20px;
+        }
+        .wetterzeile img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: invert(1) sepia(1) saturate(6) hue-rotate(175deg) brightness(1.15);
+        }
+        .unten {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: 430px;
+            bottom: 14px;
+            display: grid;
+            grid-template-columns: 430px 390px 1fr;
+            gap: 14px;
+        }
+        .karte {
+            background: #141a22;
+            border-radius: 12px;
+            padding: 10px 12px;
+            box-sizing: border-box;
+        }
+        .tage {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            text-align: center;
+            height: 100%;
+        }
+        .tag {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .tag img, .tag .ersatz {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            font-size: 34px;
+            line-height: 52px;
+        }
+        .etp {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+        }
+        .etpzeile {
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            gap: 8px;
+            align-items: center;
+            font-size: 15px;
+        }
+        .etpzeile b { font-weight: 700; }
+        .etpzeile span { color: #e6c200; }
+        .schema {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            align-items: end;
+            height: 100%;
+        }
+        .tank {
+            position: relative;
+            width: 86px;
+            height: 250px;
+            margin-bottom: 18px;
+            border: 4px solid #c5c5c5;
+            border-radius: 42px 42px 16px 16px;
+            overflow: hidden;
+            background: #071833;
+            box-sizing: border-box;
+        }
+        .tank .wasser {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(#5eb6ff, #0b4ed8 70%);
+        }
+        .tank .kappe {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 42px;
+            background: #d7d2c8 url("vis-bilder/kies.png") center/cover;
+            border-bottom: 3px solid #9a9a9a;
+        }
+        .tank .stand {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 0 1px 2px #000;
+        }
+        .netz {
+            position: relative;
+            height: 100%;
+        }
+        .sprinklerreihe {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .klein {
+            position: relative;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .klein img {
+            width: 46px;
+            height: 52px;
+            object-fit: contain;
+        }
+        .klein .kreuz {
+            background-size: 70%;
+        }
+        .rohr-h {
+            height: 8px;
+            margin: 0 18px 0 4px;
+            background: #c0c0c0;
+            border-radius: 4px;
+        }
+        .rohr-h.an, .stutzen.an, .senkrecht.an { background: #1565ff; }
+        .stutzen {
+            width: 8px;
+            height: 12px;
+            margin: -2px auto 0;
+            background: #c0c0c0;
+        }
+        .pumpen {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            margin-top: 8px;
+            max-width: 290px;
+        }
+        .pumpe {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: 140px;
+        }
+        .pumpe img {
+            width: 34px;
+            height: 74px;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+        .pumpe.an img {
+            filter: sepia(1) saturate(6) hue-rotate(70deg) brightness(1.05);
+        }
+        .pumpe p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.15;
+        }
+        .pumpe.an p { color: #39e23a; font-weight: 700; }
+        .senkrecht {
+            width: 8px;
+            height: 36px;
+            margin-left: 18px;
+            background: #c0c0c0;
+        }
+    </style>
+</head>
+<body>
+    <div id="buehne">
+        <div class="kopf">
+            <button id="auto" class="schalter aus" type="button" aria-label="Automatik"></button>
+            <div id="autostart" class="autostart">Nächster Autostart --- Uhr</div>
+            <div id="datum" class="datum"></div>
+            <div id="uhr" class="uhr"></div>
+        </div>
+        <div id="ventile" class="ventile"></div>
+        <aside class="wetter" id="wetter"></aside>
+        <div class="unten">
+            <section class="karte tage" id="tage"></section>
+            <section class="karte etp" id="etp"></section>
+            <section class="schema" id="schema"></section>
+        </div>
+    </div>
+    <script>
+        var BILD = 'vis-bilder/';
+        var STAGE_W = 1280;
+        var STAGE_H = 800;
+        var NS = 'beregnungswerk.0';
+        var lage = null;
+        var live = false;
+        var demoTimer = null;
+        var fremd = {};
+
+        function leer() {
+            var ventile = [];
+            for (var n = 1; n <= 4; n++) {
+                ventile.push({
+                    nr: n,
+                    schleife: true,
+                    an: false,
+                    feuchte: '0 %',
+                    rest: 0,
+                    dauer: 15,
+                    wartung: false
+                });
+            }
+            return {
+                auto: true,
+                naechster: '---',
+                temp: '–',
+                regenHeute: '–',
+                luft: '–',
+                regenMorgen: '–',
+                sonneAuf: '–',
+                sonneUnter: '–',
+                einschalt: '–',
+                tank: 0,
+                garten: false,
+                brunnen: false,
+                gartenText: '',
+                brunnenText: '',
+                etp: { current: '–', today: '–', yesterday: '–' },
+                tage: [],
+                ventile: ventile
+            };
+        }
+
+        function demoLage() {
+            var basis = leer();
+            basis.temp = '-1,2 °C';
+            basis.regenHeute = '0 mm';
+            basis.luft = '87 %';
+            basis.regenMorgen = '0,3 mm';
+            basis.sonneAuf = '08:06:40';
+            basis.sonneUnter = '16:12:19';
+            basis.einschalt = '30 %';
+            basis.tank = 94;
+            basis.etp = { current: '-0,3538 mm', today: '-0,4556 mm', yesterday: '-0,4802 mm' };
+            var namen = ['🌤️', '⛅', '☀️', '🌦️', '☁️'];
+            var start = new Date();
+            basis.tage = namen.map(function (zeichen, i) {
+                var tag = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+                return { name: wochentag(tag), zeichen: zeichen, icon: '' };
+            });
+            return basis;
+        }
+
+        function wochentag(datum) {
+            var namen = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            return namen[datum.getDay()];
+        }
+
+        function passend() {
+            var buehne = document.getElementById('buehne');
+            var faktor = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H);
+            if (!isFinite(faktor) || faktor <= 0) faktor = 1;
+            buehne.style.transform = 'scale(' + faktor + ')';
+            buehne.style.left = Math.max(0, (window.innerWidth - STAGE_W * faktor) / 2) + 'px';
+            buehne.style.top = Math.max(0, (window.innerHeight - STAGE_H * faktor) / 2) + 'px';
+        }
+
+        function uhr() {
+            var jetzt = new Date();
+            var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+            document.getElementById('uhr').textContent = pad(jetzt.getHours()) + ':' + pad(jetzt.getMinutes()) + ':' + pad(jetzt.getSeconds());
+            var monat = jetzt.toLocaleDateString('de-DE', { month: 'long' });
+            document.getElementById('datum').textContent = wochentag(jetzt) + ', ' + jetzt.getDate() + '. ' + monat + ' ' + jetzt.getFullYear();
+        }
+
+        function zahl(wert) {
+            if (wert === undefined || wert === null || wert === '' || wert === 'Keine Daten') return null;
+            var text = String(wert).replace(',', '.').replace(/[^\d.+\-]/g, '');
+            var n = parseFloat(text);
+            return isNaN(n) ? null : n;
+        }
+
+        function mitEinheit(wert, einheit) {
+            if (wert === undefined || wert === null || wert === '' || wert === 'Keine Daten') return '–';
+            var text = String(wert);
+            if (einheit && text.indexOf(einheit) === -1 && zahl(text) !== null) {
+                return text.replace('.', ',') + ' ' + einheit;
+            }
+            return text;
+        }
+
+        function restText(sekunden) {
+            var gesamt = Math.max(0, Math.round(sekunden));
+            var minuten = Math.floor(gesamt / 60);
+            var rest = gesamt % 60;
+            var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+            return pad(minuten) + ':' + pad(rest);
+        }
+
+        function zeichne() {
+            var auto = document.getElementById('auto');
+            auto.className = 'schalter ' + (lage.auto ? 'an' : 'aus');
+            auto.setAttribute('aria-pressed', lage.auto ? 'true' : 'false');
+            var hinweis = document.getElementById('autostart');
+            if (!lage.auto) {
+                hinweis.className = 'autostart aus';
+                hinweis.textContent = 'Autostart Aus / keine automatische Bewässerung';
+            } else {
+                hinweis.className = 'autostart';
+                hinweis.textContent = 'Nächster Autostart ' + (lage.naechster || '---') + ' Uhr';
+            }
+
+            var kasten = document.getElementById('ventile');
+            kasten.innerHTML = '';
+            lage.ventile.forEach(function (ventil) {
+                var block = document.createElement('div');
+                block.className = 'ventil';
+                var haken = document.createElement('button');
+                haken.type = 'button';
+                haken.className = 'haken' + (ventil.schleife ? ' an' : '');
+                haken.textContent = ventil.schleife ? '✓' : '';
+                haken.setAttribute('aria-label', 'Ventil ' + ventil.nr + ' in der Schleife');
+                haken.addEventListener('click', function () { schalteSchleife(ventil.nr); });
+
+                var symbol = document.createElement('div');
+                symbol.className = 'symbol';
+                if (ventil.an && ventil.rest > 0) {
+                    var kreis = document.createElement('div');
+                    kreis.className = 'kreis';
+                    var dauerSek = Math.max(60, (ventil.dauer || 15) * 60);
+                    var fort = Math.max(0.04, Math.min(1, ventil.rest / dauerSek));
+                    kreis.style.setProperty('--fort', String(fort));
+                    var ziffer = document.createElement('span');
+                    ziffer.textContent = String(Math.max(0, Math.ceil(ventil.rest / 60)));
+                    kreis.appendChild(ziffer);
+                    symbol.appendChild(kreis);
+                } else {
+                    var bild = document.createElement('img');
+                    bild.className = 'gross';
+                    bild.alt = 'Ventil ' + ventil.nr;
+                    bild.src = BILD + (ventil.an ? 'sprinkler-weiss.gif' : 'sprinkler-still.png');
+                    symbol.appendChild(bild);
+                }
+                if (!ventil.schleife || ventil.wartung) {
+                    var kreuz = document.createElement('div');
+                    kreuz.className = 'kreuz';
+                    symbol.appendChild(kreuz);
+                }
+
+                var feuchte = document.createElement('div');
+                feuchte.className = 'feuchte';
+                feuchte.textContent = 'Feuchtigkeit ' + (ventil.feuchte || '–');
+
+                var schalter = document.createElement('button');
+                schalter.type = 'button';
+                schalter.className = 'schalter ' + (ventil.an ? 'an' : 'aus');
+                schalter.setAttribute('aria-label', 'Ventil ' + ventil.nr + (ventil.an ? ' aus' : ' ein'));
+                schalter.addEventListener('click', function () { schalteVentil(ventil.nr); });
+
+                block.appendChild(haken);
+                block.appendChild(symbol);
+                if (ventil.an && ventil.rest > 0) {
+                    var rest = document.createElement('div');
+                    rest.className = 'rest';
+                    rest.textContent = 'RESTZEIT ' + restText(ventil.rest) + ' MIN';
+                    block.appendChild(rest);
+                }
+                block.appendChild(feuchte);
+                block.appendChild(schalter);
+                kasten.appendChild(block);
+            });
+
+            var wetter = [
+                ['temperatur.png', 'Aktuelle Tem. ' + mitEinheit(lage.temp, '°C')],
+                ['regen.png', 'Regen Heute ' + mitEinheit(lage.regenHeute, 'mm')],
+                ['feuchtigkeit.png', 'Luftfeuchtigkeit ' + mitEinheit(lage.luft, '%')],
+                ['regen.png', 'Regen Morgen ' + mitEinheit(lage.regenMorgen, 'mm')],
+                ['sonnenaufgang.png', 'Sonnenaufgang ' + (lage.sonneAuf || '–') + (lage.sonneAuf && lage.sonneAuf !== '–' ? ' Uhr' : '')],
+                ['sonnenuntergang.png', 'Sonnenuntergang ' + (lage.sonneUnter || '–') + (lage.sonneUnter && lage.sonneUnter !== '–' ? ' Uhr' : '')],
+                ['feuchtigkeit.png', 'Einschaltpunkt Sprinkler ' + mitEinheit(lage.einschalt, '%')]
+            ];
+            var wetterKasten = document.getElementById('wetter');
+            wetterKasten.innerHTML = '';
+            wetter.forEach(function (zeile) {
+                var reihe = document.createElement('div');
+                reihe.className = 'wetterzeile';
+                var icon = document.createElement('img');
+                icon.src = BILD + zeile[0];
+                icon.alt = '';
+                reihe.appendChild(icon);
+                reihe.appendChild(document.createTextNode(zeile[1]));
+                wetterKasten.appendChild(reihe);
+            });
+
+            var tage = document.getElementById('tage');
+            tage.innerHTML = '';
+            var vorlageTage = lage.tage && lage.tage.length ? lage.tage : fuenfTage();
+            vorlageTage.forEach(function (tag) {
+                var spalte = document.createElement('div');
+                spalte.className = 'tag';
+                var name = document.createElement('div');
+                name.textContent = tag.name;
+                spalte.appendChild(name);
+                if (tag.icon) {
+                    var icon = document.createElement('img');
+                    icon.src = tag.icon;
+                    icon.alt = tag.name;
+                    spalte.appendChild(icon);
+                } else {
+                    var ersatz = document.createElement('div');
+                    ersatz.className = 'ersatz';
+                    ersatz.textContent = tag.zeichen || '☁️';
+                    spalte.appendChild(ersatz);
+                }
+                tage.appendChild(spalte);
+            });
+
+            var etp = document.getElementById('etp');
+            etp.innerHTML = '';
+            [
+                ['ETpCurrent ' + (lage.etp.current || '–'), 'Verdunstung als Tageswert'],
+                ['ETpToday ' + (lage.etp.today || '–'), 'aktuelle Tagesverdunstung'],
+                ['ETpYesterday ' + (lage.etp.yesterday || '–'), 'Verdunstung des gestrigen Tages']
+            ].forEach(function (zeile) {
+                var reihe = document.createElement('div');
+                reihe.className = 'etpzeile';
+                var links = document.createElement('b');
+                links.textContent = zeile[0];
+                var rechts = document.createElement('span');
+                rechts.textContent = zeile[1];
+                reihe.appendChild(links);
+                reihe.appendChild(rechts);
+                etp.appendChild(reihe);
+            });
+
+            zeichneSchema();
+        }
+
+        function fuenfTage() {
+            var start = new Date();
+            var liste = [];
+            for (var i = 0; i < 5; i++) {
+                var tag = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+                liste.push({ name: wochentag(tag), zeichen: '☁️', icon: '' });
+            }
+            return liste;
+        }
+
+        function zeichneSchema() {
+            var schema = document.getElementById('schema');
+            var pumpeAn = !!lage.garten || lage.ventile.some(function (v) { return v.an; });
+            schema.innerHTML = '';
+            var tank = document.createElement('div');
+            tank.className = 'tank';
+            var wasser = document.createElement('div');
+            wasser.className = 'wasser';
+            var standZahl = zahl(lage.tank);
+            wasser.style.height = Math.max(0, Math.min(100, standZahl === null ? 0 : standZahl)) + '%';
+            var kappe = document.createElement('div');
+            kappe.className = 'kappe';
+            var stand = document.createElement('div');
+            stand.className = 'stand';
+            stand.textContent = (standZahl === null ? '–' : Math.round(standZahl)) + ' %';
+            tank.appendChild(wasser);
+            tank.appendChild(kappe);
+            tank.appendChild(stand);
+
+            var netz = document.createElement('div');
+            netz.className = 'netz';
+            var reihe = document.createElement('div');
+            reihe.className = 'sprinklerreihe';
+            lage.ventile.forEach(function (ventil) {
+                var spalte = document.createElement('div');
+                var klein = document.createElement('div');
+                klein.className = 'klein';
+                var nr = document.createElement('div');
+                nr.textContent = String(ventil.nr);
+                var bild = document.createElement('img');
+                bild.alt = '';
+                bild.src = BILD + (ventil.an ? 'sprinkler-weiss.gif' : 'sprinkler-still.png');
+                klein.appendChild(nr);
+                klein.appendChild(bild);
+                if (!ventil.schleife || ventil.wartung) {
+                    var kreuz = document.createElement('div');
+                    kreuz.className = 'kreuz';
+                    klein.appendChild(kreuz);
+                }
+                var stutzen = document.createElement('div');
+                stutzen.className = 'stutzen' + (ventil.an || pumpeAn ? ' an' : '');
+                spalte.appendChild(klein);
+                spalte.appendChild(stutzen);
+                reihe.appendChild(spalte);
+            });
+            var rohr = document.createElement('div');
+            rohr.className = 'rohr-h' + (pumpeAn ? ' an' : '');
+            var senkrecht = document.createElement('div');
+            senkrecht.className = 'senkrecht' + (pumpeAn ? ' an' : '');
+            netz.appendChild(reihe);
+            netz.appendChild(rohr);
+            netz.appendChild(senkrecht);
+
+            var pumpen = document.createElement('div');
+            pumpen.className = 'pumpen';
+            pumpen.appendChild(pumpenKarte(lage.garten, lage.garten ? 'Pumpe läuft' : (lage.gartenText || 'Pumpe deaktiviert')));
+            pumpen.appendChild(pumpenKarte(lage.brunnen, lage.brunnen ? 'Brunnenpumpe läuft' : (lage.brunnenText || 'Brunnenpumpe deaktiviert')));
+            netz.appendChild(pumpen);
+
+            schema.appendChild(tank);
+            schema.appendChild(netz);
+        }
+
+        function pumpenKarte(an, text) {
+            var block = document.createElement('div');
+            block.className = 'pumpe' + (an ? ' an' : '');
+            var bild = document.createElement('img');
+            bild.src = BILD + 'brunnenpumpe.png';
+            bild.alt = '';
+            var label = document.createElement('p');
+            label.textContent = text;
+            block.appendChild(bild);
+            block.appendChild(label);
+            return block;
+        }
+
+        function ventilNachNr(nr) {
+            for (var i = 0; i < lage.ventile.length; i++) {
+                if (lage.ventile[i].nr === nr) return lage.ventile[i];
+            }
+            return null;
+        }
+
+        function id(rel) {
+            return NS + '.' + rel;
+        }
+
+        function schreibe(rel, wert) {
+            if (!live || !window.__bwSocket) {
+                return;
+            }
+            window.__bwSocket.emit('setState', id(rel), wert);
+        }
+
+        function schalteSchleife(nr) {
+            var ventil = ventilNachNr(nr);
+            if (!ventil) return;
+            ventil.schleife = !ventil.schleife;
+            if (!ventil.schleife) {
+                ventil.an = false;
+                ventil.rest = 0;
+            }
+            schreibe('SchleifenSteuerung.Ventil' + nr, ventil.schleife);
+            zeichne();
+        }
+
+        function schalteVentil(nr) {
+            var ventil = ventilNachNr(nr);
+            if (!ventil || !ventil.schleife || ventil.wartung) return;
+            ventil.an = !ventil.an;
+            if (ventil.an && ventil.rest <= 0) ventil.rest = Math.max(60, (ventil.dauer || 15) * 60);
+            if (!ventil.an) ventil.rest = 0;
+            schreibe('Ventil' + nr + '.Steuerung.Ventil' + nr + '_AusAn', ventil.an);
+            if (!live) lage.garten = lage.ventile.some(function (v) { return v.an; });
+            zeichne();
+        }
+
+        function schalteAuto() {
+            lage.auto = !lage.auto;
+            schreibe('SchleifenSteuerung.Aktiv', lage.auto);
+            zeichne();
+        }
+
+        function demoTick() {
+            var irgendwer = false;
+            lage.ventile.forEach(function (ventil) {
+                if (!ventil.an) return;
+                irgendwer = true;
+                ventil.rest = Math.max(0, ventil.rest - 1);
+                if (ventil.rest <= 0) ventil.an = false;
+            });
+            if (!irgendwer && !live) lage.garten = false;
+            zeichne();
+        }
+
+        function starteDemo() {
+            live = false;
+            lage = demoLage();
+            zeichne();
+            if (demoTimer) clearInterval(demoTimer);
+            demoTimer = setInterval(demoTick, 1000);
+        }
+
+        function wertVon(sammlung, rel) {
+            var eintrag = sammlung[id(rel)];
+            if (!eintrag) return undefined;
+            return eintrag.val !== undefined ? eintrag.val : eintrag;
+        }
+
+        function feuchteText(wert) {
+            if (wert === undefined || wert === null || wert === '' || wert === 'Keine Daten') return '– %';
+            var text = String(wert);
+            if (text.indexOf('%') !== -1) return text.replace('Feuchtigkeit', '').trim();
+            if (zahl(text) !== null) return String(wert).replace('.', ',') + ' %';
+            return text;
+        }
+
+        function naechsterText(status, anzeige) {
+            var text = String(status || '');
+            if (text.indexOf('Nächste Bewässerung') === 0) {
+                return text.replace('Nächste Bewässerung', '').trim() || '---';
+            }
+            var uhrzeit = String(anzeige || '').trim();
+            if (uhrzeit && uhrzeit !== '–' && uhrzeit !== '-') return uhrzeit;
+            return '---';
+        }
+
+        function etpText(wert) {
+            if (wert === undefined || wert === null || wert === '' || wert === 'Keine Daten') return '–';
+            var text = String(wert);
+            if (text.indexOf('mm') !== -1) return text;
+            var n = zahl(text);
+            if (n === null) return text;
+            return n.toFixed(4).replace('.', ',') + ' mm';
+        }
+
+        function uebernehme(sammlung) {
+            if (!lage) lage = leer();
+            var auto = wertVon(sammlung, 'SchleifenSteuerung.Aktiv');
+            if (auto !== undefined) lage.auto = auto === true || auto === 'true' || auto === 1;
+            var statusText = wertVon(sammlung, 'Steuerung.Status');
+            var anzeigeText = wertVon(sammlung, 'Steuerung.Zeitschaltuhr.Schaltzeit1.Anzeige');
+            if (statusText !== undefined) lage._status = statusText;
+            if (anzeigeText !== undefined) lage._anzeige = anzeigeText;
+            if (statusText !== undefined || anzeigeText !== undefined) {
+                lage.naechster = naechsterText(lage._status, lage._anzeige);
+            }
+            var temp = wertVon(sammlung, 'Steuerung.Wetterdaten.Messwerte.Temperatur');
+            var regenHeute = wertVon(sammlung, 'Steuerung.Wetterdaten.Messwerte.Niederschlag_Heute');
+            var luft = wertVon(sammlung, 'Steuerung.Wetterdaten.Messwerte.Luftfeuchtigkeit');
+            var regenMorgen = wertVon(sammlung, 'Steuerung.Wetterdaten.Messwerte.Niederschlag_Morgen');
+            var einschalt = wertVon(sammlung, 'Ventil1.Schwelle.FeuchtigkeitWert');
+            var tank = wertVon(sammlung, 'WassertankSteuerung.Anzeigen.TankIstwert_Anzeige');
+            var garten = wertVon(sammlung, 'GartenpumpeSteuerung.Anzeigen.Gartenpumpe');
+            var gartenStatus = wertVon(sammlung, 'GartenpumpeSteuerung.Anzeigen.Status');
+            if (temp !== undefined) lage.temp = temp;
+            if (regenHeute !== undefined) lage.regenHeute = regenHeute;
+            if (luft !== undefined) lage.luft = luft;
+            if (regenMorgen !== undefined) lage.regenMorgen = regenMorgen;
+            if (einschalt !== undefined) lage.einschalt = einschalt;
+            if (tank !== undefined) lage.tank = tank;
+            if (garten !== undefined) lage.garten = garten === true || garten === 'true' || garten === 1;
+            if (gartenStatus && gartenStatus !== 'Inaktiv') lage.gartenText = String(gartenStatus);
+            var brunnenDirekt = wertVon(sammlung, 'Test.Brunnenpumpe');
+            if (brunnenDirekt !== undefined && !fremd.brunnenId) {
+                lage.brunnen = brunnenDirekt === true || brunnenDirekt === 'true' || brunnenDirekt === 1;
+            }
+            lage.ventile.forEach(function (ventil) {
+                var nr = ventil.nr;
+                var schleife = wertVon(sammlung, 'SchleifenSteuerung.Ventil' + nr);
+                var an = wertVon(sammlung, 'Ventil' + nr + '.Steuerung.Aktiv');
+                var schalter = wertVon(sammlung, 'Ventil' + nr + '.Steuerung.Ventil' + nr + '_AusAn');
+                var rest = wertVon(sammlung, 'Ventil' + nr + '.Steuerung.Restzeit');
+                var feuchte = wertVon(sammlung, 'Ventil' + nr + '.Messwerte.FeuchtigkeitAnzeige');
+                var dauer = wertVon(sammlung, 'Ventil' + nr + '.Konfig.Bewaesserungsdauer');
+                var wartung = wertVon(sammlung, 'Ventil' + nr + '.Konfig.Wartung');
+                if (schleife !== undefined) ventil.schleife = schleife === true || schleife === 'true' || schleife === 1;
+                if (an !== undefined || schalter !== undefined) {
+                    var laeuft = an === true || an === 'true' || an === 1;
+                    var schalterAn = schalter === true || schalter === 'true' || schalter === 1;
+                    ventil.an = laeuft || schalterAn;
+                }
+                if (rest !== undefined && zahl(rest) !== null) ventil.rest = Math.max(0, zahl(rest));
+                if (feuchte !== undefined) ventil.feuchte = feuchteText(feuchte);
+                if (dauer !== undefined && zahl(dauer) !== null) ventil.dauer = zahl(dauer);
+                if (wartung !== undefined) ventil.wartung = wartung === true || wartung === 'true' || wartung === 1;
+            });
+            fremdAktualisieren();
+            zeichne();
+        }
+
+        function setzeFremd(oid, wert) {
+            fremd[oid] = wert;
+        }
+
+        function fremdAktualisieren() {
+            var ort = fremd.ort || 'Neu_Wulmstorf';
+            var prefix = 'open-meteo-weather.0.' + ort + '.';
+            var icons = [];
+            Object.keys(fremd).forEach(function (oid) {
+                var wert = fremd[oid];
+                if (wert === undefined || wert === null) return;
+                var klein = oid.toLowerCase();
+                if (oid.indexOf(prefix) === 0) {
+                    var tag = oid.match(/day(\d)/i);
+                    if (tag && /icon|url|symbol/.test(klein) && String(wert).indexOf('http') === 0) {
+                        icons[Number(tag[1])] = String(wert);
+                    }
+                }
+                if (/sunrise|sonnenauf/.test(klein) && !/end/.test(klein)) lage.sonneAuf = uhrAus(wert);
+                if (/sunset|sonnenunter/.test(klein) && !/start|beginn/.test(klein)) lage.sonneUnter = uhrAus(wert);
+                if (/etpcurrent/.test(klein)) lage.etp.current = etpText(wert);
+                if (/etptoday/.test(klein)) lage.etp.today = etpText(wert);
+                if (/etpyesterday/.test(klein)) lage.etp.yesterday = etpText(wert);
+                if (fremd.brunnenId && oid === fremd.brunnenId) {
+                    lage.brunnen = wert === true || wert === 'true' || wert === 1 || wert === 'on';
+                }
+            });
+            if (icons.some(function (icon) { return !!icon; })) {
+                var start = new Date();
+                lage.tage = [];
+                for (var i = 0; i < 5; i++) {
+                    var tag = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+                    lage.tage.push({
+                        name: wochentag(tag),
+                        icon: icons[i] || '',
+                        zeichen: '☁️'
+                    });
+                }
+            }
+        }
+
+        function uhrAus(wert) {
+            var text = String(wert || '');
+            var treffer = text.match(/(\d{1,2}:\d{2}(?::\d{2})?)/);
+            return treffer ? treffer[1] : text;
+        }
+
+        function abonnieren(socket, muster) {
+            socket.emit('subscribe', muster);
+            socket.emit('getStates', muster, function (fehler, zustand) {
+                var daten = zustand;
+                if (!daten && fehler && typeof fehler === 'object' && !fehler.message) daten = fehler;
+                if (!daten) return;
+                if (muster.indexOf('beregnungswerk.') === 0) {
+                    if (window.__bwAngekommen) window.__bwAngekommen();
+                    uebernehme(daten);
+                    var ort = wertVon(daten, 'Steuerung.Wetterdaten.Konfig.OpenMeteoOrt');
+                    var brunnenPfad = wertVon(daten, 'WassertankSteuerung.Konfig.Brunnenpumpe');
+                    if (ort && String(ort).indexOf('.') === -1) {
+                        fremd.ort = String(ort);
+                        abonnieren(socket, 'open-meteo-weather.0.' + fremd.ort + '.*');
+                    }
+                    if (brunnenPfad && String(brunnenPfad).indexOf('.') !== -1) {
+                        fremd.brunnenId = String(brunnenPfad);
+                        abonnieren(socket, fremd.brunnenId);
+                    }
+                } else if (fremd.brunnenId && muster === fremd.brunnenId) {
+                    var eintrag = daten[muster] || daten;
+                    setzeFremd(muster, eintrag && eintrag.val !== undefined ? eintrag.val : eintrag);
+                    fremdAktualisieren();
+                    zeichne();
+                } else {
+                    Object.keys(daten).forEach(function (oid) {
+                        var eintrag = daten[oid];
+                        setzeFremd(oid, eintrag && eintrag.val !== undefined ? eintrag.val : eintrag);
+                    });
+                    fremdAktualisieren();
+                    zeichne();
+                }
+            });
+        }
+
+        function verbinde() {
+            var script = document.createElement('script');
+            script.src = '/socket.io/socket.io.js';
+            script.onload = function () {
+                if (typeof window.io !== 'function') {
+                    starteDemo();
+                    return;
+                }
+                var socket = window.io({ transports: ['websocket', 'polling'] });
+                window.__bwSocket = socket;
+                var angekommen = false;
+                window.__bwAngekommen = function () {
+                    angekommen = true;
+                    clearTimeout(frist);
+                };
+                var frist = setTimeout(function () {
+                    if (!angekommen) starteDemo();
+                }, 4000);
+                socket.on('connect', function () {
+                    live = true;
+                    lage = leer();
+                    if (demoTimer) {
+                        clearInterval(demoTimer);
+                        demoTimer = null;
+                    }
+                    abonnieren(socket, NS + '.*');
+                    abonnieren(socket, 'sprinklecontrol.0.evaporation.*');
+                    abonnieren(socket, 'javascript.0.03-Sonnenaufgang');
+                    abonnieren(socket, 'javascript.0.09-Sonnenuntergang');
+                });
+                socket.on('stateChange', function (oid, zustand) {
+                    if (window.__bwAngekommen) window.__bwAngekommen();
+                    if (!live) return;
+                    var wert = zustand && zustand.val !== undefined ? zustand.val : zustand;
+                    if (oid.indexOf(NS + '.') === 0) {
+                        var paket = {};
+                        paket[oid] = { val: wert };
+                        uebernehme(paket);
+                    } else {
+                        setzeFremd(oid, wert);
+                        fremdAktualisieren();
+                        zeichne();
+                    }
+                });
+                socket.on('connect_error', function () {
+                    if (!angekommen) starteDemo();
+                });
+            };
+            script.onerror = function () { starteDemo(); };
+            document.head.appendChild(script);
+        }
+
+        document.getElementById('auto').addEventListener('click', schalteAuto);
+        window.addEventListener('resize', passend);
+        passend();
+        uhr();
+        setInterval(uhr, 1000);
+        if (/(?:\?|&)demo=1(?:&|$)/.test(location.search) || location.protocol === 'file:') {
+            starteDemo();
+        } else {
+            lage = leer();
+            zeichne();
+            verbinde();
+        }
+    </script>
+</body>
+</html>
